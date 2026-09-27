@@ -4,7 +4,6 @@ import { services } from "../../content/services";
 
 const routes = [
   "/",
-  "/services",
   ...services.map((s) => `/services/${s.slug}`),
   "/oba-core",
   "/approach",

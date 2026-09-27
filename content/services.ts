@@ -6,6 +6,8 @@ export type Service = {
   summary: string;
   /** Two sentences, shown at the top of the service page. */
   intro: string;
+  /** A short paragraph on how we approach it, shown above the list of what we offer. */
+  overview: string;
   photo: { src: string; alt: string };
   /** Everything we offer under this service, in the order we'd list it. */
   items: string[];
@@ -25,7 +27,9 @@ export const services: Service[] = [
     summary: "Agents, chatbots and automations that take real work off your team's plate.",
     intro:
       "We build AI that does real work inside your business: answering customers, taking orders, reading documents and moving data between systems. It connects to the tools you already use, follows your rules and hands over to a person when it should.",
-    photo: { src: unsplash("photo-1593733925160-6f78dc0be8b6"), alt: "Someone messaging on a phone" },
+    photo: { src: unsplash("photo-1674027444454-97b822a997b6"), alt: "A wireframe AI brain glowing above a grid" },
+    overview:
+      "Most of the value sits in the repetitive parts of the day: the same questions, the same forms, the same copying between systems. We start with one of those, measure how often the AI gets it right on your real cases, and only then widen what it is allowed to do. Every action is logged, so you can always see what it did and why.",
     items: [
       "AI agent development",
       "AI chatbots and conversational AI",
@@ -64,7 +68,9 @@ export const services: Service[] = [
     summary: "Custom models that read images, video and documents, trained on your data.",
     intro:
       "When off-the-shelf models aren't accurate enough, we build and train our own. We handle the whole path: collecting and labelling data, training and fine-tuning, measuring accuracy honestly and deploying the model where it's needed.",
-    photo: { src: unsplash("photo-1588776814546-1ffcf47267a5"), alt: "A doctor examining X-ray scans on a light box" },
+    photo: { src: unsplash("photo-1764983253036-edd0f55af679"), alt: "Camera and lidar sensors on the roof of a self-driving car" },
+    overview:
+      "Custom models make sense when the job is specific to you: your products, your documents, your camera angles. We collect a sample of real data first and agree what a correct answer looks like, so every model is measured against that rather than a demo. Anything the model is unsure about goes to a person, and their corrections make the next version better.",
     items: [
       "Custom AI/ML model development",
       "Machine learning and deep learning",
@@ -101,7 +107,9 @@ export const services: Service[] = [
     summary: "Web apps, SaaS products and MVPs, built end to end.",
     intro:
       "We design and build software from the database up: web applications, SaaS products, internal tools and the APIs behind them. Permissions, error handling and tests are part of the job from day one.",
-    photo: { src: unsplash("photo-1534665482403-a909d0d97c67"), alt: "A developer writing code on a laptop" },
+    photo: { src: unsplash("photo-1628258334105-2a0b3d6efee1"), alt: "A laptop showing code on a desk beside a stack of books" },
+    overview:
+      "We usually start with the smallest version that proves the idea, put it in front of real users, then build out from what they actually use. The code is written to be handed over: documented, tested and deployed in a way your own team or a future hire can pick up. You own all of it.",
     items: [
       "Full-stack web development",
       "React and Next.js development",
@@ -140,6 +148,8 @@ export const services: Service[] = [
     intro:
       "Some software has to update the moment something happens: messages, calls, shared boards, live dashboards. We build real-time systems that stay fast and reliable as the number of people using them grows.",
     photo: { src: unsplash("photo-1606770347238-77fcfd29906c"), alt: "A video call on a laptop beside a cup of coffee" },
+    overview:
+      "Real-time features look simple in a demo and get hard under load: dropped connections, messages arriving out of order, people on weak mobile networks, thousands of open sockets. We design for those cases up front and load-test before launch, so the product feels instant on day one and stays that way as usage grows.",
     items: [
       "Real-time web applications",
       "WebSocket and Socket.IO development",
@@ -174,6 +184,8 @@ export const services: Service[] = [
     intro:
       "We build the systems a business runs on day to day: where it sells, how it tracks customers, how it gets paid and how leadership sees the numbers. Payments, permissions and reporting are built in, not bolted on.",
     photo: { src: unsplash("photo-1563013544-824ae1b704d3"), alt: "Someone paying online with a card on a laptop" },
+    overview:
+      "Off-the-shelf platforms cover the common cases. We step in where your business works differently: custom checkout rules, multi-vendor payouts, pricing logic or reporting nobody else offers. We build on proven pieces such as Stripe where they fit, and write custom code only where it earns its keep.",
     items: [
       "E-commerce development",
       "Marketplace development",
@@ -209,7 +221,9 @@ export const services: Service[] = [
     summary: "Connect your systems and run them reliably in the cloud.",
     intro:
       "We connect the tools you already pay for so information moves between them without anyone copying and pasting, and we set up the infrastructure underneath so it keeps running when you're not watching.",
-    photo: { src: unsplash("photo-1594915440248-1e419eba6611"), alt: "Fibre optic cables connected to a network switch" },
+    photo: { src: unsplash("photo-1558494949-ef010cbdcc31"), alt: "Server racks with network cabling in a data centre" },
+    overview:
+      "We map where your data lives and where it needs to go, then connect the systems with retries, logging and alerts, so a failed sync gets noticed and fixed instead of silently lost. Underneath, we set up deployments, backups and monitoring your team can understand and maintain.",
     items: [
       "Third-party API integrations",
       "WhatsApp Business API",
@@ -246,6 +260,8 @@ export const services: Service[] = [
     intro:
       "Not every problem needs a new build. We review architecture and code, find what's slow, costly or fragile, and fix it or show your team how. That includes AI systems whose costs or accuracy have drifted.",
     photo: { src: unsplash("photo-1532619675605-1ede6c2ed2b0"), alt: "An engineer explaining a design on a whiteboard" },
+    overview:
+      "Most engagements start with a short, fixed-scope review: we read the code, look at how it runs in production and talk to the people who work on it. You get a written report of what to fix first and why, with estimates. From there we can make the changes ourselves or work alongside your team.",
     items: [
       "Software architecture",
       "AI/ML architecture",

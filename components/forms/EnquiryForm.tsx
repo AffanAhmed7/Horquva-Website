@@ -36,7 +36,12 @@ export function EnquiryForm({ tone = "paper", defaultService, initialStatus = "i
   });
 
   const muted = tone === "ink" ? "text-stone" : "text-ink-soft";
-  const line = tone === "ink" ? "border-rule-dark focus:border-bronze" : "border-rule focus:border-bronze-deep";
+  // On ink the lines need a little more contrast, and the browser's own dropdown lists are asked to draw
+  // dark (color-scheme) with the site's ink behind the options.
+  const line =
+    tone === "ink"
+      ? "border-paper/15 bg-paper/[0.03] hover:border-paper/30 focus:border-bronze [color-scheme:dark] [&>option]:bg-ink [&>option]:text-paper"
+      : "border-rule bg-white/50 hover:border-stone focus:border-bronze-deep";
   const errorText = tone === "ink" ? "text-bronze" : "text-bronze-deep";
 
   async function onSubmit(values: Enquiry) {
@@ -76,7 +81,9 @@ export function EnquiryForm({ tone = "paper", defaultService, initialStatus = "i
     "aria-describedby": errors[name] ? `${uid}-${name}-error` : undefined,
   });
 
-  const input = `w-full border-0 border-b bg-transparent py-3 text-[17px] outline-none transition-colors placeholder:text-stone/70 ${line}`;
+  const input = `w-full rounded-xl border px-4 py-3 text-[17px] outline-none transition-colors placeholder:text-stone/70 ${line}`;
+  // Dropdowns draw their own chevron, since appearance-none removes the browser's.
+  const select = `${input} appearance-none pr-11`;
 
   return (
     <form
@@ -107,29 +114,33 @@ export function EnquiryForm({ tone = "paper", defaultService, initialStatus = "i
       </Field>
 
       <Field label="What do you need?" htmlFor={`${uid}-service`} error={errors.service} errorId={`${uid}-service-error`} errorText={errorText}>
-        <select {...register("service")} {...field("service")} className={`${input} appearance-none rounded-none`}>
-          <option value="" disabled>
-            Choose a service
-          </option>
-          {enquiryServiceOptions.map((o) => (
-            <option key={o} value={o}>
-              {o}
+        <Chevron>
+          <select {...register("service")} {...field("service")} className={select}>
+            <option value="" disabled>
+              Choose a service
             </option>
-          ))}
-        </select>
+            {enquiryServiceOptions.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+        </Chevron>
       </Field>
 
       <Field label="Budget" htmlFor={`${uid}-budget`} error={errors.budget} errorId={`${uid}-budget-error`} errorText={errorText}>
-        <select {...register("budget")} {...field("budget")} className={`${input} appearance-none rounded-none`}>
-          <option value="" disabled>
-            Choose a range
-          </option>
-          {budgetOptions.map((o) => (
-            <option key={o} value={o}>
-              {o}
+        <Chevron>
+          <select {...register("budget")} {...field("budget")} className={select}>
+            <option value="" disabled>
+              Choose a range
             </option>
-          ))}
-        </select>
+            {budgetOptions.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+        </Chevron>
       </Field>
 
       <div className="md:col-span-2">
@@ -200,7 +211,7 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="flex justify-between text-[15px]">
+      <label htmlFor={htmlFor} className="mb-2 flex justify-between text-[15px]">
         <span>{label}</span>
         {hint && <span className={hintClass}>{hint}</span>}
       </label>
@@ -210,6 +221,27 @@ function Field({
           {error.message}
         </p>
       )}
+    </div>
+  );
+}
+
+/** Wraps a select with a chevron, drawn in the text colour. */
+function Chevron({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative">
+      {children}
+      <svg
+        aria-hidden
+        viewBox="0 0 24 24"
+        className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 opacity-70"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
     </div>
   );
 }

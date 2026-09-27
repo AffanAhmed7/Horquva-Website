@@ -12,10 +12,10 @@ const hanken = Hanken_Grotesk({
   variable: "--font-hanken",
 });
 
-// Light display face for the home hero headline only.
+// Display face: light for the hero and section titles, bold for card titles.
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["300", "400", "700"],
   variable: "--font-jakarta",
 });
 
@@ -34,7 +34,7 @@ const organisationJsonLd = {
   url: site.url,
   logo: `${site.url}/logo-mark.png`,
   email: site.email,
-  sameAs: [site.linkedin],
+  sameAs: [site.linkedin, site.instagram, site.facebook],
   address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: "PK" },
 };
 

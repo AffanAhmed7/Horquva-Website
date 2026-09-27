@@ -9,7 +9,7 @@ export function ProcessSteps() {
   return (
     <Section tone="ink" innerClassName="py-24 md:py-36" aria-labelledby="process-title">
       <div className="grid gap-10 md:grid-cols-12">
-        <RevealText as="h2" id="process-title" className="text-title md:col-span-6">
+        <RevealText as="h2" id="process-title" className="text-title-light md:col-span-6">
           How we work
         </RevealText>
         <p className="text-[19px] leading-[1.5] text-stone md:col-span-5 md:col-start-8 md:self-end">
@@ -18,27 +18,29 @@ export function ProcessSteps() {
         </p>
       </div>
 
-      <ol className="mt-16 grid gap-x-8 gap-y-12 border-t border-rule-dark pt-10 sm:grid-cols-2 md:mt-24 lg:grid-cols-4">
+      <ol className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 md:mt-20 lg:grid-cols-4">
         {processSteps.map((step) => (
-          <li key={step.title}>
-            <p className="text-[15px] text-bronze tabular-nums">{step.number}</p>
-            <h3 className="mt-3 text-[28px] leading-tight">{step.title}</h3>
-            <p className="mt-4 text-stone">{step.body}</p>
+          <li key={step.title} className="border-t border-rule-dark pt-6">
+            <h3 className="font-display text-[26px] leading-tight">{step.title}</h3>
+            <p className="mt-4 leading-[1.6] text-stone">{step.body}</p>
           </li>
         ))}
       </ol>
 
-      <div className="mt-20 grid gap-10 md:mt-28 md:grid-cols-12 md:items-end">
-        <RevealImage className="md:col-span-8">
-          <Photo src="/photos/process.jpg" alt={manifest.photos.process.alt} ratio="3/2" sizes="(min-width: 768px) 66vw, 100vw" />
+      <div className="mt-20 grid gap-12 md:mt-28 md:grid-cols-12 md:items-center md:gap-10">
+        <RevealImage parallax className="overflow-hidden rounded-[1.25rem] md:col-span-8">
+          <Photo src="/photos/process.jpg" alt={manifest.photos.process.alt} ratio="4/3" sizes="(min-width: 768px) 66vw, 100vw" />
         </RevealImage>
-        <ul className="space-y-4 text-[17px] md:col-span-4">
-          {workingTerms.map((term) => (
-            <li key={term} className="border-t border-rule-dark pt-4">
-              {term}
-            </li>
-          ))}
-        </ul>
+        <div className="md:col-span-4">
+          <p className="text-[14px] uppercase tracking-[0.08em] text-bronze">What you can count on</p>
+          <ul className="mt-6">
+            {workingTerms.map((term) => (
+              <li key={term} className="border-t border-rule-dark py-5 text-[18px] leading-snug">
+                {term}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </Section>
   );

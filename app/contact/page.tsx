@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
-import { PageIntro } from "@/components/ui/PageIntro";
+import { StartProject } from "@/components/forms/StartProject";
 import { Section } from "@/components/ui/Section";
-import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Start a project",
@@ -13,29 +12,21 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <>
-      <PageIntro
-        title="Start a project"
-        lead={
-          <p>
-            Tell us what you&apos;re trying to do. We reply to every enquiry within two working days. You can also
-            email{" "}
-            <a href={`mailto:${site.email}`} className="text-ink underline decoration-bronze underline-offset-[6px]">
-              {site.email}
-            </a>
-            .
-          </p>
-        }
+    <Section
+      tone="ink"
+      className="relative isolate overflow-hidden"
+      innerClassName="pt-32 pb-24 md:pt-40 md:pb-32"
+      aria-labelledby="contact-title"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[60vh] w-[90vw] -translate-x-1/2 bg-[radial-gradient(ellipse_50%_60%_at_50%_0%,rgba(169,130,90,0.22),transparent_75%)]"
       />
-      <Section innerClassName="pb-28 md:pb-40">
-        <div className="border-t border-rule pt-12 lg:grid lg:grid-cols-12">
-          <div className="lg:col-span-9 lg:col-start-4">
-            <Suspense fallback={<EnquiryForm />}>
-              <ContactForm />
-            </Suspense>
-          </div>
-        </div>
-      </Section>
-    </>
+      <StartProject as="h1" titleId="contact-title">
+        <Suspense fallback={<EnquiryForm tone="ink" />}>
+          <ContactForm tone="ink" />
+        </Suspense>
+      </StartProject>
+    </Section>
   );
 }

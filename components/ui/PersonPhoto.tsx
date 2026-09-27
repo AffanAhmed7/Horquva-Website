@@ -2,12 +2,12 @@ import Image from "next/image";
 import type { Person } from "@/content/team";
 
 /** A team portrait at 4:5, or the person's initials on ink when no photo has been supplied yet. */
-export function PersonPhoto({ person, sizes }: { person: Person; sizes: string }) {
+export function PersonPhoto({ person, sizes, className = "" }: { person: Person; sizes: string; className?: string }) {
   const words = person.name.split(" ");
   const initials = `${words[0][0]}${words.length > 1 ? words[words.length - 1][0] : ""}`;
 
   return (
-    <div className="relative aspect-[4/5] overflow-hidden bg-ink">
+    <div className={`relative aspect-[4/5] overflow-hidden bg-ink ${className}`}>
       {person.photo ? (
         <Image
           src={person.photo}

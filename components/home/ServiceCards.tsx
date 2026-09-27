@@ -10,20 +10,20 @@ type Props = {
   services: Service[];
   title: ReactNode;
   lead?: ReactNode;
-  /** Link shown beside the arrows, e.g. to the full services page. */
-  allHref?: string;
 };
 
 /**
  * Services as a row of tall cards that scrolls sideways (drag, swipe, trackpad or the arrow
  * buttons). Each card: photo, name, one-line summary and a link.
  */
-export function ServiceCards({ services, title, lead, allHref }: Props) {
+export function ServiceCards({ services, title, lead }: Props) {
   const track = useRef<HTMLUListElement>(null);
   const [edge, setEdge] = useState({ start: true, end: false });
   const [dragging, setDragging] = useState(false);
   const reduced = useReducedMotion();
   const scrollByCard = useRef<(dir: 1 | -1) => void>(() => {});
+  /** Locks the row (and eases it back to the first card) while the scroll intro is still playing. */
+  const setLocked = useRef<(locked: boolean) => void>(() => {});
 
   /*
    * Horizontal scrolling is eased by hand: every input (arrows, trackpad/shift-wheel, mouse drag)
@@ -66,7 +66,17 @@ export function ServiceCards({ services, title, lead, allHref }: Props) {
     };
     const nearest = (x: number) => stops().reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a));
 
+    let locked = false;
+    setLocked.current = (next) => {
+      if (next === locked) return;
+      locked = next;
+      // Hidden overflow also stops native touch scrolling; scrollLeft can still be set from code.
+      el.style.overflowX = locked ? "hidden" : "";
+      if (locked) glideTo(0);
+    };
+
     scrollByCard.current = (dir) => {
+      if (locked) return;
       const s = stops();
       const next = dir > 0 ? s.find((x) => x > target + 4) : [...s].reverse().find((x) => x < target - 4);
       glideTo(next ?? (dir > 0 ? max() : 0));
@@ -82,6 +92,10 @@ export function ServiceCards({ services, title, lead, allHref }: Props) {
     const onWheel = (e: WheelEvent) => {
       const dx = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX;
       if (Math.abs(dx) <= Math.abs(e.deltaY) && !e.shiftKey) return; // vertical: let the page scroll
+      if (locked) {
+        e.preventDefault(); // no sideways scrolling until the cards are in
+        return;
+      }
       const x = clamp(target + dx);
       if (x === target && (x === 0 || x === max())) return; // at an end: hand back to the page
       e.preventDefault();
@@ -98,7 +112,7 @@ export function ServiceCards({ services, title, lead, allHref }: Props) {
     let moved = false;
     let down = false;
     const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      if (locked || e.pointerType !== "mouse" || e.button !== 0) return;
       down = true;
       moved = false;
       startX = lastX = e.clientX;
@@ -164,25 +178,168 @@ export function ServiceCards({ services, title, lead, allHref }: Props) {
     };
   }, [reduced]);
 
+  /*
+   * Scroll intro: the full-screen block pins with the title centred and enlarged over a small bronze
+   * glow; scrolling spreads the glow, glides the title into its corner and brings the cards in one by
+   * one. Scrubbed, so it follows the (Lenis-smoothed) scroll. Skipped under reduced motion.
+   */
+  const root = useRef<HTMLDivElement>(null);
+  const heading = useRef<HTMLDivElement>(null);
+  const controls = useRef<HTMLDivElement>(null);
+  const glow = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = root.current;
+    const head = heading.current;
+    const list = track.current;
+    if (reduced || !el || !head || !list) return;
+    let cancelled = false;
+    let revert = () => {};
+    (async () => {
+      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
+      await document.fonts.ready;
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Bounds of the rendered glyphs, not the full-width heading box.
+      const textBox = () => {
+        const walker = document.createTreeWalker(head, NodeFilter.SHOW_TEXT);
+        const range = document.createRange();
+        let l = Infinity, r = -Infinity;
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent?.trim()) continue;
+          range.selectNodeContents(n);
+          const box = range.getBoundingClientRect();
+          l = Math.min(l, box.left);
+          r = Math.max(r, box.right);
+        }
+        // Undo any transform already applied, so this is the resting position.
+        const s = gsap.getProperty(head, "scale") as number;
+        const dx = gsap.getProperty(head, "x") as number;
+        const dy = gsap.getProperty(head, "y") as number;
+        // Relative to the pinned block, whose centre lands on the viewport centre when pinned.
+        // Vertical centre comes from the heading box: the line reveal may still be shifting the glyphs.
+        const box = el.getBoundingClientRect();
+        const own = head.getBoundingClientRect();
+        return {
+          left: own.left - dx - box.left, // scale origin
+          offset: (l - own.left) / s, // glyphs may start inside the heading box
+          width: (r - l) / s,
+          midY: own.top + own.height / 2 - dy - box.top,
+        };
+      };
+      const centre = () => ({ x: el.offsetWidth / 2, y: el.offsetHeight / 2 });
+      // Enlarged, but never wider than 90% of the block.
+      const scale = () =>
+        Math.min(window.innerWidth < 768 ? 1.25 : 1.6, (el.offsetWidth * 0.9) / textBox().width);
+
+      const ctx = gsap.context(() => {
+        const cards = Array.from(list.children) as HTMLElement[];
+        // How many cards fit in the row's viewport (partly visible ones count).
+        const visible = () => {
+          const pad = cards[0]?.offsetLeft ?? 0;
+          return Math.max(1, cards.filter((c) => c.offsetLeft - pad < list.clientWidth).length);
+        };
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: el,
+            // Full-screen block pins at the top; if it's taller than a short screen, pin it centred.
+            start: () => (el.offsetHeight > window.innerHeight ? "center center" : "top top"),
+            end: () => `+=${Math.round(window.innerHeight * 1.5)}`,
+            pin: true,
+            scrub: 0.5, // Lenis already smooths the scroll; a short scrub keeps it responsive
+            invalidateOnRefresh: true,
+          },
+        });
+        // The bronze glow starts as a pool behind the title and spreads across the section.
+        tl.fromTo(
+          glow.current,
+          { scale: 0.3, autoAlpha: 0.75 },
+          { scale: 1.7, autoAlpha: 1, duration: 2, ease: "power2.inOut" },
+          0,
+        );
+        // Scaled from its left edge, so centre the enlarged width, not the resting one.
+        tl.from(
+          head,
+          {
+            x: () => {
+              const t = textBox();
+              return centre().x - t.left - (t.offset + t.width / 2) * scale();
+            },
+            y: () => centre().y - textBox().midY,
+            scale,
+            transformOrigin: "0% 50%",
+            duration: 1,
+          },
+          0,
+        )
+          .from(controls.current, { autoAlpha: 0, y: 16, duration: 0.4 }, 0.8)
+          // The row rises into place while each card slides in from the right and scales up.
+          // (Vertical offsets on the cards themselves would be clipped by the scrolling row.)
+          .from(list, { y: 120, duration: 1, ease: "power3.out" }, 0.55)
+          .from(
+            cards,
+            {
+              x: (i) => 140 + Math.min(i, visible() - 1) * 40,
+              autoAlpha: 0,
+              scale: 0.86,
+              duration: 0.9,
+              ease: "power3.out",
+              // Staggered across the cards on screen; the off-screen ones land with the last of
+              // them, so the whole row is in place the moment the visible cards are.
+              stagger: (i) => Math.min(i, visible() - 1) * 0.16,
+            },
+            0.6,
+          )
+          .addLabel("cardsIn")
+          .to({}, { duration: 0.3 }); // brief hold before unpinning
+        // Unlock the row as soon as the cards look settled (all of them, see the stagger above);
+        // relock and rewind when scrolling back up into the intro. With power3.out they are ~96%
+        // in at two thirds of their tween, so waiting for the very end made the row feel stuck.
+        const cardsIn = tl.labels.cardsIn - 0.3;
+        setLocked.current(true);
+        tl.eventCallback("onUpdate", () => setLocked.current(tl.time() < cardsIn));
+      }, el);
+      // This pin is created after the reveals further down the page have measured themselves; its
+      // spacer pushes them down, so re-sort and re-measure or they fire far too early.
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+      revert = () => {
+        ctx.revert();
+        setLocked.current(false);
+      };
+    })();
+    return () => {
+      cancelled = true;
+      revert();
+    };
+  }, [reduced]);
+
   const arrow =
     "flex h-12 w-12 items-center justify-center border border-rule text-[20px] transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:pointer-events-none disabled:opacity-30";
 
   return (
-    <div>
-      <div className="gutter mx-auto flex max-w-[1440px] flex-wrap items-end justify-between gap-8">
-        <div className="max-w-2xl grow">
+    <div ref={root} className="relative isolate flex min-h-svh flex-col justify-center overflow-hidden py-24">
+      {/* Warm bronze glow; the scroll intro spreads it from behind the title across the section. */}
+      <div
+        ref={glow}
+        aria-hidden
+        className="pointer-events-none absolute -inset-[20%] -z-10 will-change-[transform,opacity]"
+        style={{
+          background: [
+            "radial-gradient(ellipse 40% 34% at 70% 45%, rgba(94,63,44,0.22), transparent 75%)",
+            "radial-gradient(ellipse 34% 30% at 26% 68%, rgba(120,80,50,0.18), transparent 75%)",
+            "radial-gradient(ellipse 58% 52% at 48% 55%, rgba(169,130,90,0.42), rgba(169,130,90,0.24) 35%, rgba(169,130,90,0.10) 65%, transparent 90%)",
+          ].join(", "),
+        }}
+      />
+      <div className="gutter mx-auto flex w-full max-w-[1440px] flex-wrap items-end justify-between gap-8">
+        <div ref={heading} className="max-w-2xl grow">
           {title}
           {lead && <div className="mt-5 text-[18px] leading-[1.5] text-ink-soft">{lead}</div>}
         </div>
-        <div className="flex items-center gap-6">
-          {allHref && (
-            <Link
-              href={allHref}
-              className="text-[15px] underline decoration-bronze underline-offset-[6px] hover:decoration-2"
-            >
-              All services
-            </Link>
-          )}
+        <div ref={controls} className="flex items-center">
           <div className="hidden gap-2 md:flex">
             <button type="button" className={arrow} onClick={() => scrollByCard.current(-1)} disabled={edge.start} aria-label="Previous services">
               ←
@@ -225,7 +382,7 @@ export function ServiceCards({ services, title, lead, allHref }: Props) {
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="font-display text-[28px] font-medium leading-[1.12] tracking-[-0.025em]">{s.name}</h3>
+                  <h3 className="font-display text-[23px] font-bold leading-[1.15] tracking-[-0.02em]">{s.name}</h3>
                   <p className="mt-3 text-[16px] leading-[1.45] text-ink-soft">{s.summary}</p>
                   <span className="mt-auto flex items-center gap-2 pt-8 text-[13px] font-semibold uppercase tracking-[0.04em]">
                     Learn more

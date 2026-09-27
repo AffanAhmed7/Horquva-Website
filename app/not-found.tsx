@@ -10,7 +10,7 @@ export default function NotFound() {
       </p>
       <p className="mt-10 flex gap-8 text-[17px]">
         <TextLink href="/">Go to the home page</TextLink>
-        <TextLink href="/services">See our services</TextLink>
+        <TextLink href="/#services">See our services</TextLink>
       </p>
     </Section>
   );

@@ -9,6 +9,7 @@ export function Hero() {
   return (
     <section
       data-hero=""
+      data-tone="ink"
       className="relative isolate flex min-h-svh items-center overflow-hidden bg-ink text-paper"
     >
       <HeroMotion
@@ -42,20 +43,21 @@ export function Hero() {
               shows what a change will affect before you make it.
             </p>
             <p className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4 text-[16px]">
-              <TextLink href="/services">See what we build</TextLink>
+              <TextLink href="#services">See what we build</TextLink>
               <TextLink href="/approach">How we work</TextLink>
             </p>
           </div>
         </div>
       </HeroMotion>
 
-      {/* Darkens the top (header), left (headline) and bottom (corner copy) so all stay readable. */}
+      {/* Darkens the top (header), left (headline) and bottom (corner copy) so all stay readable. The
+          bottom fades all the way to ink, so the photo dissolves into the dark section below. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "linear-gradient(to bottom, rgb(21 18 15 / 0.55) 0%, rgb(21 18 15 / 0) 22%), linear-gradient(to right, rgb(21 18 15 / 0.8) 0%, rgb(21 18 15 / 0.35) 50%, rgb(21 18 15 / 0) 100%), linear-gradient(to top, rgb(21 18 15 / 0.85) 0%, rgb(21 18 15 / 0) 45%)",
+            "linear-gradient(to bottom, rgb(21 18 15 / 0.55) 0%, rgb(21 18 15 / 0) 22%), linear-gradient(to right, rgb(21 18 15 / 0.8) 0%, rgb(21 18 15 / 0.35) 50%, rgb(21 18 15 / 0) 100%), linear-gradient(to top, rgb(21 18 15) 0%, rgb(21 18 15 / 0.92) 10%, rgb(21 18 15 / 0.6) 28%, rgb(21 18 15 / 0) 55%)",
         }}
       />
     </section>

@@ -7,13 +7,8 @@ export type Person = {
   linkedin?: string;
 };
 
+/** In display order; the home page shows the first four. */
 export const team: Person[] = [
-  {
-    name: "Natasha Khan",
-    role: "Founder, CEO and CTO",
-    photo: "/photos/team/natasha-khan.jpg",
-    bio: "Leads Horquva's technology and product direction, and is building OBA Core around a simple idea: organisations should be able to see how their work actually connects.",
-  },
   {
     name: "Kia Vang",
     role: "Co-founder, COO and CFO",
@@ -25,6 +20,18 @@ export const team: Person[] = [
     role: "Board security advisor",
     photo: "/photos/team/taha-omer-nadeem.jpg",
     bio: "Twelve years across cybersecurity support, professional services and sales engineering for large enterprises.",
+  },
+  {
+    name: "Natasha Khan",
+    role: "Founder, CEO and CTO",
+    photo: "/photos/team/natasha-khan.jpg",
+    bio: "Leads Horquva's technology and product direction, and is building OBA Core around a simple idea: organisations should be able to see how their work actually connects.",
+  },
+  {
+    name: "Affan Ahmed",
+    role: "Full-stack engineer",
+    photo: "/photos/team/affan-ahmed.jpg",
+    bio: "Builds web platforms end to end: Next.js front ends, Node and PostgreSQL back ends, payments, role-based access and real-time features. Previously built Stripe Connect payouts and client portals for a US consultancy.",
   },
   {
     name: "Memoona Saleem",
@@ -45,14 +52,9 @@ export const team: Person[] = [
     bio: "Looks after the infrastructure, environments and deployments that Horquva's systems run on.",
   },
   {
-    name: "Affan Ahmed",
-    role: "Full-stack engineer",
-    photo: "/photos/team/affan-ahmed.jpg",
-    bio: "Builds web platforms end to end: Next.js front ends, Node and PostgreSQL back ends, payments, role-based access and real-time features. Previously built Stripe Connect payouts and client portals for a US consultancy.",
-  },
-  {
     name: "Muhammad Ibrahim Shaikh",
     role: "AI engineer",
+    photo: "/photos/team/muhammad-ibrahim-shaikh.jpg",
     bio: "Builds AI agents, retrieval systems and voice and vision pipelines. Previously built a multi-tenant WhatsApp ordering agent used by 25 restaurants, and TTS data pipelines at Entropik Labs.",
     linkedin: "https://www.linkedin.com/in/ibrahimshaikhh",
   },

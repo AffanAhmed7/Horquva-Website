@@ -7,14 +7,18 @@ export const site = {
   country: "Pakistan",
   // TODO(content): confirm the enquiry inbox before launch.
   email: "hello@horquva.com",
-  linkedin: "https://www.linkedin.com/company/horquva",
+  // From the footer of the previous horquva.com. Note the LinkedIn and Facebook handles end in "aa".
+  linkedin: "https://www.linkedin.com/company/horquvaa/",
+  instagram: "https://www.instagram.com/horquva/",
+  facebook: "https://web.facebook.com/Horquvaa",
   url: "https://horquva.com",
   description:
     "Horquva builds AI-powered software, business automation, SaaS platforms, real-time apps and custom software. It's also building OBA Core, its own product.",
 };
 
 export const nav = [
-  { href: "/services", label: "Services" },
+  // Jumps to the service cards on the home page; stays highlighted on each service's own page.
+  { href: "/#services", label: "Services", activePrefix: "/services" },
   { href: "/oba-core", label: "OBA Core" },
   { href: "/approach", label: "Approach" },
   { href: "/team", label: "Team" },

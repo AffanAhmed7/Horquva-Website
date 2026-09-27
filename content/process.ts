@@ -29,3 +29,23 @@ export const workingTerms = [
   "You own all the code and data",
   "One engineer accountable from start to finish",
 ];
+
+/** How we work, shown on the Approach and Careers pages. */
+export const principles = [
+  {
+    title: "Working software early",
+    body: "We'd rather show you something that runs on your data in week two than a slide deck in week six. Early prototypes surface the hard questions while they're still cheap to answer.",
+  },
+  {
+    title: "Built to be relied on",
+    body: "Permissions, error handling, tests, monitoring and documentation are part of the job, not extras. We build systems your team can depend on after we've handed them over.",
+  },
+  {
+    title: "No lock-in",
+    body: "You own the code, the data and the accounts. Everything is documented so your team, or another company, can pick it up.",
+  },
+  {
+    title: "Honest about AI",
+    body: "If a rule-based script solves the problem more reliably than a model, we'll tell you. Where we do use AI, we measure how well it works before it goes live.",
+  },
+];

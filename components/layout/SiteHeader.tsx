@@ -9,23 +9,30 @@ import { Wordmark } from "./Wordmark";
 import { MobileMenu } from "./MobileMenu";
 
 /** Pages that open with a full-bleed photo the header floats over. */
-const heroPages = new Set(["/"]);
+const heroPages = new Set(["/", "/oba-core", "/contact", "/approach", "/team", "/careers"]);
+
+/** Whether the section behind the header is dark (sections mark themselves with data-tone). */
+function darkUnderHeader(header: HTMLElement) {
+  // Its middle, since that's what shows through the frosted background.
+  const y = header.offsetHeight / 2;
+  const below = document.elementsFromPoint(window.innerWidth / 2, y).find((el) => !header.contains(el));
+  return below?.closest<HTMLElement>("[data-tone]")?.dataset.tone === "ink";
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
   const hasHero = heroPages.has(pathname);
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
+  const [dark, setDark] = useState(hasHero);
   const [menuFor, setMenuFor] = useState<string | null>(null);
   // The menu belongs to the page it was opened on, so navigating closes it.
   const menuOpen = menuFor === pathname;
 
   useEffect(() => {
+    const header = document.querySelector<HTMLElement>("header[data-surface]");
     const onScroll = () => {
-      const y = window.scrollY;
-      const hero = document.querySelector<HTMLElement>("[data-hero]");
-      setScrolled(y > 8);
-      setPastHero(!hero || y > hero.offsetHeight - 80);
+      setScrolled(window.scrollY > 8);
+      if (header) setDark(darkUnderHeader(header));
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -36,33 +43,32 @@ export function SiteHeader() {
     };
   }, [pathname]);
 
-  // Over the hero photo the header uses light text; elsewhere dark text on paper.
-  const onDark = hasHero && !pastHero && !menuOpen;
-  // Fully clear only at the very top of the hero; once scrolled it frosts so it stays legible.
+  // The header always has light text and buttons, so its surface is always dark enough behind them:
+  // clear over a dark opening, a light tint over dark sections, dark frosted glass over paper, and
+  // solid ink at the top of pages that open on paper (and behind the ink mobile menu).
   const surface = menuOpen
-    ? "bg-paper border-rule"
-    : onDark
-      ? scrolled
-        ? "bg-ink/35 backdrop-blur-md border-paper/10"
-        : "bg-transparent border-transparent"
-      : scrolled
-        ? "bg-paper/75 backdrop-blur-md border-rule/70"
-        : "bg-paper border-transparent";
+    ? "bg-ink border-rule-dark"
+    : !scrolled
+      ? hasHero
+        ? "bg-transparent border-transparent"
+        : "bg-ink border-transparent"
+      : dark
+        ? "bg-ink/25 backdrop-blur-md border-paper/10"
+        : "bg-ink/80 backdrop-blur-md border-paper/10";
 
   return (
     <>
       <header
-        data-surface={onDark ? "dark" : "light"}
-        className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,color,border-color,backdrop-filter] duration-300 ease-out-expo ${surface} ${
-          onDark ? "text-paper" : "text-ink"
-        }`}
+        data-surface="dark"
+        className={`fixed inset-x-0 top-0 z-40 border-b text-paper transition-[background-color,border-color,backdrop-filter] duration-300 ease-out-expo ${surface}`}
       >
         <div className="gutter mx-auto flex h-16 max-w-[1440px] items-center justify-between md:h-20">
           <Wordmark />
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex gap-9 text-[15px]">
               {nav.map((item) => {
-                const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                const prefix = "activePrefix" in item ? item.activePrefix : item.href;
+                const active = pathname === item.href || pathname.startsWith(`${prefix}/`);
                 return (
                   <li key={item.href}>
                     <Link
@@ -79,7 +85,7 @@ export function SiteHeader() {
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden sm:block">
-              <Button href="/contact" variant="glass" tone={onDark ? "ink" : "paper"}>
+              <Button href="/contact" variant="glass" tone="ink">
                 Start a project
               </Button>
             </div>
