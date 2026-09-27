@@ -6,13 +6,14 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-ink text-paper">
-      <div className="gutter mx-auto max-w-[1440px] pb-10 pt-24 md:pt-32">
-        <Link href="/contact" className="text-display group inline-flex items-baseline gap-[0.25em] hover:text-bronze">
-          Start a project
-          <span aria-hidden className="inline-block transition-transform duration-300 group-hover:translate-x-3">
-            →
-          </span>
-        </Link>
+      <div className="gutter mx-auto max-w-[1440px] pb-10">
+        <div className="border-t border-rule-dark pt-24 md:pt-32">
+        <a
+          href={`mailto:${site.email}`}
+          className="inline-block break-all text-[clamp(2.25rem,7vw,7rem)] font-medium leading-none tracking-[-0.035em] hover:text-bronze"
+        >
+          {site.email}
+        </a>
 
         <div className="mt-20 grid gap-12 border-t border-rule-dark pt-10 text-[15px] sm:grid-cols-2 lg:grid-cols-12">
           <p className="max-w-sm text-stone lg:col-span-5">{site.description}</p>
@@ -65,6 +66,7 @@ export function SiteFooter() {
           <Link href="/privacy" className="hover:text-paper">
             Privacy
           </Link>
+        </div>
         </div>
       </div>
     </footer>
