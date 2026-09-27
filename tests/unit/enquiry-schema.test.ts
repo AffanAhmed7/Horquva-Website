@@ -23,8 +23,9 @@ describe("enquirySchema", () => {
   });
 
   it("accepts a missing company", () => {
-    const { company: _c, ...rest } = validEnquiry;
-    expect(enquirySchema.safeParse(rest).success).toBe(true);
+    const withoutCompany: Partial<typeof validEnquiry> = { ...validEnquiry };
+    delete withoutCompany.company;
+    expect(enquirySchema.safeParse(withoutCompany).success).toBe(true);
   });
 
   it("rejects an empty name", () => fieldError({ ...validEnquiry, name: "  " }, "name"));
