@@ -1,7 +1,8 @@
 # Horquva Website v2 — Design Spec
 
 **Date:** 2026-09-27
-**Status:** Awaiting review
+**Status:** Approved 2026-09-27
+**Amendments:** Next.js 16 (current stable) instead of 15; service content in typed TS modules instead of MDX.
 **Supersedes:** `docs/PROPOSAL.md` (kept as discussion history)
 
 ---
@@ -168,10 +169,10 @@ Team photos go through the same script plus a consistent 4:5 crop.
 ## 7. Technical architecture
 
 ### Stack
-- Next.js 15 (App Router) + TypeScript (strict)
+- Next.js 16 (App Router) + TypeScript (strict)
 - Tailwind CSS v4 with the tokens above as theme variables
 - GSAP (+ ScrollTrigger, SplitText), Lenis, Motion
-- MDX via `@next/mdx` for service pages
+- Typed content modules (`content/*.ts`) for services, team and process
 - Zod + React Hook Form for the enquiry form
 - Resend for email delivery
 - Vitest (unit), Playwright + @axe-core/playwright (e2e and accessibility), Lighthouse CI
