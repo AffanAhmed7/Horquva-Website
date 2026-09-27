@@ -3,6 +3,7 @@ import { Hanken_Grotesk } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { site } from "@/content/site";
 import "./globals.css";
 
 const hanken = Hanken_Grotesk({
@@ -12,8 +13,22 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Horquva",
-  description: "Horquva builds the software and AI systems businesses depend on.",
+  metadataBase: new URL(site.url),
+  title: { default: "Horquva: software and AI systems businesses depend on", template: "%s | Horquva" },
+  description: site.description,
+  openGraph: { type: "website", siteName: site.name, locale: "en_GB" },
+  twitter: { card: "summary_large_image" },
+};
+
+const organisationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.legalName,
+  url: site.url,
+  logo: `${site.url}/logo-mark.png`,
+  email: site.email,
+  sameAs: [site.linkedin],
+  address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: "PK" },
 };
 
 // Runs before paint: lets reveal-animated text start hidden only when motion is allowed.
@@ -24,6 +39,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={hanken.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationJsonLd).replace(/</g, "\\u003c") }}
+        />
       </head>
       <body>
         <a
