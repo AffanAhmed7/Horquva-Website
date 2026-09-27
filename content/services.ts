@@ -21,7 +21,7 @@ export const services: Service[] = [
     summary: "WhatsApp, web and voice agents that take orders, answer support and work with your database.",
     intro:
       "We build agents that do real work inside your business: taking orders, answering customers, updating records. They connect to your systems, follow your rules and hand over to a person when they should.",
-    photo: { src: "/photos/ai-agents.jpg", alt: "A busy restaurant kitchen during service" },
+    photo: { src: "/photos/ai-agents.jpg", alt: "A chef cooking over open flame in a busy restaurant kitchen" },
     deliverables: [
       "WhatsApp Business agents for ordering, bookings and support",
       "Website and in-app chat assistants connected to your data",
@@ -55,7 +55,7 @@ export const services: Service[] = [
     summary: "Assistants that answer questions from your documents, wikis and data, and show their sources.",
     intro:
       "Most company knowledge lives in PDFs, shared drives and people's heads. We build assistants that search it properly and answer with a reference to where the answer came from, so people can check it.",
-    photo: { src: "/photos/knowledge-assistants.jpg", alt: "Shelves of archived paper files" },
+    photo: { src: "/photos/knowledge-assistants.jpg", alt: "Stacks of worn binders and paper files" },
     deliverables: [
       "Internal assistants over policies, manuals, contracts and wikis",
       "Ingestion of PDFs, Office files, web pages, repositories and transcripts",
@@ -88,7 +88,7 @@ export const services: Service[] = [
     summary: "Data extraction from documents, computer vision and custom-trained models.",
     intro:
       "We turn documents and images into structured data your systems can use. Where off-the-shelf models aren't accurate enough, we train and fine-tune our own on your data.",
-    photo: { src: "/photos/document-vision-ai.jpg", alt: "Hands sorting printed forms and invoices on a desk" },
+    photo: { src: "/photos/document-vision-ai.jpg", alt: "Tall stacks of paper documents and file folders" },
     deliverables: [
       "Extraction of fields and tables from invoices, receipts, forms and reports",
       "Classification and routing of incoming documents",
@@ -121,7 +121,7 @@ export const services: Service[] = [
     summary: "Speech-to-text, text-to-speech and voice assistants, including Urdu and Roman Urdu.",
     intro:
       "We build systems that listen and speak: transcription, voice assistants and phone agents. We pay particular attention to local languages and accents, where generic tools often fall short.",
-    photo: { src: "/photos/voice-ai.jpg", alt: "A studio microphone in low warm light" },
+    photo: { src: "/photos/voice-ai.jpg", alt: "A studio microphone grille lit by warm light" },
     deliverables: [
       "Transcription of calls, meetings and voice notes, including Urdu and Roman Urdu",
       "Voice assistants for devices, kiosks and apps",
@@ -154,7 +154,7 @@ export const services: Service[] = [
     summary: "n8n and LangGraph automations, webhooks, and POS, CRM and ERP integrations.",
     intro:
       "We connect the tools you already pay for so information moves between them without anyone copying and pasting. Where a step needs judgement, we add AI to handle it.",
-    photo: { src: "/photos/automation-integrations.jpg", alt: "Parcels moving along a warehouse conveyor" },
+    photo: { src: "/photos/automation-integrations.jpg", alt: "Parcels moving along a conveyor in a warehouse" },
     deliverables: [
       "Automations in n8n or custom code, hosted and monitored",
       "Integrations with POS, CRM, ERP, accounting and messaging platforms",
@@ -187,7 +187,7 @@ export const services: Service[] = [
     summary: "SaaS platforms, dashboards, client portals, payments and real-time apps.",
     intro:
       "We design and build web products end to end, from database schema to interface. The things that make software dependable, like permissions, payments and audit trails, are built in from the start.",
-    photo: { src: "/photos/web-product-engineering.jpg", alt: "An engineer working at a desk late in the evening" },
+    photo: { src: "/photos/web-product-engineering.jpg", alt: "An engineer working at a laptop in a dark room" },
     deliverables: [
       "SaaS platforms and internal tools",
       "Client and partner portals with role-based access",
@@ -221,7 +221,7 @@ export const services: Service[] = [
     summary: "Custom themes and plugins, WooCommerce, speed and security fixes, and headless WordPress.",
     intro:
       "WordPress runs a huge share of the web, and it can be fast and secure when it's built well. We build custom themes and plugins, fix slow or broken sites, and set up WordPress as a back end for modern front ends.",
-    photo: { src: "/photos/wordpress.jpg", alt: "A designer's desk with printed page layouts" },
+    photo: { src: "/photos/wordpress.jpg", alt: "Hand-drawn wireframe sketches of website layouts" },
     deliverables: [
       "Custom themes built from your design, without heavy page builders",
       "Custom plugins and integrations with your other systems",
@@ -255,7 +255,7 @@ export const services: Service[] = [
     summary: "Dashboards, KPI reporting, data cleaning and validation, and data pipelines.",
     intro:
       "We get your data into one reliable place and turn it into reports people trust. That starts with the unglamorous part: cleaning and validating the data before anyone draws conclusions from it.",
-    photo: { src: "/photos/data-analytics.jpg", alt: "Printed charts and notes spread across a meeting table" },
+    photo: { src: "/photos/data-analytics.jpg", alt: "A hand-drawn line graph on paper with a ruler" },
     deliverables: [
       "Dashboards and KPI reports for leadership and operations",
       "Pipelines that pull data from your systems on a schedule",

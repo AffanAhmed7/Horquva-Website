@@ -1,0 +1,18 @@
+{
+  "source": "Unsplash (https://unsplash.com/license): free for commercial use, no permission needed.",
+  "photos": {
+    "hero": { "id": "uZF3nuUiGUk", "file": "photo-1759210720487-c74d9764da79", "photographer": "Tahamie Farooqui", "alt": "Karachi from above at night, streets traced in light" },
+    "process": { "id": "5Q07sS54D0Q", "file": "photo-1598520106830-8c45c2035460", "photographer": "Kvalifik", "alt": "A hand sketching a system diagram on a glass whiteboard" },
+    "oba": { "id": "Pk-KuizxQv8", "file": "photo-1777269749032-d8d458ae594d", "photographer": "Tasha Kostyuk", "alt": "An empty hospital corridor lined with doors" },
+    "ai-agents": { "id": "4NQEvxW2_4w", "file": "photo-1600565193348-f74bd3c7ccdf", "photographer": "Johnathan Macedo", "alt": "A chef cooking over open flame in a busy restaurant kitchen" },
+    "knowledge-assistants": { "id": "K-ZsC7YdJ6Y", "file": "photo-1526656001029-20a71b17f7ba", "photographer": "Sear Greyson", "alt": "Stacks of worn binders and paper files" },
+    "document-vision-ai": { "id": "snNHKZ-mGfE", "file": "photo-1583521214690-73421a1829a9", "photographer": "Wesley Tingey", "alt": "Tall stacks of paper documents and file folders" },
+    "voice-ai": { "id": "N6jxoR1PcbE", "file": "photo-1745848413113-4f39bdad5769", "photographer": "dlxmedia.hu", "alt": "A studio microphone grille lit by warm light" },
+    "automation-integrations": { "id": "Ru9Uf4G0Gx0", "file": "photo-1716016435588-f5db7da707d5", "photographer": "motomoto sc", "alt": "Parcels moving along a conveyor in a warehouse" },
+    "web-product-engineering": { "id": "dYEuFB8KQJk", "file": "photo-1562813733-b31f71025d54", "photographer": "Clint Patterson", "alt": "An engineer working at a laptop in a dark room" },
+    "wordpress": { "id": "tZc3vjPCk-Q", "file": "photo-1522542550221-31fd19575a2d", "photographer": "Hal Gatewood", "alt": "Hand-drawn wireframe sketches of website layouts" },
+    "data-analytics": { "id": "6EnTPvPPL6I", "file": "photo-1543286386-713bdd548da4", "photographer": "Isaac Smith", "alt": "A hand-drawn line graph on paper with a ruler" },
+    "approach": { "id": "dEcBKGZS0P8", "file": "photo-1623303647440-967d26b95b47", "photographer": "FORTYTWO", "alt": "A team working around a table covered in papers" },
+    "careers": { "id": "_0ZOwPCnu0A", "file": "photo-1788820194578-6391ad798609", "photographer": "Bruno BD", "alt": "Three lit office windows at night" }
+  }
+}
