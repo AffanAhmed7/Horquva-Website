@@ -51,11 +51,11 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
       <Section innerClassName="py-24 md:py-32" aria-labelledby="build-title">
         <div className="grid gap-10 md:grid-cols-12">
           <h2 id="build-title" className="text-heading md:col-span-4">
-            What we build
+            What we offer
           </h2>
-          <ul className="md:col-span-8">
-            {service.deliverables.map((d) => (
-              <li key={d} className="border-t border-rule py-5 text-[19px] leading-snug last:border-b">
+          <ul className="grid gap-x-10 sm:grid-cols-2 md:col-span-8">
+            {service.items.map((d) => (
+              <li key={d} className="border-t border-rule py-4 text-[18px] leading-snug">
                 {d}
               </li>
             ))}

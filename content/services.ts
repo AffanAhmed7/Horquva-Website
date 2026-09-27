@@ -2,208 +2,126 @@ export type Service = {
   number: string;
   slug: string;
   name: string;
-  /** One line, shown in the services index. */
+  /** One line, shown on the service card. */
   summary: string;
   /** Two sentences, shown at the top of the service page. */
   intro: string;
   photo: { src: string; alt: string };
-  deliverables: string[];
+  /** Everything we offer under this service, in the order we'd list it. */
+  items: string[];
   scenarios: { title: string; body: string }[];
   process: { step: string; body: string }[];
   stack: string[];
 };
 
+/** Temporary: loads straight from Unsplash until the set is approved and graded into /public/photos. */
+const unsplash = (file: string) => `https://images.unsplash.com/${file}?w=1600&q=80&fm=jpg&fit=crop`;
+
 export const services: Service[] = [
   {
     number: "01",
-    slug: "ai-agents",
-    name: "AI agents and chat automation",
-    summary: "WhatsApp, web and voice agents that take orders, answer support and work with your database.",
+    slug: "ai-automation",
+    name: "AI and automation",
+    summary: "Agents, chatbots and automations that take real work off your team's plate.",
     intro:
-      "We build agents that do real work inside your business: taking orders, answering customers, updating records. They connect to your systems, follow your rules and hand over to a person when they should.",
-    photo: { src: "/photos/ai-agents.jpg", alt: "A food vendor in an apron checking orders on his phone" },
-    deliverables: [
-      "WhatsApp Business agents for ordering, bookings and support",
-      "Website and in-app chat assistants connected to your data",
-      "Tool-calling agents that read and write to your database, CRM or POS",
-      "Voice notes and images understood inside the conversation",
-      "Human handover, audit logs and conversation dashboards",
-      "Automated test suites that check the agent before every release",
+      "We build AI that does real work inside your business: answering customers, taking orders, reading documents and moving data between systems. It connects to the tools you already use, follows your rules and hands over to a person when it should.",
+    photo: { src: unsplash("photo-1593733925160-6f78dc0be8b6"), alt: "Someone messaging on a phone" },
+    items: [
+      "AI agent development",
+      "AI chatbots and conversational AI",
+      "RAG and enterprise knowledge systems",
+      "LLM application development",
+      "AI workflow and business process automation",
+      "n8n automation",
+      "WhatsApp AI and automation",
+      "Voice AI and speech-to-text systems",
+      "Multimodal AI",
+      "AI integration into existing applications",
+      "AI testing, evaluation and optimisation",
     ],
     scenarios: [
       {
         title: "Ordering on WhatsApp",
-        body: "A restaurant group wants customers to order on WhatsApp without staff typing orders by hand. The agent shows the menu, checks the delivery area, applies promotions and writes the confirmed order straight into the POS.",
+        body: "A restaurant group wants customers to order on WhatsApp without staff typing orders by hand. An agent shows the menu, checks the delivery area, applies promotions and writes the confirmed order straight into the POS.",
       },
       {
-        title: "Support that closes tickets",
-        body: "A retailer's support inbox is full of the same ten questions. An agent answers them from order data, processes simple returns and passes anything unusual to a person with the full context attached.",
+        title: "Answers from your own documents",
+        body: "An operations team answers the same policy questions every day. An assistant answers from the current handbook and links the paragraph it used, so people can check it.",
       },
     ],
     process: [
-      { step: "Discover", body: "We read real conversations, list what the agent must and must never do, and agree on accuracy targets." },
-      { step: "Prototype", body: "A working agent on a test number or page, using your real catalogue or data." },
-      { step: "Build", body: "Integrations, guardrails, handover and a test suite that runs on every change." },
-      { step: "Support", body: "We watch real conversations after launch, fix failure cases and tune cost and speed." },
+      { step: "Discover", body: "We read real conversations and documents, list what the AI must and must never do, and agree on accuracy targets." },
+      { step: "Prototype", body: "A working agent on your real data within the first weeks, tested against real questions." },
+      { step: "Build", body: "Integrations, guardrails, human handover and an evaluation suite that runs on every change." },
+      { step: "Support", body: "We review live conversations, fix failure cases and tune cost and speed." },
     ],
-    stack: ["Python", "FastAPI", "LangGraph", "OpenAI, Gemini and Qwen models", "WhatsApp Cloud API", "Whisper", "PostgreSQL", "Pydantic"],
+    stack: ["Python", "FastAPI", "LangChain", "LangGraph", "LlamaIndex", "OpenAI, Gemini and Qwen models", "n8n", "WhatsApp Cloud API", "Whisper", "PostgreSQL"],
   },
   {
     number: "02",
-    slug: "knowledge-assistants",
-    name: "Knowledge assistants",
-    summary: "Assistants that answer questions from your documents, wikis and data, and show their sources.",
+    slug: "ai-ml-computer-vision",
+    name: "AI/ML and computer vision",
+    summary: "Custom models that read images, video and documents, trained on your data.",
     intro:
-      "Most company knowledge lives in PDFs, shared drives and people's heads. We build assistants that search it properly and answer with a reference to where the answer came from, so people can check it.",
-    photo: { src: "/photos/knowledge-assistants.jpg", alt: "Someone reading papers by a small desk lamp" },
-    deliverables: [
-      "Internal assistants over policies, manuals, contracts and wikis",
-      "Ingestion of PDFs, Office files, web pages, repositories and transcripts",
-      "Answers with citations back to the exact source passage",
-      "Access control so people only see what they're allowed to see",
-      "Evaluation sets that measure answer quality over time",
-    ],
-    scenarios: [
-      {
-        title: "Policy questions for staff",
-        body: "An operations team spends hours answering the same HR and process questions. An assistant answers from the current handbook and links the paragraph it used.",
-      },
-      {
-        title: "Searching years of project files",
-        body: "An engineering firm has a decade of reports on a shared drive. An assistant lets staff ask \"have we done this before?\" and get the relevant reports with page references.",
-      },
-    ],
-    process: [
-      { step: "Discover", body: "We collect the real questions people ask and the documents that should answer them." },
-      { step: "Prototype", body: "An assistant over a sample of your documents, tested against those questions." },
-      { step: "Build", body: "Full ingestion, permissions, citations and a quality evaluation you can rerun." },
-      { step: "Support", body: "New documents are indexed automatically and weak answers are reviewed and fixed." },
-    ],
-    stack: ["Python", "LangChain", "LlamaIndex", "FAISS", "ChromaDB", "pgvector", "Docling", "FastAPI"],
-  },
-  {
-    number: "03",
-    slug: "document-vision-ai",
-    name: "Document and vision AI",
-    summary: "Data extraction from documents, computer vision and custom-trained models.",
-    intro:
-      "We turn documents and images into structured data your systems can use. Where off-the-shelf models aren't accurate enough, we train and fine-tune our own on your data.",
-    photo: { src: "/photos/document-vision-ai.jpg", alt: "An office worker going through a drawer of paper files" },
-    deliverables: [
-      "Extraction of fields and tables from invoices, receipts, forms and reports",
-      "Classification and routing of incoming documents",
-      "Object detection and segmentation models for images and video",
-      "Fine-tuning of vision and vision-language models on your data",
-      "Review screens where people check low-confidence results",
+      "When off-the-shelf models aren't accurate enough, we build and train our own. We handle the whole path: collecting and labelling data, training and fine-tuning, measuring accuracy honestly and deploying the model where it's needed.",
+    photo: { src: unsplash("photo-1588776814546-1ffcf47267a5"), alt: "A doctor examining X-ray scans on a light box" },
+    items: [
+      "Custom AI/ML model development",
+      "Machine learning and deep learning",
+      "Computer vision",
+      "Object detection and image classification",
+      "Image segmentation",
+      "YOLO and SAM-based solutions",
+      "OCR and document AI",
+      "Dataset creation, annotation and curation",
+      "Model fine-tuning and deployment",
     ],
     scenarios: [
       {
         title: "Invoices into the accounting system",
-        body: "A finance team keys in hundreds of supplier invoices a month. A pipeline reads each invoice, extracts the line items, flags anything it isn't sure about and posts the rest automatically.",
+        body: "A finance team keys in hundreds of supplier invoices a month. A pipeline reads each one, extracts the line items, flags anything it isn't sure about and posts the rest automatically.",
       },
       {
         title: "Visual inspection",
-        body: "A manufacturer checks products by eye at the end of the line. A camera and a trained detection model flag defects and log them with a photo for review.",
+        body: "A manufacturer checks products by eye at the end of the line. A camera and a trained detection model flag defects and log each one with a photo for review.",
       },
     ],
     process: [
-      { step: "Discover", body: "We gather sample documents or images and define exactly which outputs matter." },
+      { step: "Discover", body: "We gather sample images or documents and define exactly which outputs matter." },
       { step: "Prototype", body: "A first model measured on a held-out sample, so accuracy is a number, not a promise." },
-      { step: "Build", body: "Production pipeline, review interface and integration with your systems." },
-      { step: "Support", body: "Corrections from reviewers feed back into retraining so accuracy improves." },
+      { step: "Build", body: "Production pipeline, review screens for low-confidence results, and integration with your systems." },
+      { step: "Support", body: "Reviewer corrections feed back into retraining, so accuracy keeps improving." },
     ],
-    stack: ["PyTorch", "Hugging Face", "YOLO", "SAM 2", "Docling", "OpenCV", "FastAPI", "Next.js"],
+    stack: ["PyTorch", "TensorFlow", "Hugging Face", "YOLO", "SAM 2", "OpenCV", "Docling", "FastAPI", "Docker"],
   },
   {
-    number: "04",
-    slug: "voice-ai",
-    name: "Voice AI",
-    summary: "Speech-to-text, text-to-speech and voice assistants, including Urdu and Roman Urdu.",
+    number: "03",
+    slug: "web-software-development",
+    name: "Web and software development",
+    summary: "Web apps, SaaS products and MVPs, built end to end.",
     intro:
-      "We build systems that listen and speak: transcription, voice assistants and phone agents. We pay particular attention to local languages and accents, where generic tools often fall short.",
-    photo: { src: "/photos/voice-ai.jpg", alt: "A support agent on a headset at his desk" },
-    deliverables: [
-      "Transcription of calls, meetings and voice notes, including Urdu and Roman Urdu",
-      "Voice assistants for devices, kiosks and apps",
-      "Phone agents that answer, book and route calls",
-      "Text-to-speech pipelines and voice dataset preparation",
-      "Low-latency streaming for real-time conversations",
+      "We design and build software from the database up: web applications, SaaS products, internal tools and the APIs behind them. Permissions, error handling and tests are part of the job from day one.",
+    photo: { src: unsplash("photo-1534665482403-a909d0d97c67"), alt: "A developer writing code on a laptop" },
+    items: [
+      "Full-stack web development",
+      "React and Next.js development",
+      "Node.js, Express and FastAPI development",
+      "Custom web applications",
+      "SaaS product development",
+      "MVP development",
+      "Backend and REST API development",
+      "Database architecture and development",
+      "Custom business software",
+      "WordPress development",
     ],
     scenarios: [
       {
-        title: "Searchable call recordings",
-        body: "A call centre records every call but nobody can search them. Calls are transcribed, tagged by topic and made searchable, with a summary on each one.",
-      },
-      {
-        title: "Voice notes into orders",
-        body: "Customers send voice notes in Roman Urdu instead of typing. The system transcribes them, understands the request and turns it into a structured order.",
-      },
-    ],
-    process: [
-      { step: "Discover", body: "We collect real audio samples and measure how current tools perform on them." },
-      { step: "Prototype", body: "A working pipeline tested on your audio, with word error rate reported." },
-      { step: "Build", body: "Streaming, integrations, fallbacks for poor audio and monitoring." },
-      { step: "Support", body: "We tune for new accents, vocabulary and noise conditions as they appear." },
-    ],
-    stack: ["Whisper", "Wav2Vec2", "WebRTC", "FastAPI", "Python", "Groq", "Raspberry Pi"],
-  },
-  {
-    number: "05",
-    slug: "automation-integrations",
-    name: "Workflow automation and integrations",
-    summary: "n8n and LangGraph automations, webhooks, and POS, CRM and ERP integrations.",
-    intro:
-      "We connect the tools you already pay for so information moves between them without anyone copying and pasting. Where a step needs judgement, we add AI to handle it.",
-    photo: { src: "/photos/automation-integrations.jpg", alt: "A worker in a high-visibility jacket walking through a dark site at night" },
-    deliverables: [
-      "Automations in n8n or custom code, hosted and monitored",
-      "Integrations with POS, CRM, ERP, accounting and messaging platforms",
-      "Webhooks and APIs built for systems that don't have one",
-      "Email and inbox agents that read, classify and act on messages",
-      "Retries, alerts and logs so failures are caught, not discovered",
-    ],
-    scenarios: [
-      {
-        title: "Enquiries into the CRM",
-        body: "Leads arrive by email, web form and WhatsApp. Each one is captured, deduplicated, enriched and created in the CRM with the right owner assigned.",
-      },
-      {
-        title: "Orders across systems",
-        body: "Online orders are re-entered into the POS and the delivery tool by hand. An integration syncs them automatically and alerts staff when something doesn't match.",
-      },
-    ],
-    process: [
-      { step: "Discover", body: "We map the workflow step by step and count where time and errors go." },
-      { step: "Prototype", body: "The most painful step automated first, running alongside the manual process." },
-      { step: "Build", body: "The full workflow with error handling, retries, alerts and documentation." },
-      { step: "Support", body: "We monitor runs and update integrations when the tools on either end change." },
-    ],
-    stack: ["n8n", "LangGraph", "Node.js", "Python", "Webhooks", "REST APIs", "Google Workspace APIs", "PostgreSQL"],
-  },
-  {
-    number: "06",
-    slug: "web-product-engineering",
-    name: "Web and product engineering",
-    summary: "SaaS platforms, dashboards, client portals, payments and real-time apps.",
-    intro:
-      "We design and build web products end to end, from database schema to interface. The things that make software dependable, like permissions, payments and audit trails, are built in from the start.",
-    photo: { src: "/photos/web-product-engineering.jpg", alt: "An engineer at his desk in a dark room, lit by a lamp and screens" },
-    deliverables: [
-      "SaaS platforms and internal tools",
-      "Client and partner portals with role-based access",
-      "Admin dashboards, reporting and KPI views",
-      "Payments, subscriptions, invoicing and payouts with Stripe",
-      "Real-time features: chat, live updates, presence and notifications",
-      "Background jobs and queues for heavy or slow work",
-    ],
-    scenarios: [
-      {
-        title: "A portal for your clients",
-        body: "A consultancy runs its client work over email and spreadsheets. A portal gives each client a login to submit requests, track progress, see invoices and pay online.",
+        title: "From idea to first customers",
+        body: "A founder needs a working product to show investors and early users. We scope the smallest version worth launching and ship it in weeks, on a codebase that can grow.",
       },
       {
         title: "Replacing the spreadsheet",
-        body: "An operations team runs the business from a shared spreadsheet that breaks weekly. It becomes a proper internal tool with permissions, history and a dashboard.",
+        body: "An operations team runs the business from a shared spreadsheet that breaks weekly. It becomes a proper internal tool with permissions, history and reporting.",
       },
     ],
     process: [
@@ -212,74 +130,150 @@ export const services: Service[] = [
       { step: "Build", body: "Feature by feature with tests, code review and weekly releases to a staging site." },
       { step: "Support", body: "Hosting, monitoring, security updates and new features after launch." },
     ],
-    stack: ["Next.js", "React", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Supabase", "Stripe", "Redis", "Socket.io"],
+    stack: ["Next.js", "React", "TypeScript", "Node.js", "Express", "FastAPI", "PostgreSQL", "Prisma", "Supabase", "WordPress"],
+  },
+  {
+    number: "04",
+    slug: "real-time-communication",
+    name: "Real-time and communication systems",
+    summary: "Chat, video calling, live collaboration and presence, built to stay fast.",
+    intro:
+      "Some software has to update the moment something happens: messages, calls, shared boards, live dashboards. We build real-time systems that stay fast and reliable as the number of people using them grows.",
+    photo: { src: unsplash("photo-1606770347238-77fcfd29906c"), alt: "A video call on a laptop beside a cup of coffee" },
+    items: [
+      "Real-time web applications",
+      "WebSocket and Socket.IO development",
+      "Chat and messaging platforms",
+      "WebRTC video calling",
+      "Real-time collaboration systems",
+      "Live notifications and presence systems",
+    ],
+    scenarios: [
+      {
+        title: "Messaging inside your product",
+        body: "A marketplace wants buyers and sellers to talk without leaving the platform. We add chat with read receipts, file sharing and moderation, backed by the platform's own accounts.",
+      },
+      {
+        title: "Consultations by video",
+        body: "A clinic wants to see patients remotely. A browser-based video call with a waiting room, booking and live transcription runs without anyone installing an app.",
+      },
+    ],
+    process: [
+      { step: "Discover", body: "We map who talks to whom, how many at once, and what must never be lost." },
+      { step: "Prototype", body: "A working real-time slice under realistic load, so latency is measured early." },
+      { step: "Build", body: "Scaling, reconnection, storage, moderation and monitoring." },
+      { step: "Support", body: "We watch performance as usage grows and tune before it becomes a problem." },
+    ],
+    stack: ["Socket.IO", "WebSockets", "WebRTC", "Node.js", "Redis", "PostgreSQL", "React", "AWS S3"],
+  },
+  {
+    number: "05",
+    slug: "business-ecommerce",
+    name: "Business and e-commerce solutions",
+    summary: "Stores, marketplaces, CRMs, dashboards and payments.",
+    intro:
+      "We build the systems a business runs on day to day: where it sells, how it tracks customers, how it gets paid and how leadership sees the numbers. Payments, permissions and reporting are built in, not bolted on.",
+    photo: { src: unsplash("photo-1563013544-824ae1b704d3"), alt: "Someone paying online with a card on a laptop" },
+    items: [
+      "E-commerce development",
+      "Marketplace development",
+      "CRM and lead management systems",
+      "Admin and analytics dashboards",
+      "Business intelligence and data visualisation",
+      "Custom internal business platforms",
+      "Payment systems and Stripe integration",
+      "Stripe Connect and automated payouts",
+    ],
+    scenarios: [
+      {
+        title: "A portal for your clients",
+        body: "A consultancy runs its client work over email and spreadsheets. A portal gives each client a login to submit requests, track progress, see invoices and pay online.",
+      },
+      {
+        title: "One set of numbers",
+        body: "Sales, finance and operations each report different figures. A single dashboard pulls from each system with agreed definitions, so everyone works from the same numbers.",
+      },
+    ],
+    process: [
+      { step: "Discover", body: "We map how money, orders and customer data move through the business today." },
+      { step: "Prototype", body: "The core flow working end to end, including a real test payment." },
+      { step: "Build", body: "Roles and permissions, payments, reporting and admin tools, with tests." },
+      { step: "Support", body: "We keep payments, integrations and reports running as the business changes." },
+    ],
+    stack: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "Stripe", "Stripe Connect", "Redis", "Metabase"],
+  },
+  {
+    number: "06",
+    slug: "integrations-infrastructure",
+    name: "Integrations and infrastructure",
+    summary: "Connect your systems and run them reliably in the cloud.",
+    intro:
+      "We connect the tools you already pay for so information moves between them without anyone copying and pasting, and we set up the infrastructure underneath so it keeps running when you're not watching.",
+    photo: { src: unsplash("photo-1594915440248-1e419eba6611"), alt: "Fibre optic cables connected to a network switch" },
+    items: [
+      "Third-party API integrations",
+      "WhatsApp Business API",
+      "POS integrations",
+      "Gmail and Google Workspace integrations",
+      "AWS and cloud deployment",
+      "Docker and CI/CD",
+      "Redis and BullMQ",
+      "Background jobs and event-driven systems",
+    ],
+    scenarios: [
+      {
+        title: "Orders across systems",
+        body: "Online orders are re-entered into the POS and the delivery tool by hand. An integration syncs them automatically and alerts staff when something doesn't match.",
+      },
+      {
+        title: "Deployments without fear",
+        body: "A team deploys by hand on Friday nights and hopes. We set up containers, automated tests and one-click deploys with rollbacks and alerts.",
+      },
+    ],
+    process: [
+      { step: "Discover", body: "We map every system involved and where data is lost or duplicated today." },
+      { step: "Prototype", body: "The most painful connection automated first, running alongside the manual process." },
+      { step: "Build", body: "Retries, queues, alerts, logging and documentation, deployed through CI/CD." },
+      { step: "Support", body: "We monitor runs and update integrations when the tools on either end change." },
+    ],
+    stack: ["Node.js", "Python", "AWS (EC2, S3)", "Docker", "GitHub Actions", "Redis", "BullMQ", "Webhooks", "Google Workspace APIs"],
   },
   {
     number: "07",
-    slug: "wordpress",
-    name: "WordPress development",
-    summary: "Custom themes and plugins, WooCommerce, speed and security fixes, and headless WordPress.",
+    slug: "consulting-optimisation",
+    name: "Consulting and optimisation",
+    summary: "Architecture, reviews and tuning for software and AI you already have.",
     intro:
-      "WordPress runs a huge share of the web, and it can be fast and secure when it's built well. We build custom themes and plugins, fix slow or broken sites, and set up WordPress as a back end for modern front ends.",
-    photo: { src: "/photos/wordpress.jpg", alt: "A designer working on page layouts across two monitors" },
-    deliverables: [
-      "Custom themes built from your design, without heavy page builders",
-      "Custom plugins and integrations with your other systems",
-      "WooCommerce stores, payments and shipping setup",
-      "Speed, security and Core Web Vitals fixes for existing sites",
-      "Headless WordPress with a Next.js front end",
-      "Hosting setup, backups, updates and maintenance",
+      "Not every problem needs a new build. We review architecture and code, find what's slow, costly or fragile, and fix it or show your team how. That includes AI systems whose costs or accuracy have drifted.",
+    photo: { src: unsplash("photo-1532619675605-1ede6c2ed2b0"), alt: "An engineer explaining a design on a whiteboard" },
+    items: [
+      "Software architecture",
+      "AI/ML architecture",
+      "RAG and agent architecture",
+      "Technical consulting",
+      "Code and architecture reviews",
+      "Backend and database optimisation",
+      "AI cost and performance optimisation",
+      "Authentication, authorisation and RBAC",
+      "AI and software QA and testing",
     ],
     scenarios: [
       {
-        title: "A slow site that loses sales",
-        body: "A store built on a page builder takes eight seconds to load on mobile. We rebuild the theme, remove unused plugins and fix hosting so pages load in under two seconds.",
+        title: "An AI bill that keeps growing",
+        body: "A chatbot's model costs double every quarter. We measure where tokens go, trim prompts, cache what repeats and move simple steps to smaller models, without losing accuracy.",
       },
       {
-        title: "Content team keeps WordPress",
-        body: "A company wants a modern, fast site but its editors know WordPress. We keep WordPress for editing and build the public site in Next.js on top of it.",
+        title: "A second opinion before you scale",
+        body: "A startup is about to hire and grow its product. We review the codebase and architecture, and hand over a prioritised list of what to fix now and what can wait.",
       },
     ],
     process: [
-      { step: "Discover", body: "We audit the current site, or agree on the design and content model for a new one." },
-      { step: "Prototype", body: "Key templates built first and reviewed on a staging site." },
-      { step: "Build", body: "Full theme or plugin, content migration, performance and security hardening." },
-      { step: "Support", body: "Updates, backups, uptime monitoring and changes on request." },
+      { step: "Discover", body: "We read the code, the metrics and the incident history before forming a view." },
+      { step: "Prototype", body: "The highest-impact fix tried first, with before-and-after numbers." },
+      { step: "Build", body: "Fixes applied, or a written plan your team can carry out." },
+      { step: "Support", body: "Follow-up reviews to make sure the improvements hold." },
     ],
-    stack: ["WordPress", "PHP", "WooCommerce", "Advanced Custom Fields", "WPGraphQL", "Next.js", "MySQL"],
-  },
-  {
-    number: "08",
-    slug: "data-analytics",
-    name: "Data and analytics",
-    summary: "Dashboards, KPI reporting, data cleaning and validation, and data pipelines.",
-    intro:
-      "We get your data into one reliable place and turn it into reports people trust. That starts with the unglamorous part: cleaning and validating the data before anyone draws conclusions from it.",
-    photo: { src: "/photos/data-analytics.jpg", alt: "A control room lined with gauges and switch panels" },
-    deliverables: [
-      "Dashboards and KPI reports for leadership and operations",
-      "Pipelines that pull data from your systems on a schedule",
-      "Data cleaning, deduplication and validation rules",
-      "Reconciliation reports that flag discrepancies across records",
-      "Exports and scheduled reports by email",
-    ],
-    scenarios: [
-      {
-        title: "One set of numbers",
-        body: "Sales, finance and operations each report different figures. A single pipeline pulls from each system, applies agreed definitions and feeds one dashboard everyone uses.",
-      },
-      {
-        title: "Catching errors in records",
-        body: "A compliance team checks large datasets by hand. Validation rules run automatically and produce a list of discrepancies to review.",
-      },
-    ],
-    process: [
-      { step: "Discover", body: "We list the decisions the data should support and trace where each number comes from." },
-      { step: "Prototype", body: "A first dashboard on real data, so definitions get agreed early." },
-      { step: "Build", body: "Automated pipelines, validation rules, access control and documentation." },
-      { step: "Support", body: "We keep pipelines running and add metrics as questions change." },
-    ],
-    stack: ["Python", "Pandas", "SQL", "PostgreSQL", "Streamlit", "Metabase", "Node.js"],
+    stack: ["Architecture reviews", "Load testing", "PostgreSQL tuning", "Observability", "LLM evaluation", "JWT and RBAC"],
   },
 ];
 

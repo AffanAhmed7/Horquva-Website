@@ -11,6 +11,7 @@
   --color-rule-dark: #3a332d;
 
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-hanken), ui-sans-serif, sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -64,6 +65,15 @@
     font-weight: 500;
   }
 
+  /* Section title in the hero's typeface: light Plus Jakarta Sans at title size. */
+  .text-title-light {
+    font-family: var(--font-display);
+    font-size: clamp(2.125rem, 4.2vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 300;
+  }
+
   .text-heading {
     font-size: clamp(1.75rem, 3.2vw, 3rem);
     line-height: 1.05;
@@ -73,7 +83,7 @@
 
   /* Hero headline: large, light and open, in Plus Jakarta Sans. */
   .text-hero {
-    font-family: var(--font-jakarta), var(--font-hanken), ui-sans-serif, sans-serif;
+    font-family: var(--font-display);
     font-size: clamp(2.75rem, 5vw, 5.25rem);
     line-height: 1.04;
     letter-spacing: -0.025em;

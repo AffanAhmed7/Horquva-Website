@@ -22,7 +22,7 @@ test("valid submit shows the confirmation", async ({ page }) => {
   await page.goto("/contact");
   await page.getByLabel("Name").fill("Sara Ahmed");
   await page.getByLabel("Email").fill("sara@example.com");
-  await page.getByLabel("What do you need?").selectOption("WordPress development");
+  await page.getByLabel("What do you need?").selectOption("Web and software development");
   await page.getByLabel("Budget").selectOption("$2k–5k");
   await page.getByLabel("About the project").fill("Our WooCommerce store takes eight seconds to load on mobile.");
   await page.getByRole("button", { name: "Send enquiry" }).click();
@@ -36,7 +36,7 @@ test("server errors are shown next to the right field", async ({ page }) => {
   await page.goto("/contact");
   await page.getByLabel("Name").fill("Sara Ahmed");
   await page.getByLabel("Email").fill("sara@example.com");
-  await page.getByLabel("What do you need?").selectOption("Voice AI");
+  await page.getByLabel("What do you need?").selectOption("AI and automation");
   await page.getByLabel("Budget").selectOption("Not sure yet");
   await page.getByLabel("About the project").fill("We want our call recordings transcribed and searchable.");
   await page.getByRole("button", { name: "Send enquiry" }).click();

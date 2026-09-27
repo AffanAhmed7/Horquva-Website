@@ -10,7 +10,7 @@ export const site = {
   linkedin: "https://www.linkedin.com/company/horquva",
   url: "https://horquva.com",
   description:
-    "Horquva is an engineering company. We build AI agents, automation, web platforms and data systems for businesses, and we're building OBA Core.",
+    "Horquva builds AI-powered software, business automation, SaaS platforms, real-time apps and custom software. It's also building OBA Core, its own product.",
 };
 
 export const nav = [

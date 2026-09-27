@@ -5,7 +5,7 @@ export const validEnquiry = {
   name: "Sara Ahmed",
   email: "sara@example.com",
   company: "Example Foods",
-  service: "AI agents and chat automation",
+  service: "AI and automation",
   budget: "$5k–15k",
   message: "We want customers to order on WhatsApp and have it go into our POS.",
   website: "",

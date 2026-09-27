@@ -8,14 +8,14 @@ const banned =
   /unlock|empower|seamless|cutting-edge|leverage|revolutioni[sz]e|transform your business|next-generation|supercharge/i;
 
 describe("services content", () => {
-  it("has 8 services numbered 01–08 in order", () => {
-    expect(services.map((s) => s.number)).toEqual(["01", "02", "03", "04", "05", "06", "07", "08"]);
+  it("has 7 services numbered 01–07 in order", () => {
+    expect(services.map((s) => s.number)).toEqual(["01", "02", "03", "04", "05", "06", "07"]);
   });
 
   it("has unique slugs and complete fields", () => {
-    expect(new Set(services.map((s) => s.slug)).size).toBe(8);
+    expect(new Set(services.map((s) => s.slug)).size).toBe(7);
     for (const s of services) {
-      expect(s.deliverables.length, s.slug).toBeGreaterThanOrEqual(4);
+      expect(s.items.length, s.slug).toBeGreaterThanOrEqual(6);
       expect(s.scenarios.length, s.slug).toBeGreaterThanOrEqual(2);
       expect(s.process, s.slug).toHaveLength(4);
       expect(s.stack.length, s.slug).toBeGreaterThan(0);
@@ -28,10 +28,10 @@ describe("services content", () => {
   });
 
   it("finds services by slug and wraps to the first after the last", () => {
-    expect(getService("wordpress")?.number).toBe("07");
+    expect(getService("web-software-development")?.number).toBe("03");
     expect(getService("nope")).toBeUndefined();
-    expect(nextService("data-analytics").slug).toBe("ai-agents");
-    expect(nextService("ai-agents").slug).toBe("knowledge-assistants");
+    expect(nextService("consulting-optimisation").slug).toBe("ai-automation");
+    expect(nextService("ai-automation").slug).toBe("ai-ml-computer-vision");
   });
 });
 

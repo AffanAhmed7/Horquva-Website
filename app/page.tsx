@@ -2,7 +2,7 @@ import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Hero } from "@/components/home/Hero";
 import { ObaTeaser } from "@/components/home/ObaTeaser";
 import { ProcessSteps } from "@/components/home/ProcessSteps";
-import { ServiceIndex } from "@/components/home/ServiceIndex";
+import { ServiceCards } from "@/components/home/ServiceCards";
 import { TeamStrip } from "@/components/home/TeamStrip";
 import { RevealText } from "@/components/motion/RevealText";
 import { Section } from "@/components/ui/Section";
@@ -13,17 +13,32 @@ export default function Home() {
     <>
       <Hero />
 
-      <Section innerClassName="py-24 md:py-36" aria-labelledby="services-title">
-        <div className="mb-12 grid gap-8 md:mb-16 md:grid-cols-12">
-          <RevealText as="h2" id="services-title" className="text-title md:col-span-6">
-            What we build
-          </RevealText>
-          <p className="text-[19px] leading-[1.5] text-ink-soft md:col-span-5 md:col-start-8 md:self-end">
-            Eight kinds of work, one team. Most projects combine two or three of them.
-          </p>
-        </div>
-        <ServiceIndex services={services} />
-      </Section>
+      <section
+        className="relative isolate overflow-hidden bg-paper py-24 text-ink md:py-36"
+        aria-labelledby="services-title"
+      >
+        {/* Warm bronze glow that pools behind the cards and fades out to the paper at the edges. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: [
+              "radial-gradient(ellipse 65% 50% at 30% 68%, rgba(169,130,90,0.30), transparent 70%)",
+              "radial-gradient(ellipse 55% 45% at 80% 55%, rgba(94,63,44,0.16), transparent 70%)",
+              "linear-gradient(to bottom, transparent 15%, rgba(169,130,90,0.10) 55%, transparent 95%)",
+            ].join(", "),
+          }}
+        />
+        <ServiceCards
+          services={services}
+          allHref="/services"
+          title={
+            <RevealText as="h2" id="services-title" className="text-title-light">
+              What we build
+            </RevealText>
+          }
+        />
+      </section>
 
       <ProcessSteps />
       <ObaTeaser />

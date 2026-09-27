@@ -9,7 +9,7 @@ const valid = {
   name: "Sara Ahmed",
   email: "sara@example.com",
   company: "",
-  service: "WordPress development",
+  service: "Web and software development",
   budget: "Not sure yet",
   message: "Our WooCommerce store is slow and we need it fixed properly.",
   website: "",

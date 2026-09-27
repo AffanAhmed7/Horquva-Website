@@ -16,7 +16,15 @@ export function Photo({ src, alt, ratio, className = "", priority, sizes = "100v
   return (
     <div className={`relative overflow-hidden bg-ink ${className}`} style={{ aspectRatio: ratio }}>
       {src ? (
-        <Image src={src} alt={alt} fill preload={priority} sizes={sizes} className="object-cover" />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          preload={priority}
+          sizes={sizes}
+          unoptimized={src.startsWith("http")}
+          className="object-cover"
+        />
       ) : (
         <span className="sr-only">{alt}</span>
       )}
