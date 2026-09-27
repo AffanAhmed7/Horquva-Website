@@ -1,18 +1,19 @@
 {
   "source": "Unsplash (https://unsplash.com/license): free for commercial use, no permission needed.",
+  "direction": "Mix of wide places at night (Palantir, Anduril) and candid frontline people at work (Faculty, Sierra). Nothing literal, no one posing for the camera.",
   "photos": {
     "hero": { "id": "uZF3nuUiGUk", "file": "photo-1759210720487-c74d9764da79", "photographer": "Tahamie Farooqui", "alt": "Karachi from above at night, streets traced in light" },
-    "process": { "id": "5Q07sS54D0Q", "file": "photo-1598520106830-8c45c2035460", "photographer": "Kvalifik", "alt": "A hand sketching a system diagram on a glass whiteboard" },
-    "oba": { "id": "Pk-KuizxQv8", "file": "photo-1777269749032-d8d458ae594d", "photographer": "Tasha Kostyuk", "alt": "An empty hospital corridor lined with doors" },
-    "ai-agents": { "id": "4NQEvxW2_4w", "file": "photo-1600565193348-f74bd3c7ccdf", "photographer": "Johnathan Macedo", "alt": "A chef cooking over open flame in a busy restaurant kitchen" },
-    "knowledge-assistants": { "id": "K-ZsC7YdJ6Y", "file": "photo-1526656001029-20a71b17f7ba", "photographer": "Sear Greyson", "alt": "Stacks of worn binders and paper files" },
-    "document-vision-ai": { "id": "snNHKZ-mGfE", "file": "photo-1583521214690-73421a1829a9", "photographer": "Wesley Tingey", "alt": "Tall stacks of paper documents and file folders" },
-    "voice-ai": { "id": "N6jxoR1PcbE", "file": "photo-1745848413113-4f39bdad5769", "photographer": "dlxmedia.hu", "alt": "A studio microphone grille lit by warm light" },
-    "automation-integrations": { "id": "Ru9Uf4G0Gx0", "file": "photo-1716016435588-f5db7da707d5", "photographer": "motomoto sc", "alt": "Parcels moving along a conveyor in a warehouse" },
-    "web-product-engineering": { "id": "dYEuFB8KQJk", "file": "photo-1562813733-b31f71025d54", "photographer": "Clint Patterson", "alt": "An engineer working at a laptop in a dark room" },
-    "wordpress": { "id": "tZc3vjPCk-Q", "file": "photo-1522542550221-31fd19575a2d", "photographer": "Hal Gatewood", "alt": "Hand-drawn wireframe sketches of website layouts" },
-    "data-analytics": { "id": "6EnTPvPPL6I", "file": "photo-1543286386-713bdd548da4", "photographer": "Isaac Smith", "alt": "A hand-drawn line graph on paper with a ruler" },
-    "approach": { "id": "dEcBKGZS0P8", "file": "photo-1623303647440-967d26b95b47", "photographer": "FORTYTWO", "alt": "A team working around a table covered in papers" },
-    "careers": { "id": "_0ZOwPCnu0A", "file": "photo-1788820194578-6391ad798609", "photographer": "Bruno BD", "alt": "Three lit office windows at night" }
+    "process": { "id": "VBLHICVh-lI", "file": "photo-1541746972996-4e0b0f43e02a", "photographer": "Mario Gogh", "alt": "A team working late in a dim glass-walled office" },
+    "oba": { "id": "CjgwW0VR3d0", "file": "photo-1614101062781-09a8dfb90dce", "photographer": "Frederic Köberl", "alt": "A hospital room at night, a monitor above an empty bed" },
+    "ai-agents": { "id": "uk3ey_vhDKA", "file": "photo-1687422808248-f807f4ea2a2e", "photographer": "Ali Mkumbwa", "alt": "A food vendor in an apron checking orders on his phone" },
+    "knowledge-assistants": { "id": "TislfTYCUVQ", "file": "photo-1789930445611-3b13fd7d6de4", "photographer": "Oleg Zarevennyi", "alt": "Someone reading papers by a small desk lamp" },
+    "document-vision-ai": { "id": "8WO_JTyzuNg", "file": "photo-1664382952681-30fe4b179437", "photographer": "Centre for Ageing Better", "alt": "An office worker going through a drawer of paper files" },
+    "voice-ai": { "id": "5skDrjF5EMw", "file": "photo-1712159018726-4564d92f3ec2", "photographer": "Vagaro", "alt": "A support agent on a headset at his desk" },
+    "automation-integrations": { "id": "vn9zlZPYvmc", "file": "photo-1619770359325-097954a47bdb", "photographer": "Maksym Tymchyk", "alt": "A worker in a high-visibility jacket walking through a dark site at night" },
+    "web-product-engineering": { "id": "4Uj0OFn-m3E", "file": "photo-1717802019159-74496e3ee504", "photographer": "Bedirhan Gül", "alt": "An engineer at his desk in a dark room, lit by a lamp and screens" },
+    "wordpress": { "id": "Z8Fm-Dc3G7A", "file": "photo-1612417137465-2883c39320a7", "photographer": "Ion (Ivan) Sipilov", "alt": "A designer working on page layouts across two monitors" },
+    "data-analytics": { "id": "2CakbXfm_gM", "file": "photo-1685720543547-cc4873188c75", "photographer": "Dmitrijs Safrans", "alt": "A control room lined with gauges and switch panels" },
+    "approach": { "id": "KdeqA3aTnBY", "file": "photo-1517048676732-d65bc937f952", "photographer": "Dylan Gillis", "alt": "People around a table taking notes during a working session" },
+    "careers": { "id": "wSxag1zUalw", "file": "photo-1772059409102-86d89782265b", "photographer": "Bruno BD", "alt": "Office floors lit at night with people still working" }
   }
 }

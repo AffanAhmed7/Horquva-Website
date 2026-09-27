@@ -47,3 +47,6 @@ next-env.d.ts
 
 # local tooling
 /.claude/settings.local.json
+
+# ungraded photo originals (re-download with npm run photos:fetch)
+/assets/photos/raw/

@@ -1,0 +1,80 @@
+[
+  {
+    "slot": "hero",
+    "photographer": "Tahamie Farooqui",
+    "source": "https://unsplash.com/photos/uZF3nuUiGUk",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "process",
+    "photographer": "Mario Gogh",
+    "source": "https://unsplash.com/photos/VBLHICVh-lI",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "oba",
+    "photographer": "Frederic Köberl",
+    "source": "https://unsplash.com/photos/CjgwW0VR3d0",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "ai-agents",
+    "photographer": "Ali Mkumbwa",
+    "source": "https://unsplash.com/photos/uk3ey_vhDKA",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "knowledge-assistants",
+    "photographer": "Oleg Zarevennyi",
+    "source": "https://unsplash.com/photos/TislfTYCUVQ",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "document-vision-ai",
+    "photographer": "Centre for Ageing Better",
+    "source": "https://unsplash.com/photos/8WO_JTyzuNg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "voice-ai",
+    "photographer": "Vagaro",
+    "source": "https://unsplash.com/photos/5skDrjF5EMw",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "automation-integrations",
+    "photographer": "Maksym Tymchyk",
+    "source": "https://unsplash.com/photos/vn9zlZPYvmc",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "web-product-engineering",
+    "photographer": "Bedirhan Gül",
+    "source": "https://unsplash.com/photos/4Uj0OFn-m3E",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "wordpress",
+    "photographer": "Ion (Ivan) Sipilov",
+    "source": "https://unsplash.com/photos/Z8Fm-Dc3G7A",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "data-analytics",
+    "photographer": "Dmitrijs Safrans",
+    "source": "https://unsplash.com/photos/2CakbXfm_gM",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "approach",
+    "photographer": "Dylan Gillis",
+    "source": "https://unsplash.com/photos/KdeqA3aTnBY",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "careers",
+    "photographer": "Bruno BD",
+    "source": "https://unsplash.com/photos/wSxag1zUalw",
+    "license": "Unsplash License"
+  }
+]
