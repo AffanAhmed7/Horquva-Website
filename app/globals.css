@@ -71,6 +71,15 @@
     font-weight: 500;
   }
 
+  /* Hero headline: large, light and open, in Plus Jakarta Sans. */
+  .text-hero {
+    font-family: var(--font-jakarta), var(--font-hanken), ui-sans-serif, sans-serif;
+    font-size: clamp(2.75rem, 5vw, 5.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 300;
+  }
+
   .gutter {
     padding-inline: clamp(1rem, 4vw, 3.5rem);
   }

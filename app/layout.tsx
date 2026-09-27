@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk } from "next/font/google";
+import { Hanken_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
@@ -12,9 +12,16 @@ const hanken = Hanken_Grotesk({
   variable: "--font-hanken",
 });
 
+// Light display face for the home hero headline only.
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  variable: "--font-jakarta",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: "Horquva: software and AI systems businesses depend on", template: "%s | Horquva" },
+  title: { default: "Horquva: software and AI for businesses that can't afford downtime", template: "%s | Horquva" },
   description: site.description,
   openGraph: { type: "website", siteName: site.name, locale: "en_GB" },
   twitter: { card: "summary_large_image" },
@@ -36,7 +43,7 @@ const motionScript = `if(!matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={hanken.variable} suppressHydrationWarning>
+    <html lang="en" className={`${hanken.variable} ${jakarta.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionScript }} />
         <script

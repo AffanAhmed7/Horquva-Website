@@ -14,7 +14,6 @@ const heroPages = new Set(["/"]);
 export function SiteHeader() {
   const pathname = usePathname();
   const hasHero = heroPages.has(pathname);
-  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const [menuFor, setMenuFor] = useState<string | null>(null);
@@ -22,14 +21,11 @@ export function SiteHeader() {
   const menuOpen = menuFor === pathname;
 
   useEffect(() => {
-    let last = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
       const hero = document.querySelector<HTMLElement>("[data-hero]");
       setScrolled(y > 8);
       setPastHero(!hero || y > hero.offsetHeight - 80);
-      setHidden(y > 160 && y > last);
-      last = y;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -40,18 +36,25 @@ export function SiteHeader() {
     };
   }, [pathname]);
 
-  // Transparent with light text while over the hero photo; solid paper everywhere else.
-  const overlay = hasHero && !pastHero && !menuOpen;
+  // Over the hero photo the header uses light text; elsewhere dark text on paper.
+  const onDark = hasHero && !pastHero && !menuOpen;
+  // Fully clear only at the very top of the hero; once scrolled it frosts so it stays legible.
+  const surface = menuOpen
+    ? "bg-paper border-rule"
+    : onDark
+      ? scrolled
+        ? "bg-ink/35 backdrop-blur-md border-paper/10"
+        : "bg-transparent border-transparent"
+      : scrolled
+        ? "bg-paper/75 backdrop-blur-md border-rule/70"
+        : "bg-paper border-transparent";
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b transition-[transform,background-color,color,border-color] duration-300 ease-out-expo ${
-          hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
-        } ${
-          overlay
-            ? "border-transparent bg-transparent text-paper"
-            : `bg-paper text-ink ${scrolled ? "border-rule" : "border-transparent"}`
+        data-surface={onDark ? "dark" : "light"}
+        className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,color,border-color,backdrop-filter] duration-300 ease-out-expo ${surface} ${
+          onDark ? "text-paper" : "text-ink"
         }`}
       >
         <div className="gutter mx-auto flex h-16 max-w-[1440px] items-center justify-between md:h-20">
@@ -76,7 +79,7 @@ export function SiteHeader() {
           </nav>
           <div className="flex items-center gap-4">
             <div className="hidden sm:block">
-              <Button href="/contact" tone={overlay ? "ink" : "paper"}>
+              <Button href="/contact" variant="glass" tone={onDark ? "ink" : "paper"}>
                 Start a project
               </Button>
             </div>

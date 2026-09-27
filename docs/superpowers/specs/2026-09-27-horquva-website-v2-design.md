@@ -133,6 +133,8 @@ Every text/background pair used must pass WCAG AA (verified in tests, Section 9)
 ### 5.4 Banned patterns (checked in review)
 Eyebrow labels above headings · pill or glowing buttons · glassmorphism · purple/blue/violet gradients · gradient text · blurred blobs / aurora backgrounds · centred hero with two buttons · three-column icon-card grids · emoji or sparkle icons · particles, beams, spotlight cards · logo marquees · AI-generated or robot/brain/hologram imagery.
 
+**Approved exceptions (2026-09-27, requested by Horquva):** the sticky header frosts (backdrop blur) once scrolled, and its "Start a project" button is a translucent outlined button. The hero headline uses Bricolage Grotesque as a display face.
+
 ### 5.5 Motion
 - Headlines: line-by-line reveal on first view (GSAP SplitText, 600ms, staggered 80ms).
 - Photos: clip-path reveal on scroll (ScrollTrigger).
