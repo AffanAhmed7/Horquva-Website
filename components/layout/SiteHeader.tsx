@@ -57,9 +57,9 @@ export function SiteHeader() {
             </ul>
           </nav>
           <div className="flex items-center gap-4">
-            <Button href="/contact" className="hidden sm:inline-flex">
-              Start a project
-            </Button>
+            <div className="hidden sm:block">
+              <Button href="/contact">Start a project</Button>
+            </div>
             <button
               type="button"
               className="flex h-11 items-center gap-3 text-[15px] lg:hidden"
