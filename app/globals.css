@@ -99,3 +99,15 @@ html.lenis body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Text waiting for its reveal. The motion class is set by an inline script only when
+   motion is allowed; the animation is a safety net if scripts never run. */
+html.motion [data-reveal] {
+  visibility: hidden;
+  animation: reveal-fallback 0s 2.5s forwards;
+}
+@keyframes reveal-fallback {
+  to {
+    visibility: visible;
+  }
+}
