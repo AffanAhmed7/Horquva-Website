@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Horquva website
 
-## Getting Started
+Marketing site for Horquva LLC: eight service pages, the OBA Core product page and an enquiry form.
 
-First, run the development server:
+Design and scope: `docs/superpowers/specs/2026-09-27-horquva-website-v2-design.md`
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Checks
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test             # unit tests (content rules, enquiry schema and API)
+npm run e2e          # builds, then runs page, accessibility and form tests in Playwright
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Enquiry form
 
-## Learn More
+Copy `.env.example` to `.env.local` and fill in the Resend API key and addresses. Without them
+the form shows "Couldn't send your message" with the email address as a fallback.
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Services, team, process and site details live in `content/*.ts`.
+- A unit test fails if copy contains banned filler words (see `tests/unit/content.test.ts`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Photos
 
-## Deploy on Vercel
+All non-team photos come from Unsplash and are listed in `content/photo-manifest.json`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run photos:fetch   # download originals into assets/photos/raw (not committed)
+npm run photos:grade   # apply the house grade into public/photos
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Team portraits go in `assets/photos/team/` and are graded and cropped to 4:5 by the same script.

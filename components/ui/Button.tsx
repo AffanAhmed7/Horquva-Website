@@ -25,9 +25,8 @@ export function Button({ tone = "paper", className = "", children, ...rest }: Pr
       </Link>
     );
   }
-  const { href: _h, ...buttonProps } = rest;
   return (
-    <button {...buttonProps} className={cls}>
+    <button {...rest} className={cls}>
       {children}
     </button>
   );

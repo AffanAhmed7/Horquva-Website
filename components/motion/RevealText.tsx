@@ -1,9 +1,6 @@
 "use client";
 
 import { useEffect, useRef, type ElementType, type ReactNode } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 type Props = {
@@ -27,15 +24,25 @@ export function RevealText({ as: Tag = "h2", className = "", children, id, delay
       el.style.visibility = "visible";
       return;
     }
-    gsap.registerPlugin(ScrollTrigger, SplitText);
-    let split: SplitText | undefined;
-    // Wait for web fonts so line breaks are measured with the real typeface.
-    document.fonts.ready.then(() => {
-      if (!ref.current) return;
-      split = SplitText.create(el, {
+    let cancelled = false;
+    let revert = () => {};
+    // GSAP loads after hydration so it stays out of the critical bundle.
+    (async () => {
+      const [{ default: gsap }, { ScrollTrigger }, { SplitText }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+        import("gsap/SplitText"),
+      ]);
+      // Wait for web fonts so line breaks are measured with the real typeface.
+      await document.fonts.ready;
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger, SplitText);
+      const split = SplitText.create(el, {
         type: "lines",
         mask: "lines",
         autoSplit: true,
+        // The text stays in the DOM as plain text, so no ARIA rewriting is needed.
+        aria: "none",
         onSplit(self) {
           gsap.set(el, { visibility: "visible" });
           return gsap.from(self.lines, {
@@ -48,8 +55,12 @@ export function RevealText({ as: Tag = "h2", className = "", children, id, delay
           });
         },
       });
-    });
-    return () => split?.revert();
+      revert = () => split.revert();
+    })();
+    return () => {
+      cancelled = true;
+      revert();
+    };
   }, [reduced, delay]);
 
   return (

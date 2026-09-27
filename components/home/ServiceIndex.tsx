@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import type { Service } from "@/content/services";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
@@ -15,12 +14,10 @@ export function ServiceIndex({ services }: { services: Service[] }) {
   const [active, setActive] = useState<number | null>(null);
   const [canHover, setCanHover] = useState(false);
   const reduced = useReducedMotion();
+  const hovering = active !== null;
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const spring = { stiffness: 260, damping: 30, mass: 0.6 };
-  const sx = useSpring(x, spring);
-  const sy = useSpring(y, spring);
+  const follower = useRef<HTMLDivElement>(null);
+  const target = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const mql = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -30,12 +27,29 @@ export function ServiceIndex({ services }: { services: Service[] }) {
     return () => mql.removeEventListener("change", update);
   }, []);
 
+  // Ease the photo toward the pointer each frame; jump straight there under reduced motion.
+  useEffect(() => {
+    if (!canHover || !hovering) return;
+    const pos = { ...target.current };
+    let frame = 0;
+    const loop = () => {
+      const k = reduced ? 1 : 0.18;
+      pos.x += (target.current.x - pos.x) * k;
+      pos.y += (target.current.y - pos.y) * k;
+      if (follower.current) {
+        follower.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
+      }
+      frame = requestAnimationFrame(loop);
+    };
+    frame = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(frame);
+  }, [canHover, reduced, hovering]);
+
   return (
     <div
       className="relative"
       onPointerMove={(e) => {
-        x.set(e.clientX);
-        y.set(e.clientY);
+        target.current = { x: e.clientX, y: e.clientY };
       }}
       onPointerLeave={() => setActive(null)}
     >
@@ -81,17 +95,16 @@ export function ServiceIndex({ services }: { services: Service[] }) {
       </ol>
 
       {canHover && (
-        <motion.div
+        <div
+          ref={follower}
           aria-hidden
-          className="pointer-events-none fixed left-0 top-0 z-20 h-[22rem] w-[17.5rem] overflow-hidden bg-ink"
-          style={{ x: sx, y: sy, translateX: "-50%", translateY: "-50%" }}
-          initial={false}
-          animate={{
-            opacity: active === null ? 0 : 1,
-            scale: active === null ? 0.92 : 1,
-          }}
-          transition={{ duration: reduced ? 0 : 0.2 }}
+          className="pointer-events-none fixed left-0 top-0 z-20 h-[22rem] w-[17.5rem] will-change-transform"
         >
+          <div
+            className={`relative h-full w-full overflow-hidden bg-ink transition-[opacity,scale] duration-200 ${
+              active === null ? "scale-[0.92] opacity-0" : "scale-100 opacity-100"
+            }`}
+          >
           {services.map((s, i) => (
             <Image
               key={s.slug}
@@ -102,7 +115,8 @@ export function ServiceIndex({ services }: { services: Service[] }) {
               className={`object-cover transition-opacity duration-200 ${active === i ? "opacity-100" : "opacity-0"}`}
             />
           ))}
-        </motion.div>
+          </div>
+        </div>
       )}
     </div>
   );

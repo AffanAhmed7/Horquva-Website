@@ -6,6 +6,7 @@ type Props = {
   /** CSS aspect-ratio, e.g. "16/9". */
   ratio: string;
   className?: string;
+  /** Preload in <head>: use only for the page's LCP image. */
   priority?: boolean;
   sizes?: string;
 };
@@ -15,7 +16,7 @@ export function Photo({ src, alt, ratio, className = "", priority, sizes = "100v
   return (
     <div className={`relative overflow-hidden bg-ink ${className}`} style={{ aspectRatio: ratio }}>
       {src ? (
-        <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" />
+        <Image src={src} alt={alt} fill preload={priority} sizes={sizes} className="object-cover" />
       ) : (
         <span className="sr-only">{alt}</span>
       )}
