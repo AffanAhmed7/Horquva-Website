@@ -46,12 +46,6 @@ export const team: Person[] = [
     bio: "Runs planning, governance and coordination, working closely with leadership to keep projects and internal processes on track.",
   },
   {
-    name: "Mohammad Mohsin",
-    role: "Technical operations lead",
-    photo: "/photos/team/mohammad-mohsin.jpg",
-    bio: "Looks after the infrastructure, environments and deployments that Horquva's systems run on.",
-  },
-  {
     name: "Muhammad Ibrahim Shaikh",
     role: "AI engineer",
     photo: "/photos/team/muhammad-ibrahim-shaikh.jpg",
