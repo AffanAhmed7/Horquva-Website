@@ -50,3 +50,9 @@ next-env.d.ts
 
 # ungraded photo originals (re-download with npm run photos:fetch)
 /assets/photos/raw/
+
+# local scratch files
+/.err.mjs
+/.lead.txt
+/.page.bak
+/.shot.mjs
