@@ -1,8 +1,18 @@
-# Horquva website
+# Horquva Website
 
-Marketing site for Horquva LLC: eight service pages, the OBA Core product page and an enquiry form.
+Marketing site for Horquva LLC: a home page with an interactive hero, eight service pages, the
+OBA Core product tour, approach, team, careers and privacy pages, and an enquiry form that sends
+email through Resend.
 
 Design and scope: `docs/superpowers/specs/2026-09-27-horquva-website-v2-design.md`
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router) with React 19 and TypeScript
+- Tailwind CSS 4
+- GSAP and Lenis for scroll and motion (loaded after hydration)
+- React Hook Form and Zod for the enquiry form, Resend for delivery
+- Vitest for unit tests, Playwright and axe-core for end-to-end and accessibility tests
 
 ## Run it
 
@@ -11,12 +21,47 @@ npm install
 npm run dev          # http://localhost:3000
 ```
 
+Production build:
+
+```bash
+npm run build
+npm start
+```
+
 ## Checks
 
 ```bash
 npm test             # unit tests (content rules, enquiry schema and API)
 npm run e2e          # builds, then runs page, accessibility and form tests in Playwright
 npm run lint
+```
+
+## Pages
+
+| Route | What it is |
+| --- | --- |
+| `/` | Home: hero, services, OBA Core teaser, contact |
+| `/services`, `/services/[slug]` | Services index and one page per service |
+| `/oba-core` | OBA Core product tour |
+| `/approach` | How Horquva works |
+| `/team` | Team |
+| `/careers` | Careers |
+| `/contact` | Enquiry form (posts to `/api/enquiry`) |
+| `/privacy` | Privacy notice |
+
+`sitemap.xml`, `robots.txt` and the Open Graph image are generated from `app/`.
+
+## Project layout
+
+```
+app/          routes, layout, API handler, metadata
+components/   UI components
+content/      services, team, process and site copy as typed TypeScript
+lib/          shared helpers (enquiry schema, email, utilities)
+public/       graded photos and static assets
+scripts/      photo fetch and grade scripts
+tests/        unit (Vitest) and e2e (Playwright) tests
+docs/         proposal, design spec and implementation plan
 ```
 
 ## Enquiry form
