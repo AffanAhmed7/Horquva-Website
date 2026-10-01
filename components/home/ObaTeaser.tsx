@@ -1,13 +1,13 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
-import { ProductTour } from "@/components/oba/ProductTour";
+import { HowItWorks } from "@/components/oba/HowItWorks";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 
 const understand = ["Understand what you have.", "Understand what depends on it.", "Understand what changes."];
 
 /**
- * OBA Core, straight after the hero: the promise, a live tour of the product, and the line it all
+ * OBA Core, straight after the hero: the promise, how it works step by step, and the line it all
  * comes down to. Each part makes its entrance in turn as it scrolls in.
  */
 export function ObaTeaser() {
@@ -31,7 +31,7 @@ export function ObaTeaser() {
         </Reveal>
       </div>
 
-      <ProductTour tone="ink" className="mt-16 md:mt-24" />
+      <HowItWorks className="mt-20 md:mt-28" />
 
       {/* What it comes down to, beat by beat. */}
       <div className="mt-24 border-t border-rule-dark pt-12 md:mt-32">
@@ -45,7 +45,7 @@ export function ObaTeaser() {
         </Reveal>
         <Reveal delay={0.5} className="mt-12 flex flex-wrap items-center justify-between gap-6">
           <p className="max-w-lg text-[15px] text-stone">
-            OBA Core is in development. The screens show the product as it stands today.
+            OBA Core is in development, and we’re opening it to a small group of early teams.
           </p>
           <Button href="/oba-core" tone="ink">
             Explore OBA Core

@@ -3,6 +3,7 @@ import { Hanken_Grotesk, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { WobaWidget } from "@/components/woba/WobaWidget";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main">{children}</main>
         <SiteFooter />
         <SmoothScroll />
+        <WobaWidget />
       </body>
     </html>
   );

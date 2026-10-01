@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
 import { ConnectsGrid } from "@/components/oba/ConnectsGrid";
-import { ProductTour } from "@/components/oba/ProductTour";
+import { HowItWorks } from "@/components/oba/HowItWorks";
 import { Roadmap } from "@/components/oba/Roadmap";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
@@ -97,7 +97,7 @@ export default function ObaCorePage() {
           </Reveal>
         </div>
 
-        <ProductTour tone="ink" priority className="mt-20 md:mt-28" />
+        <HowItWorks className="mt-20 md:mt-28" />
       </Section>
 
       {/* The problem. */}

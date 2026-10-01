@@ -136,13 +136,33 @@ html.motion [data-reveal] {
   }
 }
 
-/* Product tour: the selected feature's line fills over the dwell time, then the tour advances. */
-@keyframes tour-fill {
-  from {
-    transform: scaleY(0);
-  }
+/* OBA how-it-works: the line's bright head fades once it reaches the last step. */
+@keyframes oba-head-out {
   to {
-    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* Woba launcher: light travelling round a bronze ring, like a lamp catching brushed metal. */
+.woba-ring {
+  background: conic-gradient(
+    from var(--woba-angle),
+    rgba(169, 130, 90, 0.25),
+    #e2c3a0 12%,
+    rgba(169, 130, 90, 0.5) 24%,
+    rgba(169, 130, 90, 0.25) 50%,
+    rgba(169, 130, 90, 0.25)
+  );
+  animation: woba-spin 6s linear infinite;
+}
+@property --woba-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes woba-spin {
+  to {
+    --woba-angle: 360deg;
   }
 }
 
