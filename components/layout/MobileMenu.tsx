@@ -72,7 +72,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                   href={item.href}
                   onClick={onClose}
                   aria-current={active ? "page" : undefined}
-                  className={`group flex items-center justify-between gap-6 py-4 font-display text-[clamp(1.875rem,8vw,2.75rem)] font-light leading-none tracking-[-0.025em] transition-colors duration-300 ${
+                  className={`group flex items-center justify-between gap-6 py-3.5 font-display text-[clamp(1.375rem,6vw,1.75rem)] font-light leading-none tracking-[-0.025em] transition-colors duration-300 ${
                     active ? "text-paper" : "text-paper/65 hover:text-paper"
                   }`}
                 >
