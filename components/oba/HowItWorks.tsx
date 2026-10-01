@@ -75,7 +75,7 @@ const reach = (i: number) => (i / (n - 1)) * RUN;
 
 /**
  * OBA Core's five steps on one line. When it first scrolls into view a bronze line rushes from the
- * first step to the last (top to bottom on small screens), lighting each step as it arrives and
+ * first step to the last (top to bottom below laptop width), lighting each step as it arrives and
  * bringing its words in behind it. Under reduced motion everything is shown lit and still.
  */
 export function HowItWorks({ className = "" }: { className?: string }) {
@@ -103,9 +103,9 @@ export function HowItWorks({ className = "" }: { className?: string }) {
   const delay = (ms: number) => ({ transitionDelay: on && !reduced ? `${ms}ms` : "0ms" });
 
   return (
-    <div ref={ref} className={`relative ${className}`}>
+    <div ref={ref} className={`relative mx-auto max-w-xl lg:max-w-none ${className}`}>
       {/* Desktop line: from the first circle's centre to the last's, with a bright head leading the fill. */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-[10%] top-8 hidden h-px md:block">
+      <div aria-hidden className="pointer-events-none absolute inset-x-[10%] top-8 hidden h-px lg:block">
         <span className="absolute inset-0 bg-rule-dark" />
         <span
           className={`absolute inset-0 origin-left bg-gradient-to-r from-bronze/40 via-bronze to-bronze transition-transform ease-linear ${
@@ -124,14 +124,14 @@ export function HowItWorks({ className = "" }: { className?: string }) {
         />
       </div>
 
-      <ol aria-label="How OBA Core works" className="relative md:grid md:grid-cols-5 md:gap-6">
+      <ol aria-label="How OBA Core works" className="relative lg:grid lg:grid-cols-5 lg:gap-6">
         {steps.map((s, i) => {
           const at = reach(i);
           return (
-            <li key={s.label} className="relative grid grid-cols-[4rem_1fr] gap-x-5 pb-10 last:pb-0 md:block md:pb-0 md:text-center">
+            <li key={s.label} className="relative grid grid-cols-[4rem_1fr] gap-x-5 pb-10 last:pb-0 lg:block lg:pb-0 lg:text-center">
               {/* Mobile line: one segment down to the next step, filling in turn. */}
               {i < n - 1 && (
-                <span aria-hidden className="absolute bottom-0 left-8 top-8 w-px bg-rule-dark md:hidden">
+                <span aria-hidden className="absolute bottom-0 left-8 top-8 w-px bg-rule-dark lg:hidden">
                   <span
                     className={`absolute inset-0 origin-top bg-bronze transition-transform ease-linear ${
                       on ? "scale-y-100" : "scale-y-0"
@@ -143,7 +143,7 @@ export function HowItWorks({ className = "" }: { className?: string }) {
 
               {/* The step's circle lights as the line reaches it. */}
               <span
-                className={`relative z-10 grid size-16 place-items-center rounded-full bg-ink ring-1 ring-inset transition-[color,box-shadow,transform] duration-500 ease-out-expo md:mx-auto ${
+                className={`relative z-10 grid size-16 place-items-center rounded-full bg-ink ring-1 ring-inset transition-[color,box-shadow,transform] duration-500 ease-out-expo lg:mx-auto ${
                   on
                     ? "scale-100 text-bronze shadow-[0_0_0_6px_rgba(169,130,90,0.06),0_0_32px_-4px_rgba(169,130,90,0.45)] ring-bronze/60"
                     : "scale-90 text-stone/50 ring-rule-dark"
@@ -165,13 +165,13 @@ export function HowItWorks({ className = "" }: { className?: string }) {
               </span>
 
               <div
-                className={`pt-1 transition-[opacity,transform,filter] duration-700 ease-out-expo md:mx-auto md:max-w-[17rem] md:pt-8 ${
+                className={`pt-1 transition-[opacity,transform,filter] duration-700 ease-out-expo lg:mx-auto lg:max-w-[17rem] lg:pt-8 ${
                   on ? "translate-y-0 opacity-100 blur-0" : "translate-y-3 opacity-0 blur-[2px]"
                 }`}
                 style={delay(at + 120)}
               >
                 <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-bronze">{s.label}</p>
-                <h3 className="mt-3 font-display text-[17px] font-normal leading-snug tracking-[-0.01em] text-paper md:text-[18px]">
+                <h3 className="mt-3 font-display text-[17px] font-normal leading-snug tracking-[-0.01em] text-paper lg:text-[18px]">
                   {s.title}
                 </h3>
                 <p className="mt-3 text-[15px] leading-[1.6] text-stone">{s.body}</p>
