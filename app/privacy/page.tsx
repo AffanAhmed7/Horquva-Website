@@ -94,23 +94,6 @@ export default function PrivacyPage() {
             wrong, so check anything important, like pricing or timelines, with our team.
           </p>
 
-          <h2 className={heading}>Who handles it for us</h2>
-          <ul className={list}>
-            <li>
-              <span className="text-ink">Vercel</span> hosts the website.
-            </li>
-            <li>
-              <span className="text-ink">Resend</span> delivers enquiries to our inbox.
-            </li>
-            <li>
-              <span className="text-ink">Groq and OpenRouter</span> write Woba&apos;s answers.
-            </li>
-            <li>
-              <span className="text-ink">Upstash</span> stores chat history and message counts.
-            </li>
-          </ul>
-          <p className="mt-4">Each one handles data only as needed to provide its service to us.</p>
-
           <h2 className={heading}>How long we keep it</h2>
           <ul className={list}>
             <li>Chat history: 24 hours.</li>
