@@ -50,6 +50,5 @@ export const team: Person[] = [
     role: "AI engineer",
     photo: "/photos/team/muhammad-ibrahim-shaikh.jpg",
     bio: "Builds AI agents, retrieval systems and voice and vision pipelines. Previously built a multi-tenant WhatsApp ordering agent used by 25 restaurants, and TTS data pipelines at Entropik Labs.",
-    linkedin: "https://www.linkedin.com/in/ibrahimshaikhh",
   },
 ];
