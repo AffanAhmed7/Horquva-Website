@@ -18,6 +18,13 @@ export const site = {
     "Horquva builds AI-powered software, business automation, SaaS platforms, real-time apps and custom software. It's also building OBA Core, its own product.",
 };
 
+/**
+ * Every page on the site, apart from the service pages (/services/<slug>). The sitemap lists
+ * these, and proxy.ts answers any address that isn't one of them with 410 Gone, which is how
+ * the old WordPress site's pages are cleared from search results. Add new pages here.
+ */
+export const pages = ["/", "/oba-core", "/approach", "/team", "/careers", "/contact", "/privacy"];
+
 export const nav = [
   // Jumps to the service cards on the home page; stays highlighted on each service's own page.
   { href: "/#services", label: "Services", activePrefix: "/services" },

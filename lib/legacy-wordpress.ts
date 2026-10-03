@@ -1,24 +1,45 @@
+import { services } from "@/content/services";
+import { pages } from "@/content/site";
+
 /**
- * horquva.com used to be a WordPress site. Search engines still remember its addresses, so they
- * get a 410 Gone (removed on purpose), which drops them from results faster than a 404.
- * Old pages with a clear new home are redirected in next.config.ts instead.
+ * horquva.com used to be a WordPress site, and search engines still list its pages. Rather than
+ * tracking each old address, every address that isn't part of this site gets a 410 Gone (removed
+ * on purpose), which drops it from results faster than a 404. Old pages with a clear new home are
+ * redirected in next.config.ts, and those redirects run before this check.
  */
 
-// Paths WordPress uses for its admin, files, feeds and archives.
-const LEGACY_PATH =
-  /^\/(wp-admin|wp-content|wp-includes|wp-json|wp-login\.php|wp-cron\.php|xmlrpc\.php|wp-sitemap|feed|comments\/feed|category|tag|author|blog|sample-page|hello-world|page\/\d+)(\/|$|\.)|^\/\d{4}\/(\d{2}\/)?/i;
+const servicePaths = new Set(services.map((s) => `/services/${s.slug}`));
 
-// Pages of the old site that have no equivalent here, seen still listed in search results.
-// Add any new ones to this list (sub-pages are covered too).
-const RETIRED_PAGES = ["news", "integrations"];
-const RETIRED_PAGE = new RegExp(`^/(${RETIRED_PAGES.join("|")})(/|$)`, "i");
+// Files and framework routes this site serves besides its pages.
+const SITE_FILES = new Set([
+  "/sitemap.xml",
+  "/robots.txt",
+  "/favicon.ico",
+  "/icon.png",
+  "/apple-icon.png",
+  "/logo-mark.png",
+]);
+const SITE_PREFIXES = ["/_next/", "/api/", "/photos/", "/opengraph-image", "/__nextjs"];
+// The IndexNow ownership key in public/ (32 hex characters).
+const INDEXNOW_KEY_FILE = /^\/[a-f0-9]{32}\.txt$/;
 
-// Query strings WordPress uses for posts, pages, search and attachments. None are used on this site.
+// Query strings WordPress used for posts, pages, search and attachments. None are used on this site.
 const LEGACY_PARAMS = ["p", "page_id", "cat", "tag", "s", "attachment_id", "author", "preview", "feed"];
 
-export function isLegacyWordPressUrl(url: URL): boolean {
-  if (LEGACY_PATH.test(url.pathname) || RETIRED_PAGE.test(url.pathname)) return true;
-  return LEGACY_PARAMS.some((param) => url.searchParams.has(param));
+export function isCurrentSitePath(pathname: string): boolean {
+  return (
+    pages.includes(pathname) ||
+    servicePaths.has(pathname) ||
+    SITE_FILES.has(pathname) ||
+    INDEXNOW_KEY_FILE.test(pathname) ||
+    SITE_PREFIXES.some((prefix) => pathname.startsWith(prefix))
+  );
+}
+
+/** True for any address left over from the old site: anything this site doesn't serve. */
+export function isRetiredUrl(url: URL): boolean {
+  if (LEGACY_PARAMS.some((param) => url.searchParams.has(param))) return true;
+  return !isCurrentSitePath(url.pathname);
 }
 
 export const GONE_HTML = `<!doctype html>
