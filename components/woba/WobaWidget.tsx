@@ -345,7 +345,6 @@ export function WobaWidget() {
                 <p className="text-[13px] font-semibold tracking-[0.14em]">WOBA</p>
                 <span className="size-1.5 rounded-full bg-bronze" />
               </div>
-              <p className="text-[11px] text-stone">RAG Assistant • Free Tier</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
