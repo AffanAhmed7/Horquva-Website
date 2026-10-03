@@ -1,9 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import type { RagSource } from "@/lib/rag/types";
 
-type WobaMessage = { id: string; role: "user" | "woba"; text: string };
+type WobaMessage = {
+  id: string;
+  role: "user" | "woba";
+  text: string;
+  sources?: RagSource[];
+  streaming?: boolean;
+};
 
 const greeting = "Hi, I'm Woba. Ask me about our services, OBA Core, or how a project with Horquva works.";
 
@@ -40,26 +48,123 @@ function ArrowIcon({ className = "" }: { className?: string }) {
   );
 }
 
+function ResetIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M3 12a9 9 0 1015.3-6.36L21 8M21 3v5h-5" />
+    </svg>
+  );
+}
+
+function ChevronIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 /**
- * Woba, Horquva's assistant. A bronze-ringed launcher in the corner opens a small ink panel in the
- * language of the dark sections: a bronze glow from above, and Woba's words hung off a bronze track
- * like the OBA product tour. One continuous conversation, opening with Woba's greeting.
- * UI only for now: nothing answers yet.
+ * Parses markdown links [text](url) and bold text **text** into styled React elements.
+ */
+function FormattedMessage({ content }: { content: string }) {
+  // Pattern to match [text](url) and **bold**
+  const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g;
+  const nodes: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(content.substring(lastIndex, match.index));
+    }
+
+    if (match[1] && match[2]) {
+      // Markdown link [text](url)
+      const linkText = match[1];
+      const linkUrl = match[2];
+      const isInternal = linkUrl.startsWith("/") || linkUrl.startsWith("#");
+
+      if (isInternal) {
+        nodes.push(
+          <Link
+            key={`link-${match.index}`}
+            href={linkUrl}
+            className="text-bronze underline decoration-bronze/40 underline-offset-[3px] transition-colors hover:text-paper hover:decoration-paper"
+          >
+            {linkText}
+          </Link>,
+        );
+      } else {
+        nodes.push(
+          <a
+            key={`ext-${match.index}`}
+            href={linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-bronze underline decoration-bronze/40 underline-offset-[3px] transition-colors hover:text-paper hover:decoration-paper"
+          >
+            {linkText}
+          </a>,
+        );
+      }
+    } else if (match[3]) {
+      // Bold text **text**
+      nodes.push(
+        <strong key={`bold-${match.index}`} className="font-medium text-paper">
+          {match[3]}
+        </strong>,
+      );
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < content.length) {
+    nodes.push(content.substring(lastIndex));
+  }
+
+  return <>{nodes}</>;
+}
+
+/**
+ * Woba, Horquva's assistant with full RAG retrieval, multi-model fallback cascade,
+ * and session context memory.
  */
 export function WobaWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<WobaMessage[]>([{ id: makeId(), role: "woba", text: greeting }]);
   const [draft, setDraft] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [expandedSources, setExpandedSources] = useState<Record<string, boolean>>({});
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
 
-  const showSuggestions = messages.length === 1;
+  const showSuggestions = messages.length === 1 && !isGenerating;
   const lastWoba = messages.findLastIndex((m) => m.role === "woba");
 
   function close() {
     setOpen(false);
     launcherRef.current?.focus();
+  }
+
+  function toggleSources(messageId: string) {
+    setExpandedSources((prev) => ({ ...prev, [messageId]: !prev[messageId] }));
+  }
+
+  async function resetChat() {
+    if (isGenerating) return;
+    try {
+      await fetch("/api/chat/reset", { method: "POST" });
+    } catch (e) {
+      console.warn("Could not call reset endpoint:", e);
+    }
+    setMessages([{ id: makeId(), role: "woba", text: greeting }]);
+    setExpandedSources({});
+    setDraft("");
+    inputRef.current?.focus();
   }
 
   useEffect(() => {
@@ -79,14 +184,102 @@ export function WobaWidget() {
   useEffect(() => {
     const list = listRef.current;
     if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isGenerating]);
 
-  function send(text: string) {
+  async function send(text: string) {
     const clean = text.trim();
-    if (!clean) return;
-    setMessages((m) => [...m, { id: makeId(), role: "user", text: clean }]);
+    if (!clean || isGenerating) return;
+
+    const userMessageId = makeId();
+    const assistantMessageId = makeId();
+
+    setMessages((m) => [
+      ...m,
+      { id: userMessageId, role: "user", text: clean },
+      { id: assistantMessageId, role: "woba", text: "", streaming: true },
+    ]);
     setDraft("");
-    inputRef.current?.focus();
+    setIsGenerating(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: clean }),
+      });
+
+      if (!response.ok || !response.body) {
+        throw new Error(`Server returned ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let attachedSources: RagSource[] | undefined;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith("data: ")) continue;
+
+          try {
+            const data = JSON.parse(trimmed.slice(6));
+            if (data.type === "token" && typeof data.token === "string") {
+              const chunkToken = data.token;
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === assistantMessageId
+                    ? { ...msg, text: msg.text + chunkToken, streaming: true }
+                    : msg,
+                ),
+              );
+            } else if (data.type === "sources" && Array.isArray(data.sources)) {
+              attachedSources = data.sources;
+            } else if (data.type === "error") {
+              throw new Error(data.error || "Chat stream error");
+            }
+          } catch {
+            // Non-critical JSON parse error for partial lines
+          }
+        }
+      }
+
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantMessageId
+            ? {
+                ...msg,
+                text: msg.text.trim() || "I didn't receive a response. Please try again.",
+                sources: attachedSources,
+                streaming: false,
+              }
+            : msg,
+        ),
+      );
+    } catch (error) {
+      console.error("Woba chat error:", error);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantMessageId
+            ? {
+                ...msg,
+                text: "I couldn't reach the assistant right now. You can check our [Services](/services) or reach our team directly at [Contact](/contact).",
+                streaming: false,
+              }
+            : msg,
+        ),
+      );
+    } finally {
+      setIsGenerating(false);
+      inputRef.current?.focus();
+    }
   }
 
   function onSubmit(e: FormEvent) {
@@ -103,7 +296,7 @@ export function WobaWidget() {
         inert={!open}
         data-lenis-prevent=""
         data-tone="ink"
-        className={`fixed bottom-24 right-4 z-[45] flex h-[min(70dvh,500px)] w-[calc(100vw-2rem)] max-w-[360px] origin-bottom-right flex-col overflow-hidden rounded-[1.125rem] bg-ink/95 text-paper shadow-[0_2px_4px_rgba(20,16,10,0.1),0_32px_70px_-20px_rgba(20,16,10,0.65)] ring-1 ring-paper/10 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-out-expo sm:bottom-[6.5rem] sm:right-6 ${
+        className={`fixed bottom-24 right-4 z-[45] flex h-[min(74dvh,540px)] w-[calc(100vw-2rem)] max-w-[370px] origin-bottom-right flex-col overflow-hidden rounded-[1.125rem] bg-ink/95 text-paper shadow-[0_2px_4px_rgba(20,16,10,0.1),0_32px_70px_-20px_rgba(20,16,10,0.65)] ring-1 ring-paper/10 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-out-expo sm:bottom-[6.5rem] sm:right-6 ${
           open ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
         }`}
       >
@@ -113,37 +306,100 @@ export function WobaWidget() {
           className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-48 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(169,130,90,0.26),transparent_75%)]"
         />
 
-        <header className="relative flex items-center justify-center border-b border-rule-dark px-12 py-2">
+        <header className="relative flex items-center justify-between border-b border-rule-dark px-4 py-2">
           <div className="flex items-center gap-2.5">
             <span className="grid size-8 place-items-center rounded-full bg-paper/[0.06] ring-1 ring-inset ring-bronze/40">
               <Mark size={16} />
             </span>
-            <div className="text-center leading-tight">
-              <p className="text-[13px] font-semibold tracking-[0.14em]">WOBA</p>
-              <p className="text-[12px] text-stone">Horquva assistant</p>
+            <div className="leading-tight">
+              <div className="flex items-center gap-1.5">
+                <p className="text-[13px] font-semibold tracking-[0.14em]">WOBA</p>
+                <span className="size-1.5 rounded-full bg-bronze" />
+              </div>
+              <p className="text-[11px] text-stone">RAG Assistant • Free Tier</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={close}
-            className="absolute right-1.5 top-1/2 grid size-10 -translate-y-1/2 place-items-center text-stone transition-colors hover:text-paper"
-            aria-label="Close chat"
-          >
-            <CloseIcon className="size-[18px]" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={resetChat}
+              disabled={isGenerating || messages.length <= 1}
+              className="grid size-8 place-items-center rounded-md text-stone transition-colors hover:text-paper disabled:opacity-30 disabled:hover:text-stone"
+              aria-label="Reset chat"
+              title="Reset conversation"
+            >
+              <ResetIcon className="size-[15px]" />
+            </button>
+            <button
+              type="button"
+              onClick={close}
+              className="grid size-8 place-items-center rounded-md text-stone transition-colors hover:text-paper"
+              aria-label="Close chat"
+            >
+              <CloseIcon className="size-[17px]" />
+            </button>
+          </div>
         </header>
 
         <div ref={listRef} className="flex-1 overflow-y-auto overscroll-contain px-4" aria-live="polite">
           <ol className="space-y-4 py-4">
             {messages.map((m, i) =>
               m.role === "woba" ? (
-                <li key={m.id} className="relative pl-3.5 pr-4">
-                  {/* The track, as in the product tour; bronze on Woba's latest word. */}
+                <li key={m.id} className="relative pl-3.5 pr-3">
+                  {/* The track, bronze on Woba's latest word. */}
                   <span
                     aria-hidden
-                    className={`absolute inset-y-0 left-0 w-[2px] ${i === lastWoba ? "bg-bronze" : "bg-rule-dark"}`}
+                    className={`absolute inset-y-0 left-0 w-[2px] transition-colors duration-300 ${
+                      i === lastWoba ? "bg-bronze" : "bg-rule-dark"
+                    }`}
                   />
-                  <p className="font-display text-[16px] font-light leading-[1.45] text-paper">{m.text}</p>
+                  {m.streaming && !m.text ? (
+                    <div className="flex items-center gap-1.5 py-1">
+                      <span className="size-1.5 animate-pulse rounded-full bg-bronze" />
+                      <span className="size-1.5 animate-pulse rounded-full bg-bronze [animation-delay:200ms]" />
+                      <span className="size-1.5 animate-pulse rounded-full bg-bronze [animation-delay:400ms]" />
+                    </div>
+                  ) : (
+                    <div className="font-display text-[15px] font-light leading-[1.5] text-paper">
+                      <FormattedMessage content={m.text} />
+                    </div>
+                  )}
+
+                  {/* Expandable Sources & Citations Accordion */}
+                  {m.sources && m.sources.length > 0 && !m.streaming && (
+                    <div className="mt-2.5 border-t border-rule-dark/70 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleSources(m.id)}
+                        className="group flex items-center gap-1.5 text-[11px] font-medium tracking-wide text-bronze transition-colors hover:text-paper"
+                      >
+                        <ChevronIcon
+                          className={`size-3 transition-transform duration-200 ${
+                            expandedSources[m.id] ? "rotate-90" : ""
+                          }`}
+                        />
+                        <span>Sources consulted ({m.sources.length})</span>
+                      </button>
+
+                      {expandedSources[m.id] && (
+                        <ul className="mt-2 space-y-1.5 pl-2" aria-label="Referenced sources">
+                          {m.sources.map((s) => (
+                            <li key={s.id} className="text-[11px] leading-snug">
+                              <Link
+                                href={s.url}
+                                className="block rounded bg-paper/[0.04] p-1.5 text-stone/90 ring-1 ring-inset ring-paper/5 transition-colors hover:bg-paper/[0.08] hover:text-paper"
+                              >
+                                <span className="font-medium text-paper/90">{s.title}</span>
+                                <span className="mt-0.5 block truncate text-[10px] text-stone">
+                                  {s.snippet}
+                                </span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )}
                 </li>
               ) : (
                 <li key={m.id} className="flex justify-end pl-8">
@@ -183,6 +439,7 @@ export function WobaWidget() {
               ref={inputRef}
               rows={1}
               value={draft}
+              disabled={isGenerating}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
@@ -190,19 +447,21 @@ export function WobaWidget() {
                   send(draft);
                 }
               }}
-              placeholder="Ask Woba…"
-              className="field-sizing-content max-h-24 min-h-9 flex-1 resize-none bg-transparent py-1.5 text-[14px] leading-[1.5] text-paper placeholder:text-stone focus:outline-none focus-visible:outline-none"
+              placeholder={isGenerating ? "Woba is thinking…" : "Ask Woba…"}
+              className="field-sizing-content max-h-24 min-h-9 flex-1 resize-none bg-transparent py-1.5 text-[14px] leading-[1.5] text-paper placeholder:text-stone focus:outline-none focus-visible:outline-none disabled:opacity-50"
             />
             <button
               type="submit"
-              disabled={!draft.trim()}
+              disabled={!draft.trim() || isGenerating}
               aria-label="Send message"
               className="grid size-9 shrink-0 place-items-center rounded-[0.5rem] bg-paper text-ink transition-colors duration-200 hover:bg-bronze disabled:bg-paper/10 disabled:text-stone"
             >
               <ArrowIcon className="size-4" />
             </button>
           </div>
-          <p className="mt-2 text-center text-[11px] text-stone/80">Woba can make mistakes. Check anything important with the team.</p>
+          <p className="mt-2 text-center text-[11px] text-stone/80">
+            Woba can make mistakes. Check anything important with the team.
+          </p>
         </form>
       </section>
 
