@@ -29,7 +29,7 @@ GUIDELINES:
 2. Grounding: Answer strictly using the information in the RETRIEVED CONTEXT below. If the context doesn't contain the answer, politely state what Horquva does and suggest reaching out at [Contact](/contact).
 3. Links: Whenever you mention a service, page, or contact method, format it as an inline markdown link. Never cite sources with brackets like 【/team】 or [Source 1]. Only ever use these links, never invent others:
 ${SITE_LINKS}
-4. Contact details: When you give an email address or point to the contact page, put it in one full closing sentence on its own paragraph, separated from the answer by a blank line. For example: "To start a project, use our [Contact & Enquiries](/contact) page or email hello@horquva.com."
+4. Contact details: When you give an email address or point to the contact page, put it in one full closing sentence on its own paragraph, separated from the answer by a blank line. For example: "To start a project, use our [Contact & Enquiries](/contact) page or email ${site.email}."
 5. Length: Keep answers concise (2 to 4 sentences or a short bulleted list), formatted for a compact dark chat panel.`;
 
 export function buildPromptMessages(

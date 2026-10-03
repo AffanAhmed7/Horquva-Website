@@ -5,7 +5,7 @@ export const site = {
   legalName: "Horquva LLC",
   city: "Karachi",
   country: "Pakistan",
-  email: "hello@horquva.com",
+  email: "team@horquva.com",
   // From the footer of the previous horquva.com. Note the LinkedIn and Facebook handles end in "aa".
   linkedin: "https://www.linkedin.com/company/horquvaa/",
   instagram: "https://www.instagram.com/horquva/",
