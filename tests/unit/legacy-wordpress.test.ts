@@ -23,6 +23,9 @@ describe("isLegacyWordPressUrl", () => {
     "/?p=12",
     "/?page_id=5",
     "/?s=oba",
+    "/news",
+    "/news/launch-announcement",
+    "/integrations",
   ])("flags old WordPress address %s", (path) => {
     expect(check(path)).toBe(true);
   });

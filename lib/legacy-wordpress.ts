@@ -8,11 +8,16 @@
 const LEGACY_PATH =
   /^\/(wp-admin|wp-content|wp-includes|wp-json|wp-login\.php|wp-cron\.php|xmlrpc\.php|wp-sitemap|feed|comments\/feed|category|tag|author|blog|sample-page|hello-world|page\/\d+)(\/|$|\.)|^\/\d{4}\/(\d{2}\/)?/i;
 
+// Pages of the old site that have no equivalent here, seen still listed in search results.
+// Add any new ones to this list (sub-pages are covered too).
+const RETIRED_PAGES = ["news", "integrations"];
+const RETIRED_PAGE = new RegExp(`^/(${RETIRED_PAGES.join("|")})(/|$)`, "i");
+
 // Query strings WordPress uses for posts, pages, search and attachments. None are used on this site.
 const LEGACY_PARAMS = ["p", "page_id", "cat", "tag", "s", "attachment_id", "author", "preview", "feed"];
 
 export function isLegacyWordPressUrl(url: URL): boolean {
-  if (LEGACY_PATH.test(url.pathname)) return true;
+  if (LEGACY_PATH.test(url.pathname) || RETIRED_PAGE.test(url.pathname)) return true;
   return LEGACY_PARAMS.some((param) => url.searchParams.has(param));
 }
 
