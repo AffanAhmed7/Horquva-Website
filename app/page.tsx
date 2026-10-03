@@ -8,10 +8,24 @@ import { TeamStrip } from "@/components/home/TeamStrip";
 import { RevealText } from "@/components/motion/RevealText";
 import { Section } from "@/components/ui/Section";
 import { services } from "@/content/services";
+import { site } from "@/content/site";
+
+// Tells Google which name to show for the site in search results. It must live on the home page.
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.legalName,
+  alternateName: [site.name, "horquva.com"],
+  url: `${site.url}/`,
+};
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd).replace(/</g, "\u003c") }}
+      />
       <Hero />
       <ObaTeaser />
 
