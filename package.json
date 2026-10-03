@@ -11,7 +11,8 @@
     "e2e": "playwright test",
     "photos:fetch": "node scripts/fetch-photos.mjs",
     "photos:grade": "node scripts/grade-images.mjs",
-    "rag:index": "node scripts/index-knowledge.mjs"
+    "rag:index": "node scripts/index-knowledge.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
