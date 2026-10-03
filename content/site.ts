@@ -2,7 +2,7 @@ import { services } from "./services";
 
 export const site = {
   name: "Horquva",
-  legalName: "Horquva LLC",
+  legalName: "Horquva Inc.",
   city: "Karachi",
   country: "Pakistan",
   email: "team@horquva.com",
@@ -13,7 +13,7 @@ export const site = {
   url: "https://horquva.com",
   /** Footer statement. The meta description below stays service-led for search. */
   tagline:
-    "Horquva builds the software, AI and automations businesses run on, and OBA Core: one living model of how your business actually runs. Your whole organisation, finally visible.",
+    "A platform for seeing the relationships behind critical work.",
   description:
     "Horquva builds AI-powered software, business automation, SaaS platforms, real-time apps and custom software. It's also building OBA Core, its own product.",
 };

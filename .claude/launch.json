@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "horquva-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "-p", "3200"], "port": 3200, "cwd": "E:/Professional/HORQUVA/Project/horquva-services-website" }
+    { "name": "horquva-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "-p", "3200"], "port": 3200, "cwd": "E:/Professional/HORQUVA/Project/horquva-services-website" },
+    { "name": "horquva-prod", "runtimeExecutable": "npm", "runtimeArgs": ["run", "start", "--", "-p", "3300"], "port": 3300, "cwd": "E:/Professional/HORQUVA/Project/horquva-services-website" }
   ]
 }

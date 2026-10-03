@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Don't advertise the framework in every response.
+  poweredByHeader: false,
   // The services index was folded into the cards on the home page.
   async redirects() {
     return [{ source: "/services", destination: "/#services", permanent: true }];

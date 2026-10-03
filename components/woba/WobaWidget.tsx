@@ -75,7 +75,11 @@ function ChevronIcon({ className = "" }: { className?: string }) {
  */
 function FormattedMessage({ content: raw }: { content: string }) {
   // Models pad line breaks with spaces and stack blank lines; keep at most one blank line.
-  const content = raw.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
+  const content = raw
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    // Markdown list items ("* " or "- " at a line start) read as bullets, not stray asterisks.
+    .replace(/^[ \t]*[*-][ \t]+/gm, "• ");
   // Pattern to match [text](url), **bold** and bare email addresses
   const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
   const nodes: ReactNode[] = [];

@@ -41,5 +41,9 @@ test("mobile menu opens and closes with Escape", async ({ page, isMobile }) => {
   const dialog = page.getByRole("dialog", { name: "Menu" });
   await expect(dialog).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(dialog).toBeHidden();
+  // The menu fades out rather than unmounting: closed means inert (no focus, hidden from
+  // assistive tech) and fully transparent.
+  await expect(dialog).toHaveAttribute("inert", "");
+  await expect(dialog).toHaveCSS("opacity", "0");
+  await expect(toggle).toBeFocused();
 });

@@ -80,7 +80,7 @@ export default function TeamPage() {
                   <span className="block font-display text-[28px] leading-tight text-paper md:text-[34px]">
                     {o.title}
                   </span>
-                  <span className="mt-3 block max-w-sm text-[16px] leading-[1.55] text-stone">{o.body}</span>
+                  <span className="mt-3 block max-w-sm text-[16px] leading-[1.55] text-paper/60">{o.body}</span>
                 </span>
                 <span
                   aria-hidden

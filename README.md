@@ -1,6 +1,6 @@
 # Horquva Website
 
-Marketing site for Horquva LLC: a home page with an interactive hero, eight service pages, the
+Marketing site for Horquva Inc.: a home page with an interactive hero, eight service pages, the
 OBA Core product tour, approach, team, careers and privacy pages, and an enquiry form that sends
 email through Resend.
 

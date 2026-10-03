@@ -101,7 +101,7 @@ export default function ApproachPage() {
           {principles.map((p) => (
             <article key={p.title} className="rounded-[1.25rem] bg-paper/[0.04] p-8 ring-1 ring-paper/10 md:p-10">
               <h3 className="font-display text-[24px] leading-tight text-paper md:text-[28px]">{p.title}</h3>
-              <p className="mt-4 text-[17px] leading-[1.6] text-stone">{p.body}</p>
+              <p className="mt-4 text-[17px] leading-[1.6] text-paper/60">{p.body}</p>
             </article>
           ))}
         </Reveal>

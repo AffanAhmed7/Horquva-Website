@@ -3,9 +3,10 @@ import { test, expect } from "@playwright/test";
 test.describe("home hero", () => {
   test.skip(({ isMobile }) => isMobile, "wheel scrolling is desktop-only");
 
-  test("header stays put: clear at the top, frosted once scrolled, light past the hero", async ({ page }) => {
+  test("header stays put: clear at the top, frosted once scrolled, dark glass over light sections", async ({ page }) => {
     await page.goto("/");
-    const header = page.locator("header");
+    // The site header; the Woba chat panel has a <header> of its own.
+    const header = page.locator("header[data-surface]");
     await expect(header).toHaveClass(/bg-transparent/);
     await expect(header).toHaveAttribute("data-surface", "dark");
 
@@ -14,11 +15,13 @@ test.describe("home hero", () => {
     await expect(header).toHaveClass(/backdrop-blur-md/);
     await expect(header).toHaveAttribute("data-surface", "dark");
 
-    const heroHeight = await page.locator("[data-hero]").evaluate((el: HTMLElement) => el.offsetHeight);
-    await page.mouse.wheel(0, heroHeight + 400);
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(heroHeight);
-    await expect(header).toHaveAttribute("data-surface", "light");
-    await expect(header).toHaveClass(/bg-paper\/75/);
+    // A dark section follows the hero, so scroll until the light services section is under the header.
+    const servicesTop = await page.locator("#services").evaluate((el: HTMLElement) => el.getBoundingClientRect().top + window.scrollY);
+    await page.mouse.wheel(0, servicesTop + 200);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(servicesTop);
+    // The header keeps light text everywhere; over paper it turns to dark frosted glass so that stays readable.
+    await expect(header).toHaveAttribute("data-surface", "dark");
+    await expect(header).toHaveClass(/bg-ink\/80/);
     // Sticky: still pinned to the top of the viewport after scrolling down.
     expect((await header.boundingBox())?.y).toBe(0);
   });

@@ -22,7 +22,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: "Horquva: software and AI for businesses that can't afford downtime", template: "%s | Horquva" },
+  title: { default: site.legalName, template: `%s | ${site.legalName}` },
   description: site.description,
   openGraph: { type: "website", siteName: site.name, locale: "en_GB" },
   twitter: { card: "summary_large_image" },

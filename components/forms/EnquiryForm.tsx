@@ -35,7 +35,7 @@ export function EnquiryForm({ tone = "paper", defaultService, initialStatus = "i
     },
   });
 
-  const muted = tone === "ink" ? "text-stone" : "text-ink-soft";
+  const muted = tone === "ink" ? "text-paper/60" : "text-ink-soft";
   // On ink the lines need a little more contrast, and the browser's own dropdown lists are asked to draw
   // dark (color-scheme) with the site's ink behind the options.
   const line =

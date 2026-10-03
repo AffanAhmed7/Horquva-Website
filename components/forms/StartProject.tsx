@@ -69,7 +69,7 @@ export function StartProject({ as = "h2", titleId, children }: Props) {
       <Reveal delay={0.2} className="lg:col-span-7">
         <div className="rounded-[1.5rem] bg-paper/[0.03] p-7 text-paper ring-1 ring-paper/10 backdrop-blur-sm sm:p-10 md:p-12">
           <p className="font-display text-[24px] leading-tight md:text-[28px]">Tell us about it</p>
-          <p className="mt-2 text-[15px] text-stone">All fields except company are required.</p>
+          <p className="mt-2 text-[15px] text-paper/60">All fields except company are required.</p>
           <div className="mt-10">{children}</div>
         </div>
       </Reveal>

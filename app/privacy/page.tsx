@@ -49,7 +49,7 @@ export default function PrivacyPage() {
             <li key={p.title} className="rounded-[1.25rem] bg-paper/[0.04] p-7 ring-1 ring-paper/10 md:p-8">
               <span aria-hidden className="block h-[11px] w-[11px] rounded-full bg-bronze" />
               <h2 className="mt-6 font-display text-[22px] leading-tight text-paper md:text-[24px]">{p.title}</h2>
-              <p className="mt-3 text-[16px] leading-[1.6] text-stone">{p.body}</p>
+              <p className="mt-3 text-[16px] leading-[1.6] text-paper/60">{p.body}</p>
             </li>
           ))}
         </Reveal>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
             and we&apos;ll reply within 30 days.
           </p>
 
-          <p className="mt-16 border-t border-rule pt-6 text-[15px] text-stone">
+          <p className="mt-16 border-t border-rule pt-6 text-[15px] text-ink-soft">
             {site.legalName}, {site.city}. Last updated October 2026.
           </p>
         </article>
