@@ -5,13 +5,15 @@ export const site = {
   legalName: "Horquva LLC",
   city: "Karachi",
   country: "Pakistan",
-  // TODO(content): confirm the enquiry inbox before launch.
   email: "hello@horquva.com",
   // From the footer of the previous horquva.com. Note the LinkedIn and Facebook handles end in "aa".
   linkedin: "https://www.linkedin.com/company/horquvaa/",
   instagram: "https://www.instagram.com/horquva/",
   facebook: "https://web.facebook.com/Horquvaa",
   url: "https://horquva.com",
+  /** Footer statement. The meta description below stays service-led for search. */
+  tagline:
+    "Horquva builds the software, AI and automations businesses run on, and OBA Core: one living model of how your business actually runs. Your whole organisation, finally visible.",
   description:
     "Horquva builds AI-powered software, business automation, SaaS platforms, real-time apps and custom software. It's also building OBA Core, its own product.",
 };

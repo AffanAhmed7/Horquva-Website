@@ -18,8 +18,9 @@ for (const [slot, p] of Object.entries(manifest.photos)) {
   const { size } = await stat(file);
   credits.push({
     slot,
-    photographer: p.photographer,
-    source: `https://unsplash.com/photos/${p.id}`,
+    // Some photos were picked straight from the image CDN, without their Unsplash page.
+    photographer: p.photographer ?? "Unknown",
+    source: p.id ? `https://unsplash.com/photos/${p.id}` : url,
     license: "Unsplash License",
   });
   console.log(`${slot.padEnd(26)} ${(size / 1024).toFixed(0)} KB`);

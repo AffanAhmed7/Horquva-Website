@@ -1,9 +1,8 @@
 import { cookies } from "next/headers";
-import { resetSessionHistory } from "@/lib/rag/session";
+import { resetSessionHistory, sessionCookie, SESSION_COOKIE_NAME } from "@/lib/rag/session";
 
 export const runtime = "nodejs";
 
-const SESSION_COOKIE_NAME = "woba_session_id";
 
 export async function POST() {
   try {
@@ -20,9 +19,7 @@ export async function POST() {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Set-Cookie": `${SESSION_COOKIE_NAME}=${newSessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${
-          86400 * 30
-        }`,
+        "Set-Cookie": sessionCookie(newSessionId),
       },
     });
   } catch (error) {

@@ -72,7 +72,7 @@ export function SiteFooter() {
             </ul>
           </div>
           <div className="grid gap-12 text-[15px] sm:grid-cols-2 lg:grid-cols-12">
-            <p className="max-w-sm text-stone lg:col-span-5">{site.description}</p>
+            <p className="max-w-sm text-stone lg:col-span-5">{site.tagline}</p>
             <nav aria-label="Services" className="lg:col-span-3">
               <h2 className="mb-4 text-[15px] text-stone">Services</h2>
               <ul className="space-y-2">

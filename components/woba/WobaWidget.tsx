@@ -25,6 +25,12 @@ const suggestions = [
 let nextId = 0;
 const makeId = () => `m${++nextId}`;
 
+class ChatError extends Error {
+  constructor(message: string, readonly forVisitor: boolean) {
+    super(message);
+  }
+}
+
 function Mark({ size, className = "" }: { size: number; className?: string }) {
   // The mark is taller than it is wide (427 × 584).
   return (
@@ -67,9 +73,11 @@ function ChevronIcon({ className = "" }: { className?: string }) {
 /**
  * Parses markdown links [text](url) and bold text **text** into styled React elements.
  */
-function FormattedMessage({ content }: { content: string }) {
-  // Pattern to match [text](url) and **bold**
-  const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g;
+function FormattedMessage({ content: raw }: { content: string }) {
+  // Models pad line breaks with spaces and stack blank lines; keep at most one blank line.
+  const content = raw.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n");
+  // Pattern to match [text](url), **bold** and bare email addresses
+  const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
   const nodes: ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -83,9 +91,14 @@ function FormattedMessage({ content }: { content: string }) {
       // Markdown link [text](url)
       const linkText = match[1];
       const linkUrl = match[2];
-      const isInternal = linkUrl.startsWith("/") || linkUrl.startsWith("#");
+      // "//host" is another site, not a path on this one.
+      const isInternal = (linkUrl.startsWith("/") && !linkUrl.startsWith("//")) || linkUrl.startsWith("#");
+      // Model output decides the URL, so anything but plain web and mail links stays text.
+      const isSafeExternal = /^(https?:|mailto:)/i.test(linkUrl);
 
-      if (isInternal) {
+      if (!isInternal && !isSafeExternal) {
+        nodes.push(linkText);
+      } else if (isInternal) {
         nodes.push(
           <Link
             key={`link-${match.index}`}
@@ -108,6 +121,17 @@ function FormattedMessage({ content }: { content: string }) {
           </a>,
         );
       }
+    } else if (match[4]) {
+      // Bare email address: make it a mail link.
+      nodes.push(
+        <a
+          key={`mail-${match.index}`}
+          href={`mailto:${match[4]}`}
+          className="text-bronze underline decoration-bronze/40 underline-offset-[3px] transition-colors hover:text-paper hover:decoration-paper"
+        >
+          {match[4]}
+        </a>,
+      );
     } else if (match[3]) {
       // Bold text **text**
       nodes.push(
@@ -209,7 +233,9 @@ export function WobaWidget() {
       });
 
       if (!response.ok || !response.body) {
-        throw new Error(`Server returned ${response.status}`);
+        // Rate-limit and validation errors carry a message written for the visitor.
+        const body = await response.json().catch(() => null);
+        throw new ChatError(body?.error ?? `Server returned ${response.status}`, response.status < 500);
       }
 
       const reader = response.body.getReader();
@@ -270,7 +296,10 @@ export function WobaWidget() {
           msg.id === assistantMessageId
             ? {
                 ...msg,
-                text: "I couldn't reach the assistant right now. You can check our [Services](/services) or reach our team directly at [Contact](/contact).",
+                text:
+                  error instanceof ChatError && error.forVisitor
+                    ? error.message
+                    : "I couldn't reach the assistant right now. You can check our [Services](/#services) or reach our team directly at [Contact](/contact).",
                 streaming: false,
               }
             : msg,
@@ -360,7 +389,7 @@ export function WobaWidget() {
                       <span className="size-1.5 animate-pulse rounded-full bg-bronze [animation-delay:400ms]" />
                     </div>
                   ) : (
-                    <div className="font-display text-[15px] font-light leading-[1.5] text-paper">
+                    <div className="whitespace-pre-line font-display text-[15px] font-light leading-[1.5] text-paper">
                       <FormattedMessage content={m.text} />
                     </div>
                   )}
@@ -438,6 +467,7 @@ export function WobaWidget() {
               id="woba-input"
               ref={inputRef}
               rows={1}
+              maxLength={1000}
               value={draft}
               disabled={isGenerating}
               onChange={(e) => setDraft(e.target.value)}

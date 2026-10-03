@@ -1,17 +1,17 @@
 import { z } from "zod";
 import { enquirySchema } from "@/lib/enquiry-schema";
-import { createRateLimiter } from "@/lib/rate-limit";
+import { createSharedRateLimiter, getClientIp } from "@/lib/rate-limit";
 import { sendEnquiry } from "@/lib/send-enquiry";
 
 export const runtime = "nodejs";
 
-const allow = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 });
+const allow = createSharedRateLimiter({ prefix: "enquiry:limit", limit: 5, windowSeconds: 10 * 60 });
 
 type Outcome = "sent" | "invalid" | "limited" | "failed";
 
 export async function POST(request: Request) {
   const isForm = !(request.headers.get("content-type") ?? "").includes("application/json");
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const ip = getClientIp(request);
 
   const respond = (outcome: Outcome, errors?: Record<string, string[] | undefined>) => {
     if (isForm) {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     return Response.json(outcome === "sent" ? { ok: true } : { ok: false, errors }, { status });
   };
 
-  if (!allow(ip)) return respond("limited");
+  if (!(await allow(ip))) return respond("limited");
 
   let body: unknown;
   try {

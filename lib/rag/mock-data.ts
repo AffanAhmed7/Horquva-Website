@@ -109,6 +109,7 @@ export function mockSearchKnowledge(query: string, topK = 4): RagSource[] {
       title: doc.title,
       url: doc.url,
       snippet: doc.content.slice(0, 260) + (doc.content.length > 260 ? "…" : ""),
+      content: doc.content,
       score,
     };
   });

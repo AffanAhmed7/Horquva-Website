@@ -26,24 +26,24 @@ export function Hero() {
       >
         <div className="gutter relative mx-auto w-full max-w-[1440px] py-32 md:flex md:min-h-svh md:items-center">
           <RevealText as="h1" className="text-hero max-w-2xl">
-            Software and AI
+            Every business
             <br />
-            for businesses
+            runs on a hidden
             <br />
-            that can&apos;t
+            structure no one
             <br />
-            afford downtime.
+            has mapped
           </RevealText>
 
           {/* Supporting copy and actions sit in the bottom-right corner on wider screens. */}
           <div className="mt-10 md:absolute md:bottom-20 md:right-[clamp(1rem,4vw,3.5rem)] md:mt-0 md:w-[26rem]">
             <p className="text-[17px] leading-[1.55] text-paper/85">
-              We&apos;re an engineering team in Karachi. We design, build and look after the AI agents,
-              automations, platforms and data systems our clients run on. And we&apos;re building OBA Core, which
-              shows what a change will affect before you make it.
+              Most organisations can name their systems. Almost none can show what they actually depend on.
+              Horquva captures what people know and proves what systems show: one living model of how your
+              business actually runs. So when something changes, you already know what breaks.
             </p>
             <p className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4 text-[16px]">
-              <TextLink href="#services">See what we build</TextLink>
+              <TextLink href="/oba-core">See what Horquva finds</TextLink>
               <TextLink href="/approach">How we work</TextLink>
             </p>
           </div>

@@ -55,8 +55,9 @@ export async function queryKnowledge(query: string, topK = 4): Promise<RagSource
       return {
         id: String(r.id || `vec-${i}`),
         title: metadata.title || "Horquva Documentation",
-        url: metadata.url || "/services",
+        url: metadata.url || "/#services",
         snippet: snippet.slice(0, 280) + (snippet.length > 280 ? "…" : ""),
+        content: snippet,
         score: r.score ?? 1,
       };
     });

@@ -9,7 +9,10 @@ export interface RagSource {
   id: string;
   title: string;
   url: string;
+  /** Short preview shown under the answer in the chat panel. */
   snippet: string;
+  /** Full retrieved text given to the model. Server-side only, stripped before streaming. */
+  content?: string;
   score: number;
 }
 

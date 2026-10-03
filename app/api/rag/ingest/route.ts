@@ -1,4 +1,6 @@
+import { timingSafeEqual } from "node:crypto";
 import { upsertKnowledge } from "@/lib/rag/vector";
+import { knowledgeDocs } from "@/lib/rag/mock-data";
 
 export const runtime = "nodejs";
 
@@ -24,20 +26,29 @@ function chunkText(text: string, maxWords = 250): string[] {
   return chunks;
 }
 
+function isAuthorized(req: Request, secret: string): boolean {
+  const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ?? "";
+  const given = Buffer.from(token);
+  const expected = Buffer.from(secret);
+  return given.length === expected.length && timingSafeEqual(given, expected);
+}
+
 export async function POST(req: Request) {
   try {
-    const secret = process.env.RAG_INGEST_SECRET;
-    const authHeader = req.headers.get("authorization");
-
-    // Guard endpoint if RAG_INGEST_SECRET is set
-    if (secret) {
-      const token = authHeader?.replace(/^Bearer\s+/i, "")?.trim();
-      if (token !== secret) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
+    // Whatever lands in the index is what WOBA tells visitors, so writes are
+    // refused outright until a secret is configured.
+    const secret = process.env.RAG_INGEST_SECRET?.trim();
+    if (!secret) {
+      return new Response(JSON.stringify({ error: "Ingestion is disabled: RAG_INGEST_SECRET is not set" }), {
+        status: 503,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    if (!isAuthorized(req, secret)) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const body = await req.json().catch(() => null);
@@ -48,11 +59,15 @@ export async function POST(req: Request) {
       });
     }
 
-    const rawItems: IngestItem[] = Array.isArray(body.chunks)
-      ? body.chunks
-      : body.content
-      ? [body]
-      : [];
+    // { "source": "site" } re-indexes the site's own content (see lib/rag/mock-data.ts).
+    const rawItems: IngestItem[] =
+      body.source === "site"
+        ? knowledgeDocs.map(({ id, title, url, section, content }) => ({ id, title, url, section, content }))
+        : Array.isArray(body.chunks)
+        ? body.chunks
+        : body.content
+        ? [body]
+        : [];
 
     if (!rawItems.length) {
       return new Response(JSON.stringify({ error: "No content or chunks provided" }), {

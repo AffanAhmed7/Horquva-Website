@@ -18,54 +18,6 @@
     "license": "Unsplash License"
   },
   {
-    "slot": "ai-agents",
-    "photographer": "Ali Mkumbwa",
-    "source": "https://unsplash.com/photos/uk3ey_vhDKA",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "knowledge-assistants",
-    "photographer": "Oleg Zarevennyi",
-    "source": "https://unsplash.com/photos/TislfTYCUVQ",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "document-vision-ai",
-    "photographer": "Centre for Ageing Better",
-    "source": "https://unsplash.com/photos/8WO_JTyzuNg",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "voice-ai",
-    "photographer": "Vagaro",
-    "source": "https://unsplash.com/photos/5skDrjF5EMw",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "automation-integrations",
-    "photographer": "Maksym Tymchyk",
-    "source": "https://unsplash.com/photos/vn9zlZPYvmc",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "web-product-engineering",
-    "photographer": "Bedirhan Gül",
-    "source": "https://unsplash.com/photos/4Uj0OFn-m3E",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "wordpress",
-    "photographer": "Ion (Ivan) Sipilov",
-    "source": "https://unsplash.com/photos/Z8Fm-Dc3G7A",
-    "license": "Unsplash License"
-  },
-  {
-    "slot": "data-analytics",
-    "photographer": "Dmitrijs Safrans",
-    "source": "https://unsplash.com/photos/2CakbXfm_gM",
-    "license": "Unsplash License"
-  },
-  {
     "slot": "approach",
     "photographer": "Dylan Gillis",
     "source": "https://unsplash.com/photos/KdeqA3aTnBY",
@@ -75,6 +27,48 @@
     "slot": "careers",
     "photographer": "Bruno BD",
     "source": "https://unsplash.com/photos/wSxag1zUalw",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "ai-automation",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1674027444454-97b822a997b6?w=2400&q=90&fm=jpg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "ai-ml-computer-vision",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1764983253036-edd0f55af679?w=2400&q=90&fm=jpg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "web-software-development",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1628258334105-2a0b3d6efee1?w=2400&q=90&fm=jpg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "real-time-communication",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1606770347238-77fcfd29906c?w=2400&q=90&fm=jpg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "business-ecommerce",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=2400&q=90&fm=jpg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "integrations-infrastructure",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=2400&q=90&fm=jpg",
+    "license": "Unsplash License"
+  },
+  {
+    "slot": "consulting-optimisation",
+    "photographer": "Unknown",
+    "source": "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?w=2400&q=90&fm=jpg",
     "license": "Unsplash License"
   }
 ]

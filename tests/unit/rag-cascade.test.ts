@@ -8,9 +8,9 @@ describe("RAG Cascade & Knowledge Retrieval", () => {
     const history = [{ role: "user" as const, content: "Hi" }, { role: "assistant" as const, content: "Hello!" }];
     const sources = [
       {
-        id: "svc-ai-agents",
-        title: "AI Agents",
-        url: "/services/ai-agents",
+        id: "service-ai-automation",
+        title: "AI and automation",
+        url: "/services/ai-automation",
         snippet: "WhatsApp and web AI agents that take orders.",
         score: 0.95,
       },
@@ -21,8 +21,8 @@ describe("RAG Cascade & Knowledge Retrieval", () => {
     expect(messages.length).toBe(4); // system, user(Hi), assistant(Hello), user(query)
     expect(messages[0].role).toBe("system");
     expect(messages[0].content).toContain("WOBA");
-    expect(messages[0].content).toContain("AI Agents");
-    expect(messages[0].content).toContain("/services/ai-agents");
+    expect(messages[0].content).toContain("AI and automation");
+    expect(messages[0].content).toContain("/services/ai-automation");
     expect(messages[3].content).toBe(query);
   });
 

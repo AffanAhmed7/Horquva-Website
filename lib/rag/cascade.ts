@@ -1,4 +1,6 @@
 import Groq from "groq-sdk";
+import { services } from "@/content/services";
+import { site } from "@/content/site";
 import type { ChatMessage, RagSource } from "./types";
 
 export interface CascadeResult {
@@ -7,25 +9,28 @@ export interface CascadeResult {
   model: string;
 }
 
+// Built from the site content so every link the model is given is a page that exists.
+const SITE_LINKS = [
+  ...services.map((svc) => `[${svc.name}](/services/${svc.slug})`),
+  "[All services](/#services)",
+  "[OBA Core Platform](/oba-core)",
+  "[Our Approach](/approach)",
+  "[Engineering Team](/team)",
+  "[Careers](/careers)",
+  "[Contact & Enquiries](/contact)",
+]
+  .map((link) => `   - ${link}`)
+  .join("\n");
+
 const SYSTEM_PROMPT_TEMPLATE = `You are WOBA, the official assistant for Horquva LLC (horquva.com). Horquva builds robust software, conversational AI agents, and enterprise automations for businesses that cannot afford downtime.
 
 GUIDELINES:
 1. Tone: Engineering-led, concise, plain-spoken, and confident. Never use AI filler words (do NOT say: "seamless", "delve", "leverage", "revolutionize", "cutting-edge", "game-changer", "empower").
 2. Grounding: Answer strictly using the information in the RETRIEVED CONTEXT below. If the context doesn't contain the answer, politely state what Horquva does and suggest reaching out at [Contact](/contact).
-3. Links: Whenever you mention a service, page, or contact method, format it as an inline markdown link:
-   - [AI Agents & Chat Automation](/services/ai-agents)
-   - [Knowledge Assistants](/services/knowledge-assistants)
-   - [Document & Vision AI](/services/document-vision-ai)
-   - [Voice AI](/services/voice-ai)
-   - [Automation & Integrations](/services/automation-integrations)
-   - [Web & Product Engineering](/services/web-software-development)
-   - [WordPress & CMS](/services/wordpress-cms-development)
-   - [Data & Analytics](/services/data-analytics-business-intelligence)
-   - [OBA Core Platform](/oba-core)
-   - [Our Approach](/approach)
-   - [Engineering Team](/team)
-   - [Contact & Enquiries](/contact)
-4. Length: Keep answers concise (2 to 4 sentences or a short bulleted list), formatted for a compact dark chat panel.`;
+3. Links: Whenever you mention a service, page, or contact method, format it as an inline markdown link. Never cite sources with brackets like 【/team】 or [Source 1]. Only ever use these links, never invent others:
+${SITE_LINKS}
+4. Contact details: When you give an email address or point to the contact page, put it in one full closing sentence on its own paragraph, separated from the answer by a blank line. For example: "To start a project, use our [Contact & Enquiries](/contact) page or email hello@horquva.com."
+5. Length: Keep answers concise (2 to 4 sentences or a short bulleted list), formatted for a compact dark chat panel.`;
 
 export function buildPromptMessages(
   query: string,
@@ -34,7 +39,7 @@ export function buildPromptMessages(
 ): Array<{ role: "system" | "user" | "assistant"; content: string }> {
   const contextSnippet = sources.length
     ? sources
-        .map((s, i) => `[Source ${i + 1}: ${s.title} (${s.url})]\n${s.snippet}`)
+        .map((s, i) => `[Source ${i + 1}: ${s.title} (${s.url})]\n${s.content ?? s.snippet}`)
         .join("\n\n")
     : "No external documents retrieved. Answer based on Horquva core services and platform.";
 
@@ -153,6 +158,27 @@ async function streamOpenRouter(
 }
 
 /**
+ * Drops 【...】 citation marks that some models (gpt-oss) add despite the prompt.
+ * The marks can be split across tokens, so this tracks whether it is inside one.
+ */
+export function stripCitationMarks(tokens: AsyncIterable<string>): AsyncIterable<string> {
+  return {
+    async *[Symbol.asyncIterator]() {
+      let inside = false;
+      for await (const token of tokens) {
+        let out = "";
+        for (const ch of token) {
+          if (ch === "【") inside = true;
+          else if (ch === "】") inside = false;
+          else if (!inside) out += ch;
+        }
+        if (out) yield out;
+      }
+    },
+  };
+}
+
+/**
  * Local mock generator for developer environments without API keys.
  */
 function streamLocalMock(
@@ -168,13 +194,15 @@ function streamLocalMock(
       "**[OBA Core](/oba-core)** is Horquva's platform for organizational intelligence. It maps system dependencies, understands real-time anomalies, and simulates operational impact across 5 continuous steps: Connect, Map, Understand, Simulate, and Act.";
   } else if (q.includes("service") || q.includes("build") || q.includes("what does")) {
     answer =
-      "Horquva engineers mission-critical software and AI solutions across 8 specialized domains, including **[AI Agents & Chat Automation](/services/ai-agents)**, **[Knowledge Assistants](/services/knowledge-assistants)**, **[Voice AI](/services/voice-ai)**, and **[Web & Product Engineering](/services/web-software-development)**. You can see the full breakdown on our [Services](/services) page.";
+      `Horquva builds software and AI across ${services.length} service areas: ${services
+        .map((svc) => `**[${svc.name}](/services/${svc.slug})**`)
+        .join(", ")}. You can see them all on our [Services](/#services) section.`;
   } else if (q.includes("start") || q.includes("process") || q.includes("how does")) {
     answer =
       "Projects follow our 4-stage engineering lifecycle: Discover, Prototype, Build, and Support. Check out **[Our Approach](/approach)** for our technical philosophy and testing standards.";
   } else if (q.includes("contact") || q.includes("touch") || q.includes("quote") || q.includes("price")) {
     answer =
-      "You can begin a project by submitting our **[Enquiry Form](/contact)** or emailing us at contact@horquva.com. Our engineering leads typically respond with a scoped feasibility review within 1–2 business days.";
+      `You can begin a project by submitting our **[Enquiry Form](/contact)** or emailing us at ${site.email}. Our engineering leads typically respond with a scoped feasibility review within 1–2 business days.`;
   } else if (top) {
     answer = `Based on our documentation for **[${top.title}](${top.url})**: ${top.snippet} For more details, explore the full specification or reach out through our [Contact](/contact) page.`;
   } else {
@@ -194,27 +222,25 @@ function streamLocalMock(
 }
 
 /**
- * 4-Tier Model Cascade with auto-failover:
- * 1. Groq: llama-3.3-70b-versatile
- * 2. Groq: llama-3.1-8b-instant
- * 3. OpenRouter Free: meta-llama/llama-3.3-70b-instruct:free
- * 4. OpenRouter Free: meta-llama/llama-3.1-8b-instruct:free
- * 5. Local Mock Fallback
+ * Model cascade with auto-failover:
+ * 1. Groq: the models in GROQ_CANDIDATE_MODELS
+ * 2. OpenRouter Free: the free models in OPENROUTER_CANDIDATE_MODELS
+ * 3. Local Mock Fallback
  */
 const GROQ_CANDIDATE_MODELS = [
   process.env.GROQ_MODEL?.trim(),
+  // Checked against GET https://api.groq.com/openai/v1/models; Groq retires models, so re-check now and then.
   "openai/gpt-oss-120b",
-  "llama-3.3-70b-versatile",
   "openai/gpt-oss-20b",
-  "llama-3.1-8b-instant",
   "qwen/qwen3.8-27b",
 ].filter((m): m is string => Boolean(m));
 
 const OPENROUTER_CANDIDATE_MODELS = [
   process.env.OPENROUTER_MODEL?.trim(),
-  "meta-llama/llama-3.3-70b-instruct:free",
-  "meta-llama/llama-3.1-8b-instruct:free",
-  "mistralai/mistral-7b-instruct:free",
+  // OpenRouter retires free slugs often; re-check https://openrouter.ai/models?q=free before launch.
+  "qwen/qwen3.8-27b:free",
+  "nvidia/nemotron-3-super-120b-a12b:free",
+  "google/gemma-4-31b-it:free",
 ].filter((m): m is string => Boolean(m));
 
 export async function executeModelCascade(
@@ -232,7 +258,7 @@ export async function executeModelCascade(
     for (const model of GROQ_CANDIDATE_MODELS) {
       try {
         const stream = await streamGroq(model, messages, groqKey);
-        return { tokenStream: stream, provider: "groq", model };
+        return { tokenStream: stripCitationMarks(stream), provider: "groq", model };
       } catch (err: unknown) {
         const status = (err as { status?: number })?.status;
         const msg = err instanceof Error ? err.message : String(err);
@@ -246,7 +272,7 @@ export async function executeModelCascade(
     for (const model of OPENROUTER_CANDIDATE_MODELS) {
       try {
         const stream = await streamOpenRouter(model, messages, openRouterKey);
-        return { tokenStream: stream, provider: "openrouter", model };
+        return { tokenStream: stripCitationMarks(stream), provider: "openrouter", model };
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
         console.warn(`OpenRouter model ${model} failed (${msg}), trying next candidate...`);

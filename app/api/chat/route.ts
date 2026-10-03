@@ -1,23 +1,37 @@
 import { cookies } from "next/headers";
 import { queryKnowledge } from "@/lib/rag/vector";
-import { getSessionHistory, appendSessionHistory } from "@/lib/rag/session";
+import { getSessionHistory, appendSessionHistory, sessionCookie, SESSION_COOKIE_NAME } from "@/lib/rag/session";
 import { executeModelCascade } from "@/lib/rag/cascade";
+import { allowChatMessage } from "@/lib/rag/chat-limit";
+import { getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const SESSION_COOKIE_NAME = "woba_session_id";
+const MAX_MESSAGE_LENGTH = 1000;
+
+const jsonError = (error: string, status: number) =>
+  new Response(JSON.stringify({ error }), { status, headers: { "Content-Type": "application/json" } });
 
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => null);
-    const message = body?.message?.trim();
+    const message = typeof body?.message === "string" ? body.message.trim() : "";
 
-    if (!message || typeof message !== "string") {
-      return new Response(JSON.stringify({ error: "Message is required" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (!message) {
+      return jsonError("Message is required", 400);
+    }
+
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return jsonError(`Please keep messages under ${MAX_MESSAGE_LENGTH} characters.`, 400);
+    }
+
+    const ip = getClientIp(req);
+    if (!(await allowChatMessage(ip))) {
+      return jsonError(
+        "You've sent a lot of messages in a short time. Please wait a few minutes, or reach the team directly through [Contact](/contact).",
+        429,
+      );
     }
 
     // 1. Session Cookie Management
@@ -25,7 +39,8 @@ export async function POST(req: Request) {
     let sessionId = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     let isNewSession = false;
 
-    if (!sessionId) {
+    // The id becomes a Redis key, so only accept ids this server could have issued.
+    if (!sessionId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(sessionId)) {
       sessionId = crypto.randomUUID();
       isNewSession = true;
     }
@@ -55,7 +70,8 @@ export async function POST(req: Request) {
           // Emit sources metadata once generation is complete
           const sourcesPayload = JSON.stringify({
             type: "sources",
-            sources,
+            // Previews only: the full retrieved text stays on the server.
+            sources: sources.map((s) => ({ id: s.id, title: s.title, url: s.url, snippet: s.snippet, score: s.score })),
             provider,
             model,
           });
@@ -88,9 +104,7 @@ export async function POST(req: Request) {
     };
 
     if (isNewSession) {
-      headers["Set-Cookie"] = `${SESSION_COOKIE_NAME}=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${
-        86400 * 30
-      }`;
+      headers["Set-Cookie"] = sessionCookie(sessionId);
     }
 
     return new Response(stream, { headers });

@@ -96,3 +96,11 @@ export async function resetSessionHistory(sessionId: string): Promise<void> {
     }
   }
 }
+
+export const SESSION_COOKIE_NAME = "woba_session_id";
+
+/** Set-Cookie value for the chat session; Secure outside local dev so it only travels over HTTPS. */
+export function sessionCookie(sessionId: string): string {
+  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+  return `${SESSION_COOKIE_NAME}=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${86400 * 30}${secure}`;
+}
