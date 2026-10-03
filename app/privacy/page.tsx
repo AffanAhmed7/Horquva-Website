@@ -79,14 +79,14 @@ export default function PrivacyPage() {
             </li>
           </ul>
           <p className="mt-4">
-            Our fonts and images load from this website itself, so browsing it doesn&apos;t contact Google or anyone
-            else.
+            Our fonts and images load from this website itself, so browsing it doesn&apos;t contact any other
+            companies.
           </p>
 
           <h2 className={heading}>How Woba uses your messages</h2>
           <p className="mt-4">
-            To write each answer, your message is sent to an AI provider, Groq, or OpenRouter if Groq is unavailable.
-            They process it under their own terms and send the answer straight back. We keep the conversation for 24
+            To write each answer, your message is sent to a trusted AI provider, which processes it only to write the
+            answer and send it straight back. We keep the conversation for 24
             hours so Woba can follow it, and starting a new chat deletes it straight away.
           </p>
           <p className="mt-4">
