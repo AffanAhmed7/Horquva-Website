@@ -34,6 +34,12 @@ export const team: Person[] = [
     bio: "Builds web platforms end to end: Next.js front ends, Node and PostgreSQL back ends, payments, role-based access and real-time features. Previously built Stripe Connect payouts and client portals for a US consultancy.",
   },
   {
+    name: "Muhammad Ibrahim Shaikh",
+    role: "AI engineer",
+    photo: "/photos/team/muhammad-ibrahim-shaikh.jpg",
+    bio: "Builds AI agents, retrieval systems and voice and vision pipelines. Previously built a multi-tenant WhatsApp ordering agent used by 25 restaurants, and TTS data pipelines at Entropik Labs.",
+  },
+  {
     name: "Memoona Saleem",
     role: "Head of business development",
     photo: "/photos/team/memoona-saleem.jpg",
@@ -50,11 +56,5 @@ export const team: Person[] = [
     role: "Senior manager",
     photo: "/photos/team/hooriya-k.jpg",
     bio: "Runs planning, governance and coordination, working closely with leadership to keep projects and internal processes on track.",
-  },
-  {
-    name: "Muhammad Ibrahim Shaikh",
-    role: "AI engineer",
-    photo: "/photos/team/muhammad-ibrahim-shaikh.jpg",
-    bio: "Builds AI agents, retrieval systems and voice and vision pipelines. Previously built a multi-tenant WhatsApp ordering agent used by 25 restaurants, and TTS data pipelines at Entropik Labs.",
   },
 ];
