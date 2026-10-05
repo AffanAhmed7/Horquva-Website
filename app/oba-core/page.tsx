@@ -105,12 +105,11 @@ export default function ObaCorePage() {
         <div className="mx-auto max-w-3xl text-center">
           <Reveal>
             <p className="text-[21px] leading-[1.5] text-ink md:text-[26px]">
-              Someone leaves, a vendor changes, a model is swapped out. Most teams find out what that affected
-              afterwards.
+              The process nobody wrote down. The AI agent nobody owns. The vendor three teams quietly depend on. The
+              person who has been there nine years and just knows.
             </p>
             <p className="mx-auto mt-5 max-w-2xl text-[17px] leading-[1.65] text-ink-soft">
-              The information to see it coming usually exists. It&apos;s spread across HR systems, project tools,
-              documents and people&apos;s heads, and nothing joins it up.
+              When they leave, it leaves. When something changes, nobody notices until it breaks.
             </p>
           </Reveal>
           <Reveal as="dl" stagger={0.1} className="mt-14 border-t border-rule">
@@ -127,7 +126,7 @@ export default function ObaCorePage() {
       {/* What it connects. */}
       <Section tone="ink" innerClassName="py-24 md:py-36" aria-labelledby="connects-title">
         <RevealText as="h2" id="connects-title" className="text-title-light mx-auto max-w-[22ch] text-center">
-          One picture of everything important work depends on.
+          Your whole organization. Finally visible.
         </RevealText>
         <ConnectsGrid />
       </Section>
