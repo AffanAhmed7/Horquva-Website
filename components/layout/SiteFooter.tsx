@@ -119,7 +119,7 @@ export function SiteFooter() {
 
           <div className="mt-20 flex flex-wrap justify-between gap-4 text-[13px] text-stone">
             <p>
-              © {year} {site.legalName} All rights reserved.
+              © {year} {site.name}. All rights reserved.
             </p>
             <Link href="/privacy" className="hover:text-paper">
               Privacy

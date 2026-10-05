@@ -20,10 +20,10 @@ export const knowledgeDocs: KnowledgeDoc[] = [
   // Company Overview & Contact
   {
     id: "horquva-overview",
-    title: `About ${site.legalName}`,
+    title: `About ${site.name}`,
     url: "/approach",
     section: "Overview",
-    content: `${site.name} (${site.legalName}) builds software, AI systems, and automations for businesses that can't afford downtime. We work in discovery, prototype, production build, and ongoing support phases. Located in ${site.city}, ${site.country}. Contact: ${site.email} or visit /contact.`,
+    content: `${site.name} builds software, AI systems, and automations for businesses that can't afford downtime. We work in discovery, prototype, production build, and ongoing support phases. Located in ${site.city}, ${site.country}. Contact: ${site.email} or visit /contact.`,
     keywords: ["horquva", "about", "company", "who", "overview", "location", "email"],
   },
   {

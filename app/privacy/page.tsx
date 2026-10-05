@@ -114,7 +114,7 @@ export default function PrivacyPage() {
           </p>
 
           <p className="mt-16 border-t border-rule pt-6 text-[15px] text-ink-soft">
-            {site.legalName}, {site.city}. Last updated October 2026.
+            {site.name}, {site.city}. Last updated October 2026.
           </p>
         </article>
       </Section>

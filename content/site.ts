@@ -2,7 +2,6 @@ import { services } from "./services";
 
 export const site = {
   name: "Horquva",
-  legalName: "Horquva Inc.",
   city: "Karachi",
   country: "Pakistan",
   email: "team@horquva.com",

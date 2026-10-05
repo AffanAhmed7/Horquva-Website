@@ -47,7 +47,7 @@ export const GONE_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Page removed | Horquva Inc.</title>
+<title>Page removed | Horquva</title>
 <body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#15120f;color:#f3efe7;font-family:system-ui,sans-serif;text-align:center;padding:24px">
 <main>
 <h1 style="font-weight:300;font-size:40px;margin:0 0 16px">This page has been removed</h1>

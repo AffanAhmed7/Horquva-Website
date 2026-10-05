@@ -14,8 +14,8 @@ import { site } from "@/content/site";
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: site.legalName,
-  alternateName: [site.name, "horquva.com"],
+  name: site.name,
+  alternateName: "horquva.com",
   url: `${site.url}/`,
 };
 
