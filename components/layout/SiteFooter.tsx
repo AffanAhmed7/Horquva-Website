@@ -112,7 +112,6 @@ export function SiteFooter() {
                     </a>
                   </li>
                 ))}
-                <li className="text-stone">{site.city}</li>
               </ul>
             </div>
           </div>
