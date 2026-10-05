@@ -28,11 +28,11 @@ export function ProcessSteps() {
       </ol>
 
       <div className="mt-20 grid gap-12 md:mt-28 md:grid-cols-12 md:items-center md:gap-10">
-        <RevealImage parallax className="overflow-hidden rounded-[1.25rem] md:col-span-8">
+        <RevealImage parallax className="overflow-hidden md:col-span-8">
           <Photo src="/photos/process.jpg" alt={manifest.photos.process.alt} ratio="4/3" sizes="(min-width: 768px) 66vw, 100vw" />
         </RevealImage>
         <div className="md:col-span-4">
-          <p className="text-[14px] uppercase tracking-[0.08em] text-bronze">What you can count on</p>
+          <p className="text-[14px] font-bold uppercase tracking-[0.08em] text-white">What you can count on</p>
           <ul className="mt-6">
             {workingTerms.map((term) => (
               <li key={term} className="border-t border-rule-dark py-5 text-[18px] leading-snug">
