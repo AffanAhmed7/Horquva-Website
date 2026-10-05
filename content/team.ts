@@ -40,6 +40,12 @@ export const team: Person[] = [
     bio: "Works with organisations exploring AI and automation, and is usually the first person you'll speak to at Horquva.",
   },
   {
+    name: "Muhammad Usman Azhar",
+    role: "Marketing manager",
+    photo: "/photos/team/muhammad-usman-azhar.jpg",
+    bio: "Twelve years leading B2B marketing, community growth and brand development for tech companies. Runs Horquva's performance marketing and outbound pipeline.",
+  },
+  {
     name: "Hooriya K",
     role: "Senior manager",
     photo: "/photos/team/hooriya-k.jpg",
