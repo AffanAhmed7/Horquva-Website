@@ -5,6 +5,7 @@ import { ObaTeaser } from "@/components/home/ObaTeaser";
 import { ProcessSteps } from "@/components/home/ProcessSteps";
 import { ServiceCards } from "@/components/home/ServiceCards";
 import { TeamStrip } from "@/components/home/TeamStrip";
+import { WorkStrip } from "@/components/home/WorkStrip";
 import { RevealText } from "@/components/motion/RevealText";
 import { Section } from "@/components/ui/Section";
 import { services } from "@/content/services";
@@ -40,6 +41,7 @@ export default function Home() {
         />
       </section>
 
+      <WorkStrip />
       <ProcessSteps />
       <TeamStrip />
 

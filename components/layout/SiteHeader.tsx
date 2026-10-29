@@ -9,7 +9,7 @@ import { Wordmark } from "./Wordmark";
 import { MobileMenu } from "./MobileMenu";
 
 /** Pages that open with a full-bleed photo the header floats over. */
-const heroPages = new Set(["/", "/oba-core", "/contact", "/approach", "/team", "/careers"]);
+const heroPages = new Set(["/", "/work", "/oba-core", "/contact", "/approach", "/team", "/careers"]);
 
 /** Whether the section behind the header is dark (sections mark themselves with data-tone). */
 function darkUnderHeader(header: HTMLElement) {
@@ -62,7 +62,7 @@ export function SiteHeader() {
         data-surface="dark"
         className={`fixed inset-x-0 top-0 z-40 border-b text-paper transition-[background-color,border-color,backdrop-filter] duration-300 ease-out-expo ${surface}`}
       >
-        <div className="gutter mx-auto flex h-16 max-w-[1440px] items-center justify-between md:h-20">
+        <div className="gutter mx-auto flex h-14 max-w-[1440px] items-center justify-between md:h-16">
           <Wordmark />
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex gap-9 text-[15px]">
@@ -115,7 +115,7 @@ export function SiteHeader() {
       </header>
       <MobileMenu open={menuOpen} onClose={() => setMenuFor(null)} />
       {/* Pushes content below the fixed header, except where a hero sits underneath it. */}
-      {!hasHero && <div aria-hidden className="h-16 md:h-20" />}
+      {!hasHero && <div aria-hidden className="h-14 md:h-16" />}
     </>
   );
 }

@@ -49,7 +49,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       aria-modal="true"
       aria-label="Menu"
       inert={!open}
-      className={`fixed inset-x-0 bottom-0 top-16 z-[47] overflow-y-auto bg-ink text-paper transition-opacity duration-300 ease-out-expo md:top-20 lg:hidden ${
+      className={`fixed inset-x-0 bottom-0 top-14 z-[47] overflow-y-auto bg-ink text-paper transition-opacity duration-300 ease-out-expo md:top-16 lg:hidden ${
         open ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       data-lenis-prevent=""
