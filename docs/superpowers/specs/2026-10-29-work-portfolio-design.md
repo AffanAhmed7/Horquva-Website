@@ -158,3 +158,17 @@ Drafts to send for approval (each person may rewrite theirs freely):
 - Image on the left in every row, rather than alternating sides.
 - The closing section with links to "Start a project" and "See our services".
 - Vintage's description says the site was "originally built by another studio" only in this document. The page itself says just "We took over the maintenance", without naming GIFCO.
+
+## Revision: redesign (2026-10-29, owner request)
+
+The owner asked for a more striking page with more detail, real visuals for Ruqaba, and the approved testimonials. This supersedes the plain-layout parts of the design above. The rules on claims are unchanged.
+
+- **Hero:** each client's main screen, in a browser frame, rises out of the dark section and hangs over into the page. On phones the screens become a swipeable row. Each screen links to that client's section.
+- **Client sections:** the name at display size, a one-line headline, and the location, industry and "Technology partner, ongoing" on the right. Below that is a large tinted panel (ink, bronze or sand) with the screens composed in browser and phone frames. Then "About them" and "What we did" with service tags, alongside lists of concrete details.
+- **Details:** the details describe only what can be seen in the live product. Vin-Sol's come from vin-sol.com. The HR system and Kyvani details come from Ruqaba's own case studies and screens.
+- **Ruqaba visuals:** HR system and Kyvani screens from Ruqaba's case studies.
+  - The owner confirmed that Ashraf, credited in the HR system's footer, works with Horquva. The footer is cropped out.
+  - The incentive screen is left out because it names claim types, which would hint at who the system is for.
+- **Phone shots:** captured for Vin-Sol and Vintage.
+- **Testimonials:** Aurangzeb Khan (Ruqaba) and Mohammud Bin Zahir Minhas (Vintage) are approved, using the exact drafts. Vin-Sol's quote is skipped until a name is given.
+- **Close:** "Have something you need built?" with "Start a project" and "See our services".

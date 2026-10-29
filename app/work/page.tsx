@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
-import { RevealImage } from "@/components/motion/RevealImage";
 import { RevealText } from "@/components/motion/RevealText";
-import { Photo } from "@/components/ui/Photo";
+import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { TextLink } from "@/components/ui/TextLink";
-import { clients, visibleQuote } from "@/content/work";
+import { BrowserFrame } from "@/components/work/BrowserFrame";
+import { Showcase } from "@/components/work/Showcase";
+import { clients, visibleQuote, type Client } from "@/content/work";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -14,24 +14,19 @@ export const metadata: Metadata = {
     "Who Horquva works with: Vin-Sol in Lahore, Ruqaba in Dubai and Vintage Claims Management in London, and what we've built and look after for each.",
 };
 
-const onward = [
-  { href: "/contact", title: "Start a project", body: "Tell us what you're trying to do. We reply within two working days." },
-  { href: "/#services", title: "See our services", body: "What we build, and how we go about it." },
-];
-
 export default function WorkPage() {
   return (
     <>
-      {/* Opening. */}
+      {/* Opening: the headline, then each client's work rising out of the dark and hanging over into the page. */}
       <Section
         tone="ink"
-        className="relative isolate overflow-hidden"
-        innerClassName="pt-32 pb-24 text-center md:pt-44 md:pb-32"
+        className="relative isolate overflow-visible"
+        innerClassName="pt-32 text-center md:pt-44"
         aria-labelledby="work-title"
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[60vh] w-[90vw] -translate-x-1/2 bg-[radial-gradient(ellipse_50%_60%_at_50%_0%,rgba(169,130,90,0.22),transparent_75%)]"
+          className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[70vh] w-[90vw] -translate-x-1/2 bg-[radial-gradient(ellipse_50%_60%_at_50%_0%,rgba(169,130,90,0.24),transparent_75%)]"
         />
         <RevealText as="h1" id="work-title" className="text-hero mx-auto max-w-[18ch] text-paper">
           Who we work with
@@ -42,104 +37,164 @@ export default function WorkPage() {
             we&apos;ve built for each of them, and what we look after.
           </p>
         </Reveal>
-      </Section>
 
-      {/* One plain row per client. */}
-      <Section innerClassName="pb-16 md:pb-24" aria-label="Clients">
-        {clients.map((c, i) => {
-          const quote = visibleQuote(c);
-          return (
-            <article
-              key={c.slug}
-              aria-labelledby={c.slug}
-              className={`grid gap-10 py-20 md:grid-cols-12 md:py-28 ${i > 0 ? "border-t border-rule" : ""}`}
-            >
-              <figure className="md:col-span-7">
-                <RevealImage className="overflow-hidden rounded-[1.25rem]">
-                  <Photo
-                    src={c.image?.src}
-                    alt={c.image?.alt ?? c.name}
-                    ratio="16/10"
-                    priority={i === 0}
-                    sizes="(min-width: 768px) 58vw, 100vw"
-                    className="rounded-[1.25rem] ring-1 ring-rule"
-                  />
-                </RevealImage>
-                {c.image && <figcaption className="mt-3 text-[14px] text-ink-soft">{c.image.caption}</figcaption>}
-              </figure>
-
-              <Reveal className="md:col-span-5">
-                <p className="text-[14px] text-bronze-deep">
-                  {c.number} · {c.location} · {c.industry}
-                </p>
-                <h2 id={c.slug} className="mt-3 font-display text-[34px] leading-tight md:text-[40px]">
-                  {c.name}
-                </h2>
-                <p className="mt-2 text-[15px] text-ink-soft">Technology partner · Ongoing</p>
-
-                <h3 className="mt-8 font-medium">About them</h3>
-                <p className="mt-2 leading-[1.6] text-ink-soft">{c.about}</p>
-
-                <h3 className="mt-6 font-medium">What we did</h3>
-                <p className="mt-2 leading-[1.6] text-ink-soft">{c.did}</p>
-
-                <ul className="mt-6 space-y-2" aria-label={`Services for ${c.name}`}>
-                  {c.services.map((s) => (
-                    <li key={s} className="flex items-center gap-3 text-[16px]">
-                      <span aria-hidden className="h-2 w-2 shrink-0 rounded-full bg-bronze" />
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="mt-8 text-[16px]">
-                  <TextLink href={c.url} external>
-                    Visit {c.domain}
-                  </TextLink>
-                </p>
-
-                {quote && (
-                  <figure className="mt-10">
-                    <blockquote className="border-l-2 border-bronze pl-4 text-[17px] leading-[1.55]">
-                      {quote.text}
-                    </blockquote>
-                    <figcaption className="mt-3 pl-4 text-[14px] text-ink-soft">
-                      {quote.name}, {quote.role}, {c.name}
-                    </figcaption>
-                  </figure>
-                )}
-              </Reveal>
-            </article>
-          );
-        })}
-      </Section>
-
-      {/* Where to next. */}
-      <Section tone="ink" innerClassName="py-24 md:py-32" aria-label="Get in touch">
-        <Reveal as="ul" stagger={0.12} className="grid gap-4 md:grid-cols-2">
-          {onward.map((o) => (
-            <li key={o.href}>
-              <Link
-                href={o.href}
-                className="group flex h-full items-end justify-between gap-6 rounded-[1.25rem] bg-paper/[0.04] p-8 ring-1 ring-paper/10 transition-colors duration-500 hover:bg-paper/[0.08] md:p-10"
-              >
-                <span>
-                  <span className="block font-display text-[28px] leading-tight text-paper md:text-[34px]">
-                    {o.title}
-                  </span>
-                  <span className="mt-3 block max-w-sm text-[16px] leading-[1.55] text-paper/60">{o.body}</span>
-                </span>
-                <span
-                  aria-hidden
-                  className="text-[28px] text-bronze transition-transform duration-500 ease-out-expo group-hover:translate-x-2"
-                >
-                  →
-                </span>
-              </Link>
+        <Reveal
+          as="ul"
+          stagger={0.12}
+          delay={0.5}
+          className="relative z-10 -mx-4 -mb-20 mt-16 flex md:-mb-40 snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 text-left md:mx-0 md:mt-24 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
+        >
+          {clients.map((c, i) => (
+            <li key={c.slug} className={`w-[78%] shrink-0 snap-start md:w-auto ${i === 1 ? "md:translate-y-10" : ""}`}>
+              <a href={`#${c.slug}`} className="group block">
+                <span className="block font-display text-[20px] leading-tight text-paper md:text-[22px]">{c.name}</span>
+                <span className="mt-1 block text-[14px] text-stone">{c.location}</span>
+                <BrowserFrame
+                  screen={c.showcase.main}
+                  sizes="(min-width: 768px) 30vw, 78vw"
+                  preload={i === 0}
+                  decorative
+                  ratio="16/10"
+                  className="mt-4 transition-transform duration-500 ease-out-expo group-hover:-translate-y-2"
+                />
+              </a>
             </li>
           ))}
         </Reveal>
       </Section>
+
+      <div className="bg-paper">
+        {clients.map((c, i) => (
+          <ClientChapter key={c.slug} client={c} first={i === 0} />
+        ))}
+      </div>
+
+      {/* Close. */}
+      <Section tone="ink" innerClassName="py-24 text-center md:py-36" aria-labelledby="next-title">
+        <RevealText as="h2" id="next-title" className="text-title-light mx-auto max-w-[20ch] text-paper">
+          Have something you need built?
+        </RevealText>
+        <Reveal delay={0.3}>
+          <p className="mx-auto mt-6 max-w-xl text-[18px] leading-[1.6] text-stone">
+            Tell us what you&apos;re trying to do. We reply within two working days.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Button href="/contact" tone="ink">
+              Start a project
+            </Button>
+            <Button href="/#services" variant="glass" tone="ink">
+              See our services
+            </Button>
+          </div>
+        </Reveal>
+      </Section>
     </>
+  );
+}
+
+function ClientChapter({ client: c, first }: { client: Client; first: boolean }) {
+  const quote = visibleQuote(c);
+  return (
+    <article
+      id={c.slug}
+      aria-labelledby={`${c.slug}-name`}
+      className={`gutter mx-auto w-full max-w-[1440px] scroll-mt-20 ${first ? "pt-44 md:pt-72" : "border-t border-rule pt-24 md:pt-36"} pb-24 md:pb-36`}
+    >
+      {/* Who they are. */}
+      <div className="grid gap-8 md:grid-cols-12 md:items-end">
+        <div className="md:col-span-8">
+          <RevealText as="h2" id={`${c.slug}-name`} className="text-display">
+            {c.name}
+          </RevealText>
+          <Reveal delay={0.2}>
+            <p className="mt-6 max-w-[34ch] font-display text-[22px] font-light leading-[1.35] tracking-[-0.01em] text-ink-soft md:text-[28px]">
+              {c.headline}
+            </p>
+          </Reveal>
+        </div>
+        <Reveal delay={0.3} as="dl" className="grid grid-cols-2 gap-x-6 gap-y-4 text-[15px] md:col-span-4 md:grid-cols-1 md:justify-self-end md:text-right">
+          <div>
+            <dt className="text-ink-soft">Based in</dt>
+            <dd className="font-medium">{c.location}</dd>
+          </div>
+          <div>
+            <dt className="text-ink-soft">Industry</dt>
+            <dd className="font-medium">{c.industry}</dd>
+          </div>
+          <div className="col-span-2 md:col-span-1">
+            <dt className="sr-only">Our role</dt>
+            <dd className="inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-[14px] text-paper">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-bronze" />
+              Technology partner, ongoing
+            </dd>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* The work itself. */}
+      <Reveal className="mt-12 md:mt-16">
+        <figure>
+          <Showcase client={c} />
+          <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-[14px] text-ink-soft">
+            <span>{c.showcase.caption}</span>
+            <TextLink href={c.url} external className="text-[16px] text-ink">
+              Visit {c.domain}
+            </TextLink>
+          </figcaption>
+        </figure>
+      </Reveal>
+
+      {/* What we did, and what's in it. */}
+      <div className="mt-16 grid gap-14 md:mt-24 md:grid-cols-12 md:gap-10">
+        <Reveal className="md:col-span-5">
+          <h3 className="text-[15px] text-ink-soft">About them</h3>
+          <p className="mt-2 text-[18px] leading-[1.6]">{c.about}</p>
+          <h3 className="mt-10 text-[15px] text-ink-soft">What we did</h3>
+          <p className="mt-2 text-[18px] leading-[1.6]">{c.did}</p>
+          <ul className="mt-6 flex flex-wrap gap-2" aria-label={`Services for ${c.name}`}>
+            {c.services.map((s) => (
+              <li key={s} className="rounded-full px-3.5 py-1.5 text-[14px] ring-1 ring-inset ring-ink/20">
+                {s}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <div className="space-y-12 md:col-span-6 md:col-start-7">
+          {c.details.map((d) => (
+            <Reveal key={d.title}>
+              <h3 className="font-display text-[24px] leading-tight md:text-[28px]">{d.title}</h3>
+              <ul className="mt-5 border-t border-rule">
+                {d.items.map((item) => (
+                  <li key={item} className="flex gap-4 border-b border-rule py-4 text-[16px] leading-[1.5] md:text-[17px]">
+                    <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-bronze" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              {d.stack && <p className="mt-4 text-[14px] text-ink-soft">Built with {d.stack.join(" and ")}</p>}
+            </Reveal>
+          ))}
+        </div>
+      </div>
+
+      {/* In their words. */}
+      {quote && (
+        <Reveal as="figure" className="mx-auto mt-20 max-w-4xl md:mt-32">
+          <span aria-hidden className="block font-display text-[88px] leading-[0.6] text-bronze md:text-[120px]">
+            &ldquo;
+          </span>
+          <blockquote className="mt-2 font-display text-[28px] font-light leading-[1.25] tracking-[-0.02em] md:text-[42px]">
+            {quote.text}
+          </blockquote>
+          <figcaption className="mt-8 text-[16px]">
+            <span className="font-medium">{quote.name}</span>
+            <span className="text-ink-soft">
+              , {quote.role}, {c.name}
+            </span>
+          </figcaption>
+        </Reveal>
+      )}
+    </article>
   );
 }

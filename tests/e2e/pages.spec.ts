@@ -44,9 +44,12 @@ test("work page names each client and links out safely", async ({ page, isMobile
     await expect(link).toHaveAttribute("rel", /noreferrer/);
   }
 
-  // Quotes stay hidden until the person quoted approves them.
+  // Approved quotes show with their names; Vin-Sol's draft stays hidden.
   const text = await page.locator("main").innerText();
-  for (const draft of ["Aurangzeb", "Minhas", "To be confirmed"]) expect(text).not.toContain(draft);
+  expect(text).toContain("Aurangzeb Khan");
+  expect(text).toContain("Mohammud Bin Zahir Minhas");
+  expect(text).not.toContain("To be confirmed");
+  expect(text).not.toContain("the AI assistant on it, and they automate");
 
   if (!isMobile) await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Work" })).toHaveAttribute("href", "/work");
 });

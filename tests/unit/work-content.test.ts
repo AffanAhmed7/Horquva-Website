@@ -1,12 +1,13 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, it, expect } from "vitest";
-import { clients, visibleQuote } from "@/content/work";
+import { clients, screensOf, visibleQuote } from "@/content/work";
 
 const banned =
   /unlock|empower|seamless|cutting-edge|leverage|revolutioni[sz]e|transform your business|next-generation|supercharge/i;
 
 const bySlug = (slug: string) => clients.find((c) => c.slug === slug)!;
+const root = path.resolve(import.meta.dirname, "../..");
 
 describe("work content", () => {
   it("lists Vin-Sol, Ruqaba, Vintage in that order", () => {
@@ -30,11 +31,19 @@ describe("work content", () => {
     expect(bySlug("vintage").did).not.toMatch(/designed|built/i);
   });
 
+  it("gives every client concrete details of the work", () => {
+    for (const c of clients) {
+      expect(c.headline.length, c.slug).toBeGreaterThan(20);
+      expect(c.details.length, c.slug).toBeGreaterThan(0);
+      for (const d of c.details) expect(d.items.length, `${c.slug} ${d.title}`).toBeGreaterThanOrEqual(3);
+    }
+    expect(bySlug("ruqaba").details.map((d) => d.title)).toEqual(["Inside the HR system", "Inside the Kyvani store"]);
+  });
+
   it("never makes the claims ruled out", () => {
     const all = JSON.stringify(clients);
-    expect(all).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc/i);
+    expect(all).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc|Ashraf/i);
     expect(all).not.toMatch(/kyvani\.[a-z]/i);
-    expect(JSON.stringify(bySlug("vin-sol"))).not.toMatch(/Laravel|PHP|React|Node|WordPress/i);
     expect(bySlug("ruqaba").did).not.toMatch(/ruqaba\.com/);
   });
 
@@ -50,37 +59,44 @@ describe("work content", () => {
     expect(JSON.stringify(bySlug("vin-sol"))).not.toMatch(
       /Laravel|PHP|React|Next\.js|Node|WordPress|Python|Django|Vue|Angular|OpenAI|GPT|Gemini|Claude|Groq|Llama/i,
     );
+    // The incentive screen names claim types, which would hint at who the HR system is for.
+    expect(strings(bySlug("ruqaba"))).not.toMatch(/claim|incentive breakdown|hrm-incentive/i);
   });
 
   it("keeps the page's own copy free of ruled-out claims", () => {
-    const page = readFileSync(path.resolve(import.meta.dirname, "../../app/work/page.tsx"), "utf8");
+    const page = readFileSync(path.join(root, "app/work/page.tsx"), "utf8");
     expect(page).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc|kyvani\.[a-z]/i);
     expect(page).not.toMatch(banned);
     // Quotes reach the page only through visibleQuote, never c.quote directly.
     expect(page).not.toMatch(/c\.quote/);
   });
 
-  // Tripwire: when the owner approves a quote, update this test to list the approved names.
-  it("ships every quote unapproved", () => {
-    for (const c of clients) expect(c.quote?.approved, c.slug).toBe(false);
-    expect(bySlug("ruqaba").quote).toMatchObject({ name: "Aurangzeb Khan", role: "General Manager" });
-    expect(bySlug("vintage").quote).toMatchObject({ name: "Mohammud Bin Zahir Minhas", role: "Director" });
+  // Owner confirmed approval for these on 2026-10-29. Update this list as more are approved.
+  it("publishes only the approved quotes", () => {
+    expect(clients.filter((c) => visibleQuote(c)).map((c) => c.slug)).toEqual(["ruqaba", "vintage"]);
+    expect(visibleQuote(bySlug("ruqaba"))).toMatchObject({ name: "Aurangzeb Khan", role: "General Manager" });
+    expect(visibleQuote(bySlug("vintage"))).toMatchObject({ name: "Mohammud Bin Zahir Minhas", role: "Director" });
+    expect(visibleQuote(bySlug("vin-sol"))).toBeUndefined();
   });
 
-  it("visibleQuote hides drafts and shows approved quotes", () => {
-    for (const c of clients) expect(visibleQuote(c), c.slug).toBeUndefined();
+  it("visibleQuote hides unapproved quotes", () => {
     const ruqaba = bySlug("ruqaba");
-    const approved = { ...ruqaba, quote: { ...ruqaba.quote!, approved: true } };
-    expect(visibleQuote(approved)?.name).toBe("Aurangzeb Khan");
+    expect(visibleQuote({ ...ruqaba, quote: { ...ruqaba.quote!, approved: false } })).toBeUndefined();
   });
 
-  it("keeps images in /photos/work/", () => {
+  it("gives every client a showcase whose screens exist in /photos/work/", () => {
     for (const c of clients) {
-      if (!c.image) continue;
-      expect(c.image.src, c.slug).toMatch(/^\/photos\/work\/.+\.webp$/);
-      expect(c.image.alt.length, c.slug).toBeGreaterThan(0);
-      expect(c.image.caption.length, c.slug).toBeGreaterThan(0);
+      const screens = screensOf(c);
+      expect(screens.length, c.slug).toBeGreaterThan(0);
+      for (const s of screens) {
+        expect(s.src, c.slug).toMatch(/^\/photos\/work\/.+\.webp$/);
+        expect(() => readFileSync(path.join(root, "public", s.src)), s.src).not.toThrow();
+        expect(s.alt.length, s.src).toBeGreaterThan(0);
+        expect(s.width * s.height, s.src).toBeGreaterThan(0);
+      }
+      expect(c.showcase.caption.length, c.slug).toBeGreaterThan(0);
     }
+    expect(screensOf(bySlug("ruqaba")).map((s) => s.src)).toContain("/photos/work/kyvani-home.webp");
   });
 
   it("contains no banned words", () => {
