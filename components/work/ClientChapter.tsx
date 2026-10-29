@@ -22,7 +22,7 @@ export function ClientChapter({ client: c, first }: { client: Client; first: boo
     >
       <div className="grid gap-12 md:grid-cols-12 md:items-center md:gap-10">
         <div className="md:col-span-5">
-          <RevealText as="h2" id={`${c.slug}-name`} className="font-display text-[clamp(1.875rem,2.6vw,2.5rem)] font-light leading-[1.04] tracking-[-0.025em]">
+          <RevealText as="h2" id={`${c.slug}-name`} className="font-display text-[clamp(1.875rem,2.6vw,2.5rem)] font-bold leading-[1.04] tracking-[-0.025em]">
             {c.name}
           </RevealText>
           <Reveal delay={0.15}>
