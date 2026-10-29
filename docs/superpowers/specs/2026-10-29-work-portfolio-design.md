@@ -172,3 +172,15 @@ The owner asked for a more striking page with more detail, real visuals for Ruqa
 - **Phone shots:** captured for Vin-Sol and Vintage.
 - **Testimonials:** Aurangzeb Khan (Ruqaba) and Mohammud Bin Zahir Minhas (Vintage) are approved, using the exact drafts. Vin-Sol's quote is skipped until a name is given.
 - **Close:** "Have something you need built?" with "Start a project" and "See our services".
+
+## Revision: Kyvani link (2026-10-29)
+
+The owner asked for the Kyvani store to be linked and supplied the URL, https://www.kyvani.com/. This replaces the earlier "named but not linked" rule. The link appears only as "Visit kyvani.com" under the Kyvani store details; nowhere else on the page names the URL.
+
+## Revision: Ruqaba quote wording (2026-10-29)
+
+The owner replaced Aurangzeb Khan's quote and confirmed he approved the new wording: "We've worked with Horquva on a few projects now, including our HR and payroll system and the Kyvani store. They're easy to work with and they actually deliver what they say they will."
+
+## Revision: prose instead of facts and bullets (2026-10-29)
+
+The owner felt the facts table, "What we did" label, "Inside the…" titles and bullet lists read as machine-made. Each client now has a one-line description of the company ("Digital marketing agency, Lahore"), a short paragraph on who they are and what we did, and plain service links. Detail sections are a few sentences each; only the HR system keeps a short feature list. No new claims were added, and the confirmed verbs are unchanged.

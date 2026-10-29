@@ -32,13 +32,24 @@ describe("work content", () => {
     expect(bySlug("vintage").did).not.toMatch(/designed|built/i);
   });
 
-  it("gives every client concrete details of the work", () => {
+  it("gives every client concrete details of the work, written as prose", () => {
     for (const c of clients) {
       expect(c.headline.length, c.slug).toBeGreaterThan(20);
+      expect(c.kind.length, c.slug).toBeGreaterThan(5);
       expect(c.details.length, c.slug).toBeGreaterThan(0);
-      for (const d of c.details) expect(d.items.length, `${c.slug} ${d.title}`).toBeGreaterThanOrEqual(3);
+      for (const d of c.details) expect(d.body.length, `${c.slug} ${d.title}`).toBeGreaterThan(60);
     }
-    expect(bySlug("ruqaba").details.map((d) => d.title)).toEqual(["Inside the HR system", "Inside the Kyvani store"]);
+    expect(bySlug("ruqaba").details.map((d) => d.title)).toEqual(["The HR and payroll system", "The Kyvani store"]);
+    // Only the HR system keeps a feature list; the rest is told in sentences.
+    expect(clients.flatMap((c) => c.details.filter((d) => d.items).map((d) => d.title))).toEqual([
+      "The HR and payroll system",
+    ]);
+  });
+
+  it("doesn't repeat the same headline pattern or label formula", () => {
+    const all = JSON.stringify(clients);
+    expect(all).not.toMatch(/"Inside the /);
+    expect(new Set(clients.map((c) => c.headline.split(" ")[0])).size).toBe(clients.length);
   });
 
   it("links every service to one of our service pages", () => {
@@ -56,8 +67,14 @@ describe("work content", () => {
   it("never makes the claims ruled out", () => {
     const all = JSON.stringify(clients);
     expect(all).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc|Ashraf/i);
-    expect(all).not.toMatch(/kyvani\.[a-z]/i);
     expect(bySlug("ruqaba").did).not.toMatch(/ruqaba\.com/);
+  });
+
+  it("links the Kyvani store only from its own details", () => {
+    const kyvani = bySlug("ruqaba").details.find((d) => d.title === "The Kyvani store");
+    expect(kyvani?.link).toEqual({ url: "https://www.kyvani.com/", domain: "kyvani.com" });
+    const { details, ...rest } = bySlug("ruqaba");
+    expect(JSON.stringify([rest, details.filter((d) => d !== kyvani)])).not.toMatch(/kyvani\.[a-z]/i);
   });
 
   it("keeps every string field inside each client's confirmed claims", () => {
@@ -77,7 +94,7 @@ describe("work content", () => {
   });
 
   it("keeps the page's own copy free of ruled-out claims", () => {
-    const page = ["app/work/page.tsx", ...readdirSync(path.join(root, "components/work")).map((f) => `components/work/${f}`)]
+    const page = ["app/work/page.tsx", "components/home/WorkStrip.tsx", ...readdirSync(path.join(root, "components/work")).map((f) => `components/work/${f}`)]
       .map((f) => readFileSync(path.join(root, f), "utf8"))
       .join("\n");
     expect(page).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc|kyvani\.[a-z]/i);

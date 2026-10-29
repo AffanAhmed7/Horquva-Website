@@ -24,7 +24,7 @@ export default function WorkPage() {
       <Section
         tone="ink"
         className="relative isolate overflow-hidden"
-        innerClassName="flex min-h-[80svh] flex-col items-center justify-center pt-36 pb-28 text-center md:min-h-[92svh] md:pt-48 md:pb-40"
+        innerClassName="flex min-h-svh flex-col items-center justify-center py-32 text-center"
         aria-labelledby="work-title"
       >
         <div

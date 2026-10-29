@@ -13,23 +13,25 @@ export type Client = {
   /** Link text for the client's site. */
   domain: string;
   location: string;
-  industry: string;
-  /** One line under the name: the work in a sentence. */
+  /** What kind of business they are, shown with the city under the name. */
+  kind: string;
+  /** The work in one short line, used where space is tight (the homepage). */
   headline: string;
-  /** What Horquva did. The verbs are exact: only claim what was confirmed. */
+  /** Who they are and what Horquva did, as a short paragraph. The verbs are exact: only claim what was confirmed. */
   did: string;
   /** What we did for them, each pointing at the service page it belongs to. */
   services: { name: string; service: ServiceSlug }[];
   /** Maintenance only: shown as a shorter entry, its details beside the main screens. */
   compact?: true;
-  /** Concrete parts of the work, each a list of things you can see in the live product, with screens of it. */
+  /** Concrete parts of the work, told in a few sentences about what you can see in the live product, with screens of it. */
   details: {
     title: string;
-    items: string[];
-    stack?: string[];
+    body: string;
+    /** A short feature list, only where the part really is a set of features. */
+    items?: string[];
     screens?: Screen[];
-    /** A smaller related part, shown under the screens. */
-    note?: { title: string; items: string[] };
+    /** The live product, when it has its own site. */
+    link?: { url: string; domain: string };
   }[];
   showcase: {
     main: Screen;
@@ -60,7 +62,7 @@ const phone = (src: string, alt: string, label: string, height = 1328): Screen =
 /**
  * The clients on the Work page, in the order shown. Every claim here was confirmed by the owner
  * on 2026-10-29 (see docs/superpowers/specs/2026-10-29-work-portfolio-design.md). We did not build
- * ruqaba.com or the Vintage site, and Kyvani is named but never linked. The details lists describe
+ * ruqaba.com or the Vintage site; Kyvani is linked only from its own details. The details describe
  * only what can be seen in the live product. The HR screens come from Ruqaba's own case study,
  * cropped to drop the footer; the incentive screen is left out because it hints at who the system is for.
  */
@@ -72,9 +74,9 @@ export const clients: Client[] = [
     url: "https://www.vin-sol.com/",
     domain: "vin-sol.com",
     location: "Lahore, Pakistan",
-    industry: "Digital marketing",
-    headline: "A new website, an AI chat assistant and workflow automation for a Lahore marketing agency.",
-    did: "We designed and built vin-sol.com, including the AI chat assistant visitors use to ask questions on the site. Behind the scenes, we automate parts of Vin-Sol's internal workflows.",
+    kind: "Digital marketing agency",
+    headline: "Their website, with an AI assistant built in, and automation behind the scenes.",
+    did: "Vin-Sol is a marketing agency in Bahria Town, Lahore, covering web, design, social media, ads, video and SEO. We designed and built vin-sol.com, and the AI chat assistant visitors use to ask about their services. Behind the scenes, we also automate parts of how their team works.",
     services: [
       { name: "Website design", service: "web-software-development" },
       { name: "Website development", service: "web-software-development" },
@@ -84,25 +86,11 @@ export const clients: Client[] = [
     details: [
       {
         title: "The website",
-        items: [
-          "A multi-page site: home, services, portfolio, pricing, about and contact",
-          "A section for each of Vin-Sol's six services, from web development to SEO",
-          "WhatsApp one tap away on every page, as the main way to get in touch",
-          "A link to leave a Google review, and analytics on every page",
-        ],
+        body: "The site runs from the homepage through services, portfolio, pricing, about and contact, with a section for each of Vin-Sol's six services. WhatsApp is one tap away on every page, and there's a link for clients to leave a Google review. The AI assistant opens from any page, asks the visitor's name, and answers questions about Vin-Sol's services in plain language.",
         screens: [
           desktop("vin-sol-services", "The vin-sol.com services page", "Services"),
           desktop("vin-sol-portfolio", "The vin-sol.com portfolio page", "Portfolio"),
         ],
-        note: {
-          title: "The AI chat assistant",
-          items: [
-            "Opens in a pop-up from every page, and loads only when a visitor opens it",
-            "Asks for the visitor's name and greets them by it",
-            "Answers questions about Vin-Sol's services in plain language",
-            "Lets visitors clear the conversation or start again",
-          ],
-        },
       },
     ],
     showcase: {
@@ -123,9 +111,9 @@ export const clients: Client[] = [
     url: "https://ruqaba.com/",
     domain: "ruqaba.com",
     location: "Dubai, UAE",
-    industry: "Digital marketing",
-    headline: "An HR and payroll system, and a fashion e-commerce store, built for a Dubai agency.",
-    did: "We build software for Ruqaba. That includes an HR and payroll system, built with Laravel and MySQL, that brings attendance, shift scheduling, and salary and incentive calculation into one place. We also built the Kyvani fashion e-commerce store, delivered through Ruqaba.",
+    kind: "Digital marketing agency",
+    headline: "An HR and payroll system, and the Kyvani fashion store.",
+    did: "Ruqaba is a digital marketing agency in Dubai, and we build software for them. So far that's an HR and payroll system that brings attendance, shift scheduling, and salary and incentive calculation into one place, and the Kyvani fashion e-commerce store, which we built and delivered through Ruqaba.",
     services: [
       { name: "Custom software", service: "web-software-development" },
       { name: "HR and payroll system", service: "web-software-development" },
@@ -133,29 +121,22 @@ export const clients: Client[] = [
     ],
     details: [
       {
-        title: "Inside the HR system",
+        title: "The HR and payroll system",
+        body: "Built with Laravel and MySQL. It opens on a dashboard of today's attendance, absences and late arrivals, with attendance trends over time.",
         items: [
-          "A dashboard with today's attendance, absences and late arrivals, and attendance trends",
           "Employee records with department, designation, shift and salary type",
           "Shift scheduling for teams across several sites",
           "Monthly salary generation and incentive calculation",
           "Users, roles and permissions, and reports",
         ],
-        stack: ["Laravel", "MySQL"],
         screens: [
           desktop("hrm-employee", "Adding an employee in the HR system", "HR system: employees", 717),
         ],
       },
       {
-        title: "Inside the Kyvani store",
-        items: [
-          "A mobile-first storefront and collection pages",
-          "Catalogue search, category filters and sorting",
-          "Cart and checkout with integrated payments, accepted in Dubai and Pakistan",
-          "Customer accounts",
-          "Tracking for Meta ads and SEO",
-        ],
-        stack: ["Laravel"],
+        title: "The Kyvani store",
+        body: "A mobile-first fashion store, built with Laravel and live in Pakistan and the UAE. Shoppers can search and filter the catalogue, keep an account, and pay at checkout in either country, and tracking for Meta ads and SEO is built in.",
+        link: { url: "https://www.kyvani.com/", domain: "kyvani.com" },
         screens: [
           desktop("kyvani-home", "The Kyvani store's homepage", "Kyvani: homepage", 802),
         ],
@@ -166,7 +147,7 @@ export const clients: Client[] = [
       second: desktop("kyvani-region", "Choosing a region on the Kyvani store, Pakistan or the UAE", "Kyvani store", 802),
     },
     quote: {
-      text: "Horquva built our HR and payroll system and the Kyvani store for us. They're the team we go to when something technical needs building properly.",
+      text: "We've worked with Horquva on a few projects now, including our HR and payroll system and the Kyvani store. They're easy to work with and they actually deliver what they say they will.",
       name: "Aurangzeb Khan",
       role: "General Manager",
       approved: true,
@@ -179,19 +160,15 @@ export const clients: Client[] = [
     url: "https://vamgltd.co.uk/",
     domain: "vamgltd.co.uk",
     location: "London, UK",
-    industry: "Claims management",
-    headline: "Ongoing care for a London claims company's website.",
-    did: "We took over the maintenance of Vintage's website and look after it on an ongoing basis.",
+    kind: "Claims management company",
+    headline: "We took over their website and keep it running.",
+    did: "Vintage Claims Management handles not-at-fault accident claims in London, arranging replacement vehicles, repairs, storage and recovery. We took over the maintenance of their website and look after it on an ongoing basis.",
     services: [{ name: "Website maintenance and support", service: "integrations-infrastructure" }],
     compact: true,
     details: [
       {
         title: "The site we look after",
-        items: [
-          "Service pages for credit hire, repairs, storage and recovery",
-          "A start-your-claim form",
-          "About, team and contact pages",
-        ],
+        body: "That covers the service pages for credit hire, repairs, storage and recovery, the start-your-claim form, and the about, team and contact pages.",
       },
     ],
     showcase: {

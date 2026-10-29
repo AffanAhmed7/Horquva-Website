@@ -143,6 +143,16 @@ html.motion [data-reveal] {
   }
 }
 
+/* Home "Who we work with": the active client's line fills while its screens are shown, then the next slides in. */
+@keyframes work-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* Woba launcher: light travelling round a bronze ring, like a lamp catching brushed metal. */
 .woba-ring {
   background: conic-gradient(
