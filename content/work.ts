@@ -1,6 +1,6 @@
 export type Quote = { text: string; name: string; role: string; approved: boolean };
 
-/** A screenshot. `label` is what the browser bar shows above it. */
+/** A screenshot. `label` names the page it shows, under gallery screens. */
 export type Screen = { src: string; alt: string; width: number; height: number; label: string };
 
 export type Client = {
@@ -90,6 +90,12 @@ export const clients: Client[] = [
       caption: "vin-sol.com on desktop and phone, October 2026",
       main: desktop("vin-sol", "The vin-sol.com homepage on desktop", "vin-sol.com"),
       phone: phone("vin-sol-mobile", "The vin-sol.com homepage on a phone", "vin-sol.com"),
+      gallery: [
+        desktop("vin-sol-services", "The vin-sol.com services page", "Services"),
+        desktop("vin-sol-portfolio", "The vin-sol.com portfolio page", "Portfolio"),
+        desktop("vin-sol-pricing", "The vin-sol.com pricing page", "Pricing"),
+        desktop("vin-sol-about", "The vin-sol.com about page", "About"),
+      ],
     },
     quote: {
       text: "Horquva designed and built our website and the AI assistant on it, and they automate a lot of our day-to-day work behind the scenes.",
@@ -141,10 +147,10 @@ export const clients: Client[] = [
       main: desktop("hrm-dashboard", "The HR system's dashboard", "HR and payroll system", 717),
       second: desktop("kyvani-home", "The Kyvani store's homepage", "Kyvani store", 802),
       gallery: [
-        desktop("hrm-employee", "Adding an employee in the HR system", "HR · Employees", 717),
-        desktop("hrm-salary", "Salary management in the HR system", "HR · Salary", 717),
-        desktop("kyvani-shop", "The Kyvani collection page with filters", "Kyvani · Shop", 802),
-        desktop("kyvani-account", "Signing in to a Kyvani customer account", "Kyvani · Account", 802),
+        desktop("hrm-employee", "Adding an employee in the HR system", "HR system: employees", 717),
+        desktop("hrm-salary", "Salary management in the HR system", "HR system: salary", 717),
+        desktop("kyvani-shop", "The Kyvani collection page with filters", "Kyvani: shop", 802),
+        desktop("kyvani-account", "Signing in to a Kyvani customer account", "Kyvani: account", 802),
       ],
     },
     quote: {
@@ -182,6 +188,12 @@ export const clients: Client[] = [
       caption: "vamgltd.co.uk, which we maintain. October 2026",
       main: desktop("vintage", "The vamgltd.co.uk homepage on desktop", "vamgltd.co.uk"),
       phone: phone("vintage-mobile", "The vamgltd.co.uk homepage on a phone", "vamgltd.co.uk"),
+      gallery: [
+        desktop("vintage-credit-hire", "The vamgltd.co.uk credit hire page", "Credit hire"),
+        desktop("vintage-claim", "The vamgltd.co.uk start-your-claim form", "Start your claim"),
+        desktop("vintage-about", "The vamgltd.co.uk about page", "About"),
+        desktop("vintage-contact", "The vamgltd.co.uk contact page", "Contact"),
+      ],
     },
     quote: {
       text: "Horquva took over our website and keep it running. When we need something changed, it gets done.",
