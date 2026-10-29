@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, it, expect } from "vitest";
+import { getService } from "@/content/services";
 import { clients, screensOf, visibleQuote } from "@/content/work";
 
 const banned =
@@ -38,6 +39,18 @@ describe("work content", () => {
       for (const d of c.details) expect(d.items.length, `${c.slug} ${d.title}`).toBeGreaterThanOrEqual(3);
     }
     expect(bySlug("ruqaba").details.map((d) => d.title)).toEqual(["Inside the HR system", "Inside the Kyvani store"]);
+  });
+
+  it("links every service to one of our service pages", () => {
+    for (const c of clients) {
+      for (const s of c.services) expect(getService(s.service), `${c.slug} ${s.name}`).toBeDefined();
+    }
+    expect(bySlug("vin-sol").services.find((s) => s.name === "AI chatbot")?.service).toBe("ai-automation");
+  });
+
+  it("shows only Vintage, which we maintain rather than built, as a compact entry", () => {
+    expect(clients.filter((c) => c.compact).map((c) => c.slug)).toEqual(["vintage"]);
+    expect(bySlug("vintage").details.every((d) => !d.screens)).toBe(true);
   });
 
   it("never makes the claims ruled out", () => {
@@ -96,7 +109,6 @@ describe("work content", () => {
         expect(s.alt.length, s.src).toBeGreaterThan(0);
         expect(s.width * s.height, s.src).toBeGreaterThan(0);
       }
-      expect(c.showcase.caption.length, c.slug).toBeGreaterThan(0);
     }
     expect(screensOf(bySlug("ruqaba")).map((s) => s.src)).toContain("/photos/work/kyvani-home.webp");
   });

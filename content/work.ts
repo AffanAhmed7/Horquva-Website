@@ -1,6 +1,8 @@
+type ServiceSlug = "ai-automation" | "web-software-development" | "business-ecommerce" | "integrations-infrastructure";
+
 export type Quote = { text: string; name: string; role: string; approved: boolean };
 
-/** A screenshot. `label` names the page it shows, under gallery screens. */
+/** A screenshot. `label` names the page it shows. */
 export type Screen = { src: string; alt: string; width: number; height: number; label: string };
 
 export type Client = {
@@ -14,22 +16,27 @@ export type Client = {
   industry: string;
   /** One line under the name: the work in a sentence. */
   headline: string;
-  /** One sentence on the company, from facts on its own site. */
-  about: string;
   /** What Horquva did. The verbs are exact: only claim what was confirmed. */
   did: string;
-  services: string[];
-  /** Concrete parts of the work, each a list of things you can see in the live product. */
-  details: { title: string; items: string[]; stack?: string[] }[];
+  /** What we did for them, each pointing at the service page it belongs to. */
+  services: { name: string; service: ServiceSlug }[];
+  /** Maintenance only: shown as a shorter entry, its details beside the main screens. */
+  compact?: true;
+  /** Concrete parts of the work, each a list of things you can see in the live product, with screens of it. */
+  details: {
+    title: string;
+    items: string[];
+    stack?: string[];
+    screens?: Screen[];
+    /** A smaller related part, shown under the screens. */
+    note?: { title: string; items: string[] };
+  }[];
   showcase: {
-    caption: string;
     main: Screen;
     /** A phone-sized view, overlapping the main screen. */
     phone?: Screen;
     /** A second desktop screen, overlapping the main one. */
     second?: Screen;
-    /** Smaller screens shown in a row under the panel. */
-    gallery?: Screen[];
   };
   /** Drafted by us; shown only once the person quoted has approved it in writing. */
   quote?: Quote;
@@ -42,12 +49,12 @@ const desktop = (src: string, alt: string, label: string, height = 1000): Screen
   width: 1600,
   height,
 });
-const phone = (src: string, alt: string, label: string): Screen => ({
+const phone = (src: string, alt: string, label: string, height = 1328): Screen => ({
   src: `/photos/work/${src}.webp`,
   alt,
   label,
   width: 780,
-  height: 1328,
+  height,
 });
 
 /**
@@ -67,32 +74,40 @@ export const clients: Client[] = [
     location: "Lahore, Pakistan",
     industry: "Digital marketing",
     headline: "A new website, an AI chat assistant and workflow automation for a Lahore marketing agency.",
-    about:
-      "Vin-Sol is a digital marketing agency in Bahria Town, Lahore, covering web development, design, social media, Meta ads, video and SEO.",
     did: "We designed and built vin-sol.com, including the AI chat assistant visitors use to ask questions on the site. Behind the scenes, we automate parts of Vin-Sol's internal workflows.",
-    services: ["Website design", "Website development", "AI chatbot", "Workflow automation"],
+    services: [
+      { name: "Website design", service: "web-software-development" },
+      { name: "Website development", service: "web-software-development" },
+      { name: "AI chatbot", service: "ai-automation" },
+      { name: "Workflow automation", service: "ai-automation" },
+    ],
     details: [
       {
-        title: "What we built",
+        title: "The website",
         items: [
           "A multi-page site: home, services, portfolio, pricing, about and contact",
           "A section for each of Vin-Sol's six services, from web development to SEO",
-          "An AI chat assistant in a pop-up window, loaded only when a visitor opens it",
           "WhatsApp one tap away on every page, as the main way to get in touch",
           "A link to leave a Google review, and analytics on every page",
         ],
+        screens: [
+          desktop("vin-sol-services", "The vin-sol.com services page", "Services"),
+          desktop("vin-sol-portfolio", "The vin-sol.com portfolio page", "Portfolio"),
+        ],
+        note: {
+          title: "The AI chat assistant",
+          items: [
+            "Opens in a pop-up from every page, and loads only when a visitor opens it",
+            "Asks for the visitor's name and greets them by it",
+            "Answers questions about Vin-Sol's services in plain language",
+            "Lets visitors clear the conversation or start again",
+          ],
+        },
       },
     ],
     showcase: {
-      caption: "vin-sol.com on desktop and phone, October 2026",
       main: desktop("vin-sol", "The vin-sol.com homepage on desktop", "vin-sol.com"),
-      phone: phone("vin-sol-mobile", "The vin-sol.com homepage on a phone", "vin-sol.com"),
-      gallery: [
-        desktop("vin-sol-services", "The vin-sol.com services page", "Services"),
-        desktop("vin-sol-portfolio", "The vin-sol.com portfolio page", "Portfolio"),
-        desktop("vin-sol-pricing", "The vin-sol.com pricing page", "Pricing"),
-        desktop("vin-sol-about", "The vin-sol.com about page", "About"),
-      ],
+      phone: phone("vin-sol-services-mobile", "The vin-sol.com services page on a phone", "vin-sol.com", 1688),
     },
     quote: {
       text: "Horquva designed and built our website and the AI assistant on it, and they automate a lot of our day-to-day work behind the scenes.",
@@ -110,10 +125,12 @@ export const clients: Client[] = [
     location: "Dubai, UAE",
     industry: "Digital marketing",
     headline: "An HR and payroll system, and a fashion e-commerce store, built for a Dubai agency.",
-    about:
-      "Ruqaba is a digital marketing agency in Dubai, working on branding, social media, paid media, video and web for brands across the UAE.",
     did: "We build software for Ruqaba. That includes an HR and payroll system, built with Laravel and MySQL, that brings attendance, shift scheduling, and salary and incentive calculation into one place. We also built the Kyvani fashion e-commerce store, delivered through Ruqaba.",
-    services: ["Custom software", "HR and payroll system", "E-commerce development"],
+    services: [
+      { name: "Custom software", service: "web-software-development" },
+      { name: "HR and payroll system", service: "web-software-development" },
+      { name: "E-commerce development", service: "business-ecommerce" },
+    ],
     details: [
       {
         title: "Inside the HR system",
@@ -125,6 +142,9 @@ export const clients: Client[] = [
           "Users, roles and permissions, and reports",
         ],
         stack: ["Laravel", "MySQL"],
+        screens: [
+          desktop("hrm-employee", "Adding an employee in the HR system", "HR system: employees", 717),
+        ],
       },
       {
         title: "Inside the Kyvani store",
@@ -136,16 +156,14 @@ export const clients: Client[] = [
           "Tracking for Meta ads and SEO",
         ],
         stack: ["Laravel"],
+        screens: [
+          desktop("kyvani-home", "The Kyvani store's homepage", "Kyvani: homepage", 802),
+        ],
       },
     ],
     showcase: {
-      caption: "The HR system and the Kyvani store. Screens from Ruqaba's case studies.",
       main: desktop("hrm-dashboard", "The HR system's dashboard", "HR and payroll system", 717),
-      second: desktop("kyvani-home", "The Kyvani store's homepage", "Kyvani store", 802),
-      gallery: [
-        desktop("hrm-employee", "Adding an employee in the HR system", "HR system: employees", 717),
-        desktop("kyvani-account", "Signing in to a Kyvani customer account", "Kyvani: account", 802),
-      ],
+      second: desktop("kyvani-region", "Choosing a region on the Kyvani store, Pakistan or the UAE", "Kyvani store", 802),
     },
     quote: {
       text: "Horquva built our HR and payroll system and the Kyvani store for us. They're the team we go to when something technical needs building properly.",
@@ -163,10 +181,9 @@ export const clients: Client[] = [
     location: "London, UK",
     industry: "Claims management",
     headline: "Ongoing care for a London claims company's website.",
-    about:
-      "Vintage Claims Management handles not-at-fault accident claims in London, arranging replacement vehicles, repairs, storage and recovery.",
     did: "We took over the maintenance of Vintage's website and look after it on an ongoing basis.",
-    services: ["Website maintenance and support"],
+    services: [{ name: "Website maintenance and support", service: "integrations-infrastructure" }],
+    compact: true,
     details: [
       {
         title: "The site we look after",
@@ -178,13 +195,8 @@ export const clients: Client[] = [
       },
     ],
     showcase: {
-      caption: "vamgltd.co.uk, which we maintain. October 2026",
       main: desktop("vintage", "The vamgltd.co.uk homepage on desktop", "vamgltd.co.uk"),
       phone: phone("vintage-mobile", "The vamgltd.co.uk homepage on a phone", "vamgltd.co.uk"),
-      gallery: [
-        desktop("vintage-credit-hire", "The vamgltd.co.uk credit hire page", "Credit hire"),
-        desktop("vintage-claim", "The vamgltd.co.uk start-your-claim form", "Start your claim"),
-      ],
     },
     quote: {
       text: "Horquva took over our website and keep it running. When we need something changed, it gets done.",
@@ -201,6 +213,6 @@ export function visibleQuote(c: Client): Quote | undefined {
 
 /** Every screenshot a client's showcase uses. */
 export function screensOf(c: Client): Screen[] {
-  const { main, phone, second, gallery = [] } = c.showcase;
-  return [main, phone, second, ...gallery].filter((s): s is Screen => Boolean(s));
+  const { main, phone, second } = c.showcase;
+  return [main, phone, second, ...c.details.flatMap((d) => d.screens ?? [])].filter((s): s is Screen => Boolean(s));
 }

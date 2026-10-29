@@ -40,6 +40,23 @@ export default function WorkPage() {
             we&apos;ve built for each of them, and what we look after.
           </p>
         </Reveal>
+        <Reveal delay={0.5}>
+          <nav aria-label="Clients" className="mt-14 md:mt-16">
+            <ul className="flex flex-col items-center gap-3 text-[16px] sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-10">
+              {clients.map((c) => (
+                <li key={c.slug}>
+                  <a
+                    href={`#${c.slug}`}
+                    className="text-paper underline decoration-paper/25 underline-offset-[6px] transition-colors hover:decoration-bronze"
+                  >
+                    {c.name}
+                  </a>
+                  <span className="ml-2 text-stone">{c.location.split(",")[0]}</span>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </Reveal>
       </Section>
 
       <div className="bg-paper">
