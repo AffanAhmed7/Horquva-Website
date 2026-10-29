@@ -22,11 +22,12 @@ export const site = {
  * these, and proxy.ts answers any address that isn't one of them with 410 Gone, which is how
  * the old WordPress site's pages are cleared from search results. Add new pages here.
  */
-export const pages = ["/", "/oba-core", "/approach", "/team", "/careers", "/contact", "/privacy"];
+export const pages = ["/", "/work", "/oba-core", "/approach", "/team", "/careers", "/contact", "/privacy"];
 
 export const nav = [
   // Jumps to the service cards on the home page; stays highlighted on each service's own page.
   { href: "/#services", label: "Services", activePrefix: "/services" },
+  { href: "/work", label: "Work" },
   { href: "/oba-core", label: "OBA Core" },
   { href: "/approach", label: "Approach" },
   { href: "/team", label: "Team" },

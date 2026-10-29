@@ -5,6 +5,7 @@ import { services } from "../../content/services";
 const routes = [
   "/",
   ...services.map((s) => `/services/${s.slug}`),
+  "/work",
   "/oba-core",
   "/approach",
   "/team",
@@ -26,6 +27,29 @@ for (const route of routes) {
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
   });
 }
+
+test("work page names each client and links out safely", async ({ page, isMobile }) => {
+  await page.goto("/work");
+  const names = await page.locator("article h2").allTextContents();
+  expect(names).toEqual(["Vin-Sol", "Ruqaba", "Vintage Claims Management"]);
+
+  for (const [label, href] of [
+    ["Visit vin-sol.com", "https://www.vin-sol.com/"],
+    ["Visit ruqaba.com", "https://ruqaba.com/"],
+    ["Visit vamgltd.co.uk", "https://vamgltd.co.uk/"],
+  ]) {
+    const link = page.getByRole("link", { name: label });
+    await expect(link).toHaveAttribute("href", href);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /noreferrer/);
+  }
+
+  // Quotes stay hidden until the person quoted approves them.
+  const text = await page.locator("main").innerText();
+  for (const draft of ["Aurangzeb", "Minhas", "To be confirmed"]) expect(text).not.toContain(draft);
+
+  if (!isMobile) await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Work" })).toHaveAttribute("href", "/work");
+});
 
 test("unknown service returns 404", async ({ page }) => {
   const res = await page.goto("/services/nope");

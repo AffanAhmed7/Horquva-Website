@@ -65,7 +65,7 @@ describe("the current site is never retired", () => {
     expect(isCurrentSitePath(file)).toBe(true);
   });
 
-  it.each(["/sitemap.xml", "/robots.txt", "/opengraph-image", "/favicon.ico", "/icon.png", "/apple-icon.png", "/contact?sent=1"])(
+  it.each(["/work", "/photos/work/vin-sol.webp", "/sitemap.xml", "/robots.txt", "/opengraph-image", "/favicon.ico", "/icon.png", "/apple-icon.png", "/contact?sent=1"])(
     "%s",
     (address) => {
       expect(retired(address)).toBe(false);

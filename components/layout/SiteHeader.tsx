@@ -9,7 +9,7 @@ import { Wordmark } from "./Wordmark";
 import { MobileMenu } from "./MobileMenu";
 
 /** Pages that open with a full-bleed photo the header floats over. */
-const heroPages = new Set(["/", "/oba-core", "/contact", "/approach", "/team", "/careers"]);
+const heroPages = new Set(["/", "/work", "/oba-core", "/contact", "/approach", "/team", "/careers"]);
 
 /** Whether the section behind the header is dark (sections mark themselves with data-tone). */
 function darkUnderHeader(header: HTMLElement) {
