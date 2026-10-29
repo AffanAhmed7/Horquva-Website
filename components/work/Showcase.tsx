@@ -1,28 +1,15 @@
 import type { Client } from "@/content/work";
 import { Screenshot } from "./Screenshot";
 
-const tones = {
-  ink: "bg-ink",
-  bronze: "bg-[linear-gradient(160deg,#6b4a34_0%,#5e3f2c_45%,#3b281c_100%)]",
-  sand: "bg-[#e4dacb]",
-};
-
-const glows = {
-  ink: "bg-[radial-gradient(ellipse_60%_55%_at_70%_0%,rgba(169,130,90,0.35),transparent_70%)]",
-  bronze: "bg-[radial-gradient(ellipse_55%_50%_at_20%_0%,rgba(226,195,160,0.35),transparent_70%)]",
-  sand: "bg-[radial-gradient(ellipse_60%_55%_at_80%_0%,rgba(255,255,255,0.7),transparent_70%)]",
-};
-
 /**
- * The client's main screens on a tinted panel, composed like a product shot: the main screen large,
+ * The client's main screens on a plain white panel, composed like a product shot: the main screen large,
  * with a phone or a second screen overlapping its lower corner.
  */
 export function Showcase({ client, preload }: { client: Client; preload?: boolean }) {
-  const { tone, main, phone, second } = client.showcase;
+  const { main, phone, second } = client.showcase;
 
   return (
-    <div className={`relative isolate overflow-hidden rounded-[1.5rem] ${tones[tone]}`}>
-      <div aria-hidden className={`pointer-events-none absolute inset-0 -z-10 ${glows[tone]}`} />
+    <div className="relative overflow-hidden rounded-[1.5rem] bg-white">
       <div className="relative px-6 pb-10 pt-8 sm:px-10 md:pb-14 md:pt-10">
         <Screenshot
           screen={main}

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, it, expect } from "vitest";
 import { clients, screensOf, visibleQuote } from "@/content/work";
@@ -64,7 +64,9 @@ describe("work content", () => {
   });
 
   it("keeps the page's own copy free of ruled-out claims", () => {
-    const page = readFileSync(path.join(root, "app/work/page.tsx"), "utf8");
+    const page = ["app/work/page.tsx", ...readdirSync(path.join(root, "components/work")).map((f) => `components/work/${f}`)]
+      .map((f) => readFileSync(path.join(root, f), "utf8"))
+      .join("\n");
     expect(page).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc|kyvani\.[a-z]/i);
     expect(page).not.toMatch(banned);
     // Quotes reach the page only through visibleQuote, never c.quote directly.

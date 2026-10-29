@@ -3,9 +3,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
-import { TextLink } from "@/components/ui/TextLink";
-import { ScreenGallery, Showcase } from "@/components/work/Showcase";
-import { clients, visibleQuote, type Client } from "@/content/work";
+import { ClientChapter } from "@/components/work/ClientChapter";
+import { clients, visibleQuote } from "@/content/work";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -25,7 +24,7 @@ export default function WorkPage() {
       <Section
         tone="ink"
         className="relative isolate overflow-hidden"
-        innerClassName="pt-32 pb-24 text-center md:pt-44 md:pb-32"
+        innerClassName="flex min-h-[80svh] flex-col items-center justify-center pt-36 pb-28 text-center md:min-h-[92svh] md:pt-48 md:pb-40"
         aria-labelledby="work-title"
       >
         <div
@@ -100,96 +99,5 @@ export default function WorkPage() {
         </Reveal>
       </Section>
     </>
-  );
-}
-
-/**
- * One client in two rows: who they are and what we did beside the main screens, then the details
- * of the work beside more of its screens.
- */
-function ClientChapter({ client: c, first }: { client: Client; first: boolean }) {
-  return (
-    <article
-      id={c.slug}
-      aria-labelledby={`${c.slug}-name`}
-      className={`gutter mx-auto w-full max-w-[1440px] scroll-mt-20 py-24 md:py-32 ${first ? "" : "border-t border-rule"}`}
-    >
-      <div className="grid gap-12 md:grid-cols-12 md:items-center md:gap-10">
-        <div className="md:col-span-5">
-          <RevealText as="h2" id={`${c.slug}-name`} className="text-heading">
-            {c.name}
-          </RevealText>
-          <Reveal delay={0.15}>
-            <p className="mt-5 font-display text-[21px] font-light leading-[1.4] tracking-[-0.01em] text-ink-soft md:text-[24px]">
-              {c.headline}
-            </p>
-
-            <dl className="mt-8 flex flex-wrap items-end gap-x-8 gap-y-4 text-[15px]">
-              <div>
-                <dt className="text-ink-soft">Based in</dt>
-                <dd className="font-medium">{c.location}</dd>
-              </div>
-              <div>
-                <dt className="text-ink-soft">Industry</dt>
-                <dd className="font-medium">{c.industry}</dd>
-              </div>
-              <div>
-                <dt className="sr-only">Our role</dt>
-                <dd className="inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-[14px] text-paper">
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-bronze" />
-                  Technology partner, ongoing
-                </dd>
-              </div>
-            </dl>
-
-            <h3 className="mt-10 text-[15px] text-ink-soft">About them</h3>
-            <p className="mt-2 text-[17px] leading-[1.6]">{c.about}</p>
-            <h3 className="mt-8 text-[15px] text-ink-soft">What we did</h3>
-            <p className="mt-2 text-[17px] leading-[1.6]">{c.did}</p>
-            <ul className="mt-5 flex flex-wrap gap-2" aria-label={`Services for ${c.name}`}>
-              {c.services.map((s) => (
-                <li key={s} className="rounded-full bg-ink/[0.06] px-3.5 py-1.5 text-[14px]">
-                  {s}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-8 text-[16px]">
-              <TextLink href={c.url} external>
-                Visit {c.domain}
-              </TextLink>
-            </p>
-          </Reveal>
-        </div>
-
-        <Reveal className="md:col-span-7">
-          <figure>
-            <Showcase client={c} preload={first} />
-            <figcaption className="mt-4 text-[14px] text-ink-soft">{c.showcase.caption}</figcaption>
-          </figure>
-        </Reveal>
-      </div>
-
-      <div className="mt-16 grid gap-12 md:mt-24 md:grid-cols-12 md:gap-10">
-        <div className="space-y-12 md:col-span-5">
-          {c.details.map((d) => (
-            <Reveal key={d.title}>
-              <h3 className="font-display text-[22px] leading-tight md:text-[24px]">{d.title}</h3>
-              <ul className="mt-4 border-t border-rule">
-                {d.items.map((item) => (
-                  <li key={item} className="flex gap-4 border-b border-rule py-3.5 text-[16px] leading-[1.5]">
-                    <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-bronze" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              {d.stack && <p className="mt-3 text-[14px] text-ink-soft">Built with {d.stack.join(" and ")}</p>}
-            </Reveal>
-          ))}
-        </div>
-        <Reveal className="md:col-span-7">
-          <ScreenGallery client={c} />
-        </Reveal>
-      </div>
-    </article>
   );
 }

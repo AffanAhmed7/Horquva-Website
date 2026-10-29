@@ -22,8 +22,6 @@ export type Client = {
   /** Concrete parts of the work, each a list of things you can see in the live product. */
   details: { title: string; items: string[]; stack?: string[] }[];
   showcase: {
-    /** The panel colour behind the screens. */
-    tone: "ink" | "bronze" | "sand";
     caption: string;
     main: Screen;
     /** A phone-sized view, overlapping the main screen. */
@@ -86,7 +84,6 @@ export const clients: Client[] = [
       },
     ],
     showcase: {
-      tone: "ink",
       caption: "vin-sol.com on desktop and phone, October 2026",
       main: desktop("vin-sol", "The vin-sol.com homepage on desktop", "vin-sol.com"),
       phone: phone("vin-sol-mobile", "The vin-sol.com homepage on a phone", "vin-sol.com"),
@@ -142,14 +139,11 @@ export const clients: Client[] = [
       },
     ],
     showcase: {
-      tone: "bronze",
       caption: "The HR system and the Kyvani store. Screens from Ruqaba's case studies.",
       main: desktop("hrm-dashboard", "The HR system's dashboard", "HR and payroll system", 717),
       second: desktop("kyvani-home", "The Kyvani store's homepage", "Kyvani store", 802),
       gallery: [
         desktop("hrm-employee", "Adding an employee in the HR system", "HR system: employees", 717),
-        desktop("hrm-salary", "Salary management in the HR system", "HR system: salary", 717),
-        desktop("kyvani-shop", "The Kyvani collection page with filters", "Kyvani: shop", 802),
         desktop("kyvani-account", "Signing in to a Kyvani customer account", "Kyvani: account", 802),
       ],
     },
@@ -184,15 +178,12 @@ export const clients: Client[] = [
       },
     ],
     showcase: {
-      tone: "sand",
       caption: "vamgltd.co.uk, which we maintain. October 2026",
       main: desktop("vintage", "The vamgltd.co.uk homepage on desktop", "vamgltd.co.uk"),
       phone: phone("vintage-mobile", "The vamgltd.co.uk homepage on a phone", "vamgltd.co.uk"),
       gallery: [
         desktop("vintage-credit-hire", "The vamgltd.co.uk credit hire page", "Credit hire"),
         desktop("vintage-claim", "The vamgltd.co.uk start-your-claim form", "Start your claim"),
-        desktop("vintage-about", "The vamgltd.co.uk about page", "About"),
-        desktop("vintage-contact", "The vamgltd.co.uk contact page", "Contact"),
       ],
     },
     quote: {
