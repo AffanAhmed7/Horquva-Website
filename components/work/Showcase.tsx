@@ -2,14 +2,14 @@ import type { Client } from "@/content/work";
 import { Screenshot } from "./Screenshot";
 
 /**
- * The client's main screens on a plain white panel, composed like a product shot: the main screen large,
+ * The client's main screens on the page's own paper tone, composed like a product shot: the main screen large,
  * with a phone or a second screen overlapping its lower corner.
  */
 export function Showcase({ client, preload }: { client: Client; preload?: boolean }) {
   const { main, phone, second } = client.showcase;
 
   return (
-    <div className="relative overflow-hidden rounded-[1.5rem] bg-white">
+    <div className="relative overflow-hidden rounded-[1.5rem] bg-paper">
       <div className="relative px-6 pb-10 pt-8 sm:px-10 md:pb-14 md:pt-10">
         <Screenshot
           screen={main}
