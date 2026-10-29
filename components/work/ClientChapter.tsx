@@ -26,7 +26,7 @@ export function ClientChapter({ client: c, first }: { client: Client; first: boo
             {c.name}
           </RevealText>
           <Reveal delay={0.15}>
-            <p className="mt-3 text-[15px] text-ink-soft">
+            <p className="mt-5 text-[15px] text-ink-soft">
               {c.kind}, {city}
             </p>
 
