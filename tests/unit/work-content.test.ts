@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, it, expect } from "vitest";
 import { clients, visibleQuote } from "@/content/work";
 
@@ -36,6 +38,29 @@ describe("work content", () => {
     expect(bySlug("ruqaba").did).not.toMatch(/ruqaba\.com/);
   });
 
+  it("keeps every string field inside each client's confirmed claims", () => {
+    const strings = (c: (typeof clients)[number]) => {
+      const { url, domain, ...rest } = c;
+      void url;
+      void domain;
+      return JSON.stringify(rest);
+    };
+    expect(strings(bySlug("vintage"))).not.toMatch(/designed|built|develop/i);
+    expect(strings(bySlug("ruqaba"))).not.toMatch(/ruqaba\.com/i);
+    expect(JSON.stringify(bySlug("vin-sol"))).not.toMatch(
+      /Laravel|PHP|React|Next\.js|Node|WordPress|Python|Django|Vue|Angular|OpenAI|GPT|Gemini|Claude|Groq|Llama/i,
+    );
+  });
+
+  it("keeps the page's own copy free of ruled-out claims", () => {
+    const page = readFileSync(path.resolve(import.meta.dirname, "../../app/work/page.tsx"), "utf8");
+    expect(page).not.toMatch(/GIFCO|Rabeeya|expense|Horquva Inc|kyvani\.[a-z]/i);
+    expect(page).not.toMatch(banned);
+    // Quotes reach the page only through visibleQuote, never c.quote directly.
+    expect(page).not.toMatch(/c\.quote/);
+  });
+
+  // Tripwire: when the owner approves a quote, update this test to list the approved names.
   it("ships every quote unapproved", () => {
     for (const c of clients) expect(c.quote?.approved, c.slug).toBe(false);
     expect(bySlug("ruqaba").quote).toMatchObject({ name: "Aurangzeb Khan", role: "General Manager" });
