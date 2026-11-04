@@ -79,7 +79,14 @@ export function ServiceCards({ services, title, lead }: Props) {
       if (locked) return;
       const s = stops();
       const next = dir > 0 ? s.find((x) => x > target + 4) : [...s].reverse().find((x) => x < target - 4);
-      glideTo(next ?? (dir > 0 ? max() : 0));
+      const x = next ?? (dir > 0 ? max() : 0);
+      // Touch layouts use CSS snap, which fights a frame-by-frame glide; let the browser animate.
+      if (matchMedia("(pointer: coarse)").matches) {
+        target = current = x;
+        el.scrollTo({ left: x, behavior: reduced ? "auto" : "smooth" });
+        return;
+      }
+      glideTo(x);
     };
 
     const onScroll = () => {
@@ -316,8 +323,9 @@ export function ServiceCards({ services, title, lead }: Props) {
     };
   }, [reduced]);
 
+  // Solid so they read against the bronze glow; the end-of-row state drops to an outline.
   const arrow =
-    "flex h-12 w-12 items-center justify-center border border-rule text-[20px] transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:pointer-events-none disabled:opacity-30";
+    "flex h-10 w-10 items-center justify-center border border-ink bg-ink text-paper transition-colors hover:border-bronze hover:bg-bronze md:h-12 md:w-12 disabled:pointer-events-none disabled:border-ink-soft disabled:bg-transparent disabled:text-ink-soft disabled:opacity-40";
 
   return (
     <div ref={root} className="relative isolate flex min-h-svh flex-col justify-center overflow-hidden py-24">
@@ -340,12 +348,12 @@ export function ServiceCards({ services, title, lead }: Props) {
           {lead && <div className="mt-5 text-[18px] leading-[1.5] text-ink-soft">{lead}</div>}
         </div>
         <div ref={controls} className="flex items-center">
-          <div className="hidden gap-2 md:flex">
+          <div className="flex gap-2">
             <button type="button" className={arrow} onClick={() => scrollByCard.current(-1)} disabled={edge.start} aria-label="Previous services">
-              ←
+              <ChevronIcon className="rotate-180" />
             </button>
             <button type="button" className={arrow} onClick={() => scrollByCard.current(1)} disabled={edge.end} aria-label="Next services">
-              →
+              <ChevronIcon />
             </button>
           </div>
         </div>
@@ -397,5 +405,13 @@ export function ServiceCards({ services, title, lead }: Props) {
         })}
       </ul>
     </div>
+  );
+}
+
+function ChevronIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" className={`size-5 ${className}`} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 5l7 7-7 7" />
+    </svg>
   );
 }
