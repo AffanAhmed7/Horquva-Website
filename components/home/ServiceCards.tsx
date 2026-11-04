@@ -365,8 +365,9 @@ export function ServiceCards({ services, title, lead }: Props) {
           dragging ? "cursor-grabbing select-none" : "cursor-grab"
         }`}
         style={{
-          paddingInline: "max(clamp(1rem,4vw,3.5rem), calc((100vw - 1440px) / 2 + clamp(1rem,4vw,3.5rem)))",
-          scrollPaddingInline: "max(clamp(1rem,4vw,3.5rem), calc((100vw - 1440px) / 2 + clamp(1rem,4vw,3.5rem)))",
+          // Same small gutter at every width, so the first card stays near the screen edge on wide screens.
+          paddingInline: "clamp(1rem,4vw,3.5rem)",
+          scrollPaddingInline: "clamp(1rem,4vw,3.5rem)",
         }}
         aria-label="Services"
       >
