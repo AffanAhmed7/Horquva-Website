@@ -342,7 +342,8 @@ export function ServiceCards({ services, title, lead }: Props) {
           ].join(", "),
         }}
       />
-      <div className="gutter mx-auto flex w-full max-w-[1440px] flex-wrap items-end justify-between gap-8">
+      {/* Full width with the same gutter as the card row, so the title rests in line with the first card. */}
+      <div className="gutter flex w-full flex-wrap items-end justify-between gap-8">
         <div ref={heading} className="max-w-2xl grow">
           {title}
           {lead && <div className="mt-5 text-[18px] leading-[1.5] text-ink-soft">{lead}</div>}
