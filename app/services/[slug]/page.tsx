@@ -50,8 +50,8 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
 
       <Section innerClassName="py-24 md:py-32">
         <div className="grid gap-12 md:grid-cols-12 md:gap-10">
-          {/* Stays in view while the list beside it scrolls past. */}
-          <p className="font-display text-[22px] font-light leading-[1.45] tracking-[-0.01em] md:sticky md:top-32 md:col-span-5 md:self-start md:text-[26px]">
+          {/* Static, vertically centred against the list beside it. */}
+          <p className="font-display text-[22px] font-light leading-[1.45] tracking-[-0.01em] md:col-span-5 md:self-center md:text-[26px]">
             {service.overview}
           </p>
           <RevealList className="border-t border-rule md:col-span-6 md:col-start-7" aria-label="What we offer">
