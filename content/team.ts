@@ -46,12 +46,14 @@ export const team: Person[] = [
     role: "Head of business development",
     photo: "/photos/team/memoona-saleem.jpg",
     bio: "Works with organisations exploring AI and automation, and is usually the first person you'll speak to at Horquva.",
+    visible: false,
   },
   {
     name: "Muhammad Mohsin",
     role: "Marketing manager",
     photo: "/photos/team/muhammad-mohsin.jpg",
     bio: "Drives Horquva's B2B growth strategy, outbound pipeline and demand generation. Also builds AI-driven visual automation and e-commerce product imagery, and turns complex ideas into brand media through animation, illustration and video.",
+    visible: false,
   },
   {
     name: "Hooriya K",
