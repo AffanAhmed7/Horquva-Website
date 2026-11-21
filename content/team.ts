@@ -1,4 +1,3 @@
-
 export type Person = {
   name: string;
   role: string;
@@ -47,20 +46,17 @@ export const team: Person[] = [
     role: "Head of business development",
     photo: "/photos/team/memoona-saleem.jpg",
     bio: "Works with organisations exploring AI and automation, and is usually the first person you'll speak to at Horquva.",
-    visible: false,
   },
   {
-    name: "Muhammad Usman Azhar",
+    name: "Muhammad Mohsin",
     role: "Marketing manager",
-    photo: "/photos/team/muhammad-usman-azhar.jpg",
-    bio: "Twelve years leading B2B marketing, community growth and brand development for tech companies. Runs Horquva's performance marketing and outbound pipeline.",
-    visible: false,
+    photo: "/photos/team/muhammad-mohsin.jpg",
+    bio: "Drives Horquva's B2B growth strategy, outbound pipeline and demand generation. Also builds AI-driven visual automation and e-commerce product imagery, and turns complex ideas into brand media through animation, illustration and video.",
   },
   {
     name: "Hooriya K",
     role: "Senior manager",
     photo: "/photos/team/hooriya-k.jpg",
     bio: "Runs planning, governance and coordination, working closely with leadership to keep projects and internal processes on track.",
-    visible: false,
   },
 ];
