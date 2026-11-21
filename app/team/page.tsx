@@ -45,7 +45,7 @@ export default function TeamPage() {
       {/* Everyone. */}
       <Section innerClassName="py-24 md:py-32" aria-label="Team members">
         <Reveal as="ul" stagger={0.08} className="grid gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((p) => (
+          {team.filter((p) => p.visible !== false).map((p) => (
             <li key={p.name} className="group">
               <PersonPhoto
                 person={p}
